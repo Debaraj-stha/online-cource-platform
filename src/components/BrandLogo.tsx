@@ -1,0 +1,17 @@
+import React from 'react'
+import { SITE_NAME } from '../constants/common'
+
+const BrandLogo = () => {
+    return (
+        <div className="flex items-center gap-3">
+            <img
+                src="https://images.icon-icons.com/2108/PNG/512/react_icon_130845.png"
+                alt="Logo"
+                className="brand-logo"
+            />
+            <p className="brand">{SITE_NAME}</p>
+        </div>
+    )
+}
+
+export default BrandLogo
