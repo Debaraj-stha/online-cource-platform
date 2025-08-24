@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { testimonials } from '../constants/home';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -6,13 +6,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const Testimonials = () => {
   const containerRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const cards = gsap.utils.toArray('.testimonial-card');
-     gsap.from(cards, {
-      opacity: 0,
-      y: 50,
+
+    gsap.set(cards, { opacity: 0, y: 50 });
+
+    gsap.to(cards, {
+      opacity: 1,
+      y: 0,
       duration: 0.8,
       stagger: 0.2,
       ease: 'power3.out',
@@ -22,13 +25,13 @@ const Testimonials = () => {
         toggleActions: 'play none none reverse',
       },
     });
-    gsap.set(cards,{opacity:1,y:0})
   }, []);
+
 
   return (
     <section ref={containerRef} className="wrapper py-16">
       <div className="container">
-        <h2 className="title-h2">What Our Learners Say</h2>
+        <h2 className="title-h2 font-headinng">What Our Learners Say</h2>
       </div>
       <div
 
@@ -37,7 +40,7 @@ const Testimonials = () => {
         {testimonials.map((testimonial, index) => (
           <div
             key={index}
-            className="testimonial-card bg-white p-6 rounded-xl shadow-md text-left hover:shadow-lg transition"
+            className="card font-body"
           >
             <div className="flex items-center gap-4 mb-4">
               <img

@@ -1,4 +1,4 @@
-import React, { useEffect, useState,  } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { faq } from '../constants/home';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
@@ -46,7 +46,7 @@ const FAQ = () => {
           <div key={index} className="border border-gray-200 rounded-lg shadow-sm bg-transparent mb-4">
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full text-left p-4 flex justify-between items-center font-medium text-gray-800 hover:bg-gray-50 transition"
+              className="w-full text-left p-4 flex justify-between items-center font-medium  transition text-para"
               aria-expanded={openIndex === index}
               aria-controls={`faq-answer-${index}`}
               id={`faq-question-${index}`}
@@ -59,7 +59,7 @@ const FAQ = () => {
                 id={`faq-answer-${index}`}
                 role="region"
                 aria-labelledby={`faq-question-${index}`}
-                className="p-4 pt-0 text-sm text-gray-600 faq-text"
+                className="p-4 pt-0 text-sm text-gary-300 faq-text"
               >
                 {item.answer}
               </div>

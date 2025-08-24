@@ -1,14 +1,7 @@
 import React from 'react';
+import type { Course } from '../@types/course';
 
-interface Props {
-    title: string;
-    instructor: string;
-    description: string;
-    thumbnail: string;
-    price: number;
-    rating: number;
-    totalEnrolled: number;
-}
+
 
 const CourseCard = ({
     title,
@@ -18,22 +11,19 @@ const CourseCard = ({
     price,
     rating,
     totalEnrolled,
-}: Props) => {
+}: Course) => {
     return (
-        <div className="rounded-lg shadow hover:shadow-lg transition border p-4 bg-white flex flex-col cursor-pointer">
-            <img
-                src={thumbnail}
-                alt={title}
-                className="w-full h-60 object-cover rounded-md mb-3"
-            />
-            <h3 className="title-h3">{title}</h3>
-            <p className="text-sm text-gray-500 mb-2">by {instructor}</p>
-            <p className="text-sm text-gray-600 flex-grow">{description.slice(0, 80)}...</p>
-            <div className="mt-3 flex justify-between items-center text-sm text-gray-700">
-                <span className="font-medium">${price}</span>
-                <span>⭐ {rating} ({totalEnrolled})</span>
+        <>
+            <img src={thumbnail} alt={title} className="w-full h-48 object-cover" />
+            <div className="p-4 font-body">
+                <h2 className="title-h3 font-heading">{title}</h2>
+                <p className="text-gray-600 text-sm mt-2">{description}</p>
+                <p className="text-blue-600 mt-3 font-medium">${price}</p>
+                <p className="text-sm text-gray-500 mt-1">Instructor: {instructor!.name}</p>
+                <p className="text-sm text-gray-500">Rating: ⭐ {rating}</p>
+                <p className="text-sm text-gray-500">Enrolled: {totalEnrolled} students</p>
             </div>
-        </div>
+        </>
     );
 };
 

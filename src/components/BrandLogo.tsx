@@ -1,7 +1,7 @@
 import React from 'react'
 import { SITE_NAME } from '../constants/common'
 
-const BrandLogo = () => {
+const BrandLogo = ({isHeader=false}:{isHeader?:boolean}) => {
     return (
         <div className="flex items-center gap-3">
             <img
@@ -9,7 +9,7 @@ const BrandLogo = () => {
                 alt="Logo"
                 className="brand-logo"
             />
-            <p className="brand">{SITE_NAME}</p>
+            <p className={`${isHeader ? " hidden sm:block":""} brand`}>{SITE_NAME}</p>
         </div>
     )
 }

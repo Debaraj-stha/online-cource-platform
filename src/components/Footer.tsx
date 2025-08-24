@@ -15,19 +15,19 @@ const Footer = () => {
         const columns = footerRef.current?.querySelectorAll('.footer-column');
 
         if (!columns) return;
-
-        gsap.from(columns, {
+        gsap.set(columns, { opacity: 0, y: 50 })
+        gsap.to(columns, {
             scrollTrigger: {
                 trigger: footerRef.current,
                 start: "top 80%",
             },
-            opacity: 0,
-            y: 50,
+            opacity: 1,
+            y: 0,
             stagger: 0.3,
             duration: 0.8,
             ease: "power3.out",
         });
-        gsap.set(columns, { opacity: 1, y: 0 })
+
     }, []);
 
     return (
@@ -81,7 +81,7 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div className="footer-bottom text-center mt-8 text-gray-500 text-sm">
+            <div className="footer-bottom text-center mt-8 text-sm">
                 © {new Date().getFullYear()} New Learning. All rights reserved.
             </div>
         </footer>

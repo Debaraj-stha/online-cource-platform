@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Bg from "../assets/images/bg1.jpg";
+import Bg from "../assets/images/bg4.jpg";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect } from 'react';
@@ -33,29 +33,22 @@ const Hero = () => {
 
         timeline.fromTo(paragraphSplit.chars,
             { opacity: 0, color: "#aaa" },
-            { opacity: 1, color: "#4B5563", stagger: 0.02, duration: 0.5, ease: "power2.out" },
+            { opacity: 1, color: "#ccc", stagger: 0.02, duration: 0.5, ease: "power2.out" },
             ">0.2"
         );
-
-        // Image animation
-        gsap.set("#hero-image", {
-            opacity: 0.1,
-            scale: 0.1,
-                });
-
-        gsap.to("#hero-image", {
+        gsap.set(".hero-image", { borderRadius: "20%", scale: 0.7 })
+        gsap.to(".hero-image", {
+            borderRadius: "20px",
             scale: 1,
-            opacity: 1,
-          
-            ease: "circ.inOut",
+            ease: "power1.inOut",
             scrollTrigger: {
-                trigger: "#hero-image",
-                start: "top 90%",
-                end: "top 70%",
-                scrub: true,
-                pin: true,
+                trigger: ".hero-section",
+                start: "top 60%",
+                scrub: true
+
             }
-        });
+        })
+
 
         return () => {
             titleSplit.revert();
@@ -69,36 +62,41 @@ const Hero = () => {
             <div className="container mt-20">
                 {/* Text Content */}
                 <div className="space-y-6">
-                    <h1 className="title-h1 text-4xl md:text-5xl font-bold leading-tight">
-                        Unlock Your Potential with <br className="hidden md:block" />
-                        <span className="text-blue-600">World-Class Online Learning</span>
+                    <h1 className="text-4xl font-heading md:text-6xl font-extrabold leading-tight tracking-tight sm:leading-snug sm:tracking-normal">
+                        <span className="text-gradient block mb-2">
+                            Unlock Your Potential with
+                        </span>
+                        <span className="block bg-clip-text bg-gradient-to-b from-gray-100 to-gray-300 text-transparent">
+                            World-Class Online Learning
+                        </span>
                     </h1>
 
-                    <p className="text-lg hero-para text-gray-600">
+                    <p className="hero-para  max-w-xl mt-6 text-lg md:text-xl leading-relaxed tracking-wide font-body">
                         Discover top-rated courses, expert instructors, and a vibrant learning community —
                         all at your fingertips. Learn at your own pace, anytime, anywhere.
                     </p>
 
+
                     {/* CTAs */}
-                    <div className="flex gap-4 flex-wrap">
-                        <Link to="/signup" className="primary-button">
+                    <div className="flex gap-4 flex-wrap font-body">
+                        <Link to="/signup" className="primary-button font-heading">
                             Get Started
                         </Link>
-                        <Link to="/courses" className="transparent-primary-button">
+                        <Link to="/courses" className="transparent-primary-button font-heading">
                             Browse Courses
                         </Link>
                     </div>
 
                     {/* Quick Stats */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm text-gray-600 mt-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-gray-100 text-sm mt-6">
                         <div>
-                            <NumberAnimation target={1500} extraText="+"/><br />Courses
+                            <NumberAnimation target={1500} extraText="+" /><br />Courses
                         </div>
                         <div>
-                            <NumberAnimation target={300} extraText="+"/><br />Instructors
+                            <NumberAnimation target={300} extraText="+" /><br />Instructors
                         </div>
                         <div>
-                            <NumberAnimation target={98} extraText="+"/><br />Satisfaction Rate
+                            <NumberAnimation target={98} extraText="+" /><br />Satisfaction Rate
                         </div>
                         <div>
                             <strong className='text-xl text-blue-600'>24/7</strong><br />Support
@@ -114,7 +112,7 @@ const Hero = () => {
                     </div>
 
                     {/* Trusted By */}
-                    <p className="text-sm text-gray-500 mt-4">
+                    <p className="text-sm text-gray-100 mt-4 font-body">
                         Trusted by <strong>50,000+</strong> learners across 120+ countries 🌍
                     </p>
                 </div>
@@ -124,20 +122,12 @@ const Hero = () => {
                     <img
                         src={Bg}
                         alt="Online Learning"
-                        className="w-full rounded-lg shadow-lg"
+                        className="w-full rounded-lg shadow-lg hero-image"
                     />
                 </div>
             </div>
 
-            {/* Hero Image (Animated with ScrollTrigger) */}
-            <div className="mt-10 overflow-hidden">
-                <img
-                    id="hero-image"
-                    src={Bg}
-                    alt="Scroll Animated Learning"
-                    className="w-full mx-auto"
-                />
-            </div>
+
         </section>
     );
 };
