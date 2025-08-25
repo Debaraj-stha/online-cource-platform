@@ -6,7 +6,7 @@
 /* navbar style */
 @layer components {
   .navbar {
-    @apply flex justify-between items-center px-3 sm:px-6  py-4 bg-gray-900 shadow-md sticky top-0 z-50;
+    @apply flex sm:justify-between justify-start items-center px-3 gap-4  sm:px-6  py-4 bg-gray-900 shadow-md sticky top-0 z-50;
   }
 
   .brand-logo {
@@ -22,7 +22,7 @@
   }
 
   .navbar-link {
-    @apply text-gray-300 hover:text-blue-600 transition duration-200 text-sm md:text-lg font-medium;
+    @apply text-gray-300 hover:text-blue-600 transition duration-200 text-sm lg:text-lg font-medium;
   }
 }
 

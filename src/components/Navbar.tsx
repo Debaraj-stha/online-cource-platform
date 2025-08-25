@@ -15,75 +15,91 @@ const Navbar = () => {
     const [showUserCard, setShowUserCard] = useState(false)
     const [isSearchbarOpen, setSearchbarOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState<string>()
-    const SMALL_DEVICE_WIDTH = 765
-
-    useEffect(() => {
-        const hero = document.querySelector('.hero-section');
-        const links = document.querySelectorAll('.navbar-link');
-        if (!navRef.current || !hero) return;
-        gsap.to("nav", {
-            backgroundColor: "#0f172a",
-            padding: "1.5rem 3rem",
-            scrollTrigger: {
-                trigger: ".hero-section",
-                start: "top top",
-                end: "+=100",
-                scrub: true
-            }
-        });
-
-        gsap.to(
-            links,
-            {
-                opacity: 0.5,
-                stagger: 0.2,
-                duration: 0.4,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: hero,
-                    start: "bottom top",  // when bottom of hero hits top of viewport
-                    end: "+=100",         // optional: adds a small scroll range
-                    toggleActions: "play none none reverse",
-                    // onEnter: play animation when hero leaves
-                    // onLeave: do nothing
-                    // onEnterBack: do nothing
-                    // onLeaveBack: reverse animation when hero re-enters
-                },
-            }
-        );
-
-        gsap.to(".brand", {
-            opacity: 0.5,
-            stagger: 0.2,
-            duration: 0.4,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: hero,
-                start: "bottom top",  // when bottom of hero hits top of viewport
-                end: "+=100",         // optional: adds a small scroll range
-                toggleActions: "play none none reverse",
-            }
-        })
+    const SMALL_DEVICE_WIDTH = 768
 
 
-    }, []);
+
 
     const handleSearchbarClick = () => {
-        if (window.innerWidth > SMALL_DEVICE_WIDTH) return
-        setSearchbarOpen((prev) => !prev)
-        console.log("called")
-    }
+        if (window.innerWidth <= SMALL_DEVICE_WIDTH) {
+            setSearchbarOpen(true);
+        }
+    };
 
     const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value)
     }
 
+    const onSearch = () => {
+        setSearchbarOpen(false)
+        setSearchQuery("")
+    }
+    const onBack = () => {
+        setSearchbarOpen(false)
+    }
+useEffect(() => {
+    const hero = document.querySelector('.hero-section');
+    const links = document.querySelectorAll('.navbar-link');
+    if (!navRef.current || !hero) return;
+
+    const isSmallDevice = window.innerWidth < 768; // Tailwind's md = 768px
+    const navPadding = isSmallDevice ? "1rem 1rem" : "1.5rem 3rem";
+
+    gsap.to("nav", {
+        backgroundColor: "#0f172a",
+        padding: navPadding,
+        scrollTrigger: {
+            trigger: ".hero-section",
+            start: "top top",
+            end: "+=100",
+            scrub: true
+        }
+    });
+
+    gsap.to(links, {
+        opacity: 0.5,
+        stagger: 0.2,
+        duration: 0.4,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: hero,
+            start: "bottom top",
+            end: "+=100",
+            toggleActions: "play none none reverse",
+        },
+    });
+
+    gsap.to(".brand", {
+        opacity: 0.5,
+        stagger: 0.2,
+        duration: 0.4,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: hero,
+            start: "bottom top",
+            end: "+=100",
+            toggleActions: "play none none reverse",
+        }
+    });
+}, []);
+
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > SMALL_DEVICE_WIDTH) {
+                setSearchbarOpen(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <nav
             ref={navRef}
             id="navbar"
-            className={`navbar bg-gray-900`}
+            className="navbar bg-gray-900 "
         >
             {!isSearchbarOpen &&
                 <BrandLogo isHeader={true} />
@@ -100,19 +116,22 @@ const Navbar = () => {
                     ))}
                 </ul>
             }
-            <div className={`relative gap-6 items-center ${isSearchbarOpen ? 'w-full' : 'flex justify-between'}`}>
+            <div className={`relative items-center  lg:max-w-md ${isSearchbarOpen ? 'w-full' : 'flex justify-around md:justify-between'}`}>
+
                 <Searchbar
                     onMouseClick={handleSearchbarClick}
                     value={searchQuery}
                     onChange={handleQueryChange}
+                    onSearch={onSearch}
+                    onBack={onBack}
                 />
                 {
                     !isSearchbarOpen &&
-                    <div className='flex justify-between items-center'>
+                    <div className='flex justify-between items-center whitespace-nowrap'>
                         <p className='hidden md:block '>Jhon Doe</p>
-                        <button className='hover:animate-pulse' onClick={() => setShowUserCard((prev) => !prev)}>
+                        <div className='hover:animate-pulse px-2 cursor-pointer' onClick={() => setShowUserCard((prev) => !prev)}>
                             <CgMoreVerticalAlt size={20} />
-                        </button>
+                        </div>
                         {showUserCard &&
                             <UserOptionsCard />
                         }

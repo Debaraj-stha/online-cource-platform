@@ -1,6 +1,6 @@
 import { useGSAP } from '@gsap/react'
 import { useEffect, useRef, useState } from 'react'
-import { BiSearchAlt } from 'react-icons/bi'
+import { BiArrowBack, BiSearchAlt } from 'react-icons/bi'
 import gsap from 'gsap'
 
 interface Props {
@@ -9,33 +9,41 @@ interface Props {
     value?: string
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
     onSearch?: () => void
+    onBack?: () => void
 }
 
-const Searchbar = ({ placeholder = "Search here...", onMouseClick, onChange, onSearch, value }: Props) => {
+const Searchbar = ({ placeholder = "Search here...", onMouseClick, onChange, onSearch, value, onBack }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const [showInput, setShowInput] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
-    let timer: ReturnType<typeof setTimeout> | null = null
+    const hasAnimatedRef = useRef(false)
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
 
     const startBlurTimer = () => {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-            inputRef.current!.blur()
+        if (timerRef.current) clearTimeout(timerRef.current)
+        timerRef.current = setTimeout(() => {
+            inputRef.current?.blur()
             setShowInput(false)
-            onMouseClick?.()
+            gsap.set(inputRef.current, { display: 'none', opacity: 0, width: 0 })
+            onBack?.()
         }, 5000)
     }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (timerRef.current) clearTimeout(timerRef.current)
+        onChange?.(e)
+    }
+
+
 
     useEffect(() => {
         const input = inputRef.current
         if (!input) return
 
-
-
-
         const blurOnKeyUp = (e: KeyboardEvent) => {
             if (e.key === "Enter" && onMouseClick) {
-                onMouseClick()
+                onBack?.()
                 setShowInput(false)
                 onSearch && onSearch()
             }
@@ -44,73 +52,112 @@ const Searchbar = ({ placeholder = "Search here...", onMouseClick, onChange, onS
 
         const blurOnClick = () => {
             startBlurTimer()
+
         }
 
         input.addEventListener('keyup', blurOnKeyUp)
-        input.addEventListener('click', blurOnClick)
+        input.addEventListener('click', blurOnClick, { once: true })
 
         return () => {
-            if (timer) clearTimeout(timer)
+            if (timerRef.current) clearTimeout(timerRef.current)
             input.removeEventListener('keyup', blurOnKeyUp)
             input.removeEventListener('click', blurOnClick)
         }
     }, [onMouseClick])
 
 
-    const handleSearchIconClick = () => {
-        setShowInput(true)
-        setTimeout(() => {
-            inputRef.current?.focus()
-            // Start the blur timer right after focus
-            startBlurTimer()
-        }, 100)
-        onMouseClick?.()
-    }
 
 
     useGSAP(() => {
-        if (!showInput || !inputRef.current) return
+        if (!showInput || !inputRef.current || hasAnimatedRef.current) return
 
         const input = inputRef.current
-
         gsap.set(input, { display: 'block', opacity: 0, width: 0 })
-
         gsap.to(input, {
             opacity: 1,
             width: '100%',
             duration: 0.8,
-            ease: 'power2.out'
+            ease: 'power2.out',
+            onComplete: () => {
+                hasAnimatedRef.current = true
+            }
         })
-    }, [showInput, onMouseClick])
+    }, [showInput])
+
+
+
+
+    const handleSearchIconClick = () => {
+        // If there's a value, treat it as a search submit
+        if (value?.trim()) {
+            console.log("searching...")
+            setShowInput(false)
+            setIsFocused(false)
+            onSearch?.()
+            hasAnimatedRef.current = false
+            return //  Exit early — don't toggle show/hide via onMouseClick
+        }
+
+        // Otherwise just open the search input
+        setShowInput(true)
+        setTimeout(() => {
+            inputRef.current?.focus()
+            startBlurTimer()
+        }, 100)
+
+        onMouseClick?.()
+    }
+
+
+    const handleBack = () => {
+        setShowInput(false)
+        hasAnimatedRef.current = false
+        gsap.set(inputRef.current, { display: 'none', opacity: 0, width: 0 })
+        onBack?.()
+    }
+
+
+
+
 
     return (
-        <div className='relative w-full md:w-auto'>
-            <div
-                className='absolute top-1/2 -translate-y-1/2 left-4 cursor-pointer hover:bg-gray-800 p-1 rounded'
-                onClick={handleSearchIconClick}
-            >
-                <BiSearchAlt size={20} 
-                 className={`transition-colors duration-300 ${isFocused ? 'text-blue-400' : 'text-gray-300'}`}
+        <div className='w-full flex flex-row gap-3 relative'>
+
+            <div className={`px-0 py-0 items-center ${showInput ? "flex" : "hidden"} md:hidden`} onClick={handleBack}>
+                <BiArrowBack />
+            </div>
+            <div className='relative w-full'>
+                <div
+                    title='Search'
+                    className={`absolute  top-1/2 -translate-y-1/2  ${showInput? "right-0 md:left-3" :"-right-3"}    md:left-3  
+                         cursor-pointer p-1 rounded`}
+                    onClick={handleSearchIconClick}
+                >
+
+                    <BiSearchAlt size={20}
+                        className={`transition-colors duration-300 ${isFocused ? 'text-blue-400' : 'text-gray-300'}`}
+                    />
+                </div>
+
+                <input
+                    ref={inputRef}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    type='text'
+                    name='search'
+                    value={value ?? ""}
+                    onChange={handleChange}
+                    placeholder={placeholder}
+                    style={{
+
+                        borderRadius: "1.5rem",
+                        overflow: "hidden"
+                    }}
+                    // always shows on large devices but show/hide based on state in small and medium 
+                    className={`input search-box  pl-4  pr-10 md:pr-4  md:pl-10 text-blue-400 ${showInput ? "block" : "hidden"} md:block`}
                 />
             </div>
 
-            <input
-                ref={inputRef}
-                onFocus={()=>setIsFocused(true)}
-                onBlur={()=>setIsFocused(false)}
-                type='text'
-                name='search'
-                value={value ?? ""}
-                onChange={onChange}
-                placeholder={placeholder}
-                style={{
-                    paddingLeft: "3rem",
-                    borderRadius: "1.5rem",
-                    display: showInput ? "block" : "none",
-                    overflow: "hidden"
-                }}
-                className="input search-box"
-            />
         </div>
     )
 }
