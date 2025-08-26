@@ -1,5 +1,5 @@
 import { useGSAP } from '@gsap/react'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { BiArrowBack, BiSearchAlt } from 'react-icons/bi'
 import gsap from 'gsap'
 
@@ -12,7 +12,7 @@ interface Props {
     onBack?: () => void
 }
 
-const Searchbar = ({ placeholder = "Search here...", onMouseClick, onChange, onSearch, value, onBack }: Props) => {
+const Searchbar =memo(({ placeholder = "Search here...", onMouseClick, onChange, onSearch, value, onBack }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const [showInput, setShowInput] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
@@ -160,6 +160,6 @@ const Searchbar = ({ placeholder = "Search here...", onMouseClick, onChange, onS
 
         </div>
     )
-}
+})
 
 export default Searchbar

@@ -67,6 +67,16 @@ button {
   font-family: "Montserrat", sans-serif;
 }
 
+/* Hide scrollbar across browsers */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+
 button {
 
   border: 1px solid transparent;

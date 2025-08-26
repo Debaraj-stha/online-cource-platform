@@ -1,46 +1,17 @@
-import React, { useEffect, useRef } from 'react';
-import { popularCourses } from '../constants/home';
-import CourseCard from './CourceCard';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React from 'react'
+import { popularCourses } from '../constants/home'
+import CourseCard from './CourceCard'
 
 const PopularCourses = () => {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const cards = gsap.utils.toArray('.course-card');
-    gsap.set(cards, { opacity: 0, y: 50 })
-    gsap.to(cards, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse',
-      },
-    });
-
-  }, []);
-
   return (
-    <section ref={sectionRef} className="wrapper">
-      <div className="container">
-        <h2 className="title-h2">Popular Courses</h2>
-      </div>
-      <div className="container grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-        {popularCourses.map((course, index) => (
-          <div key={index} className="course-card card">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {popularCourses.map((course) => (
+          <div key={course.id} className="course-card card">
             <CourseCard {...course} />
           </div>
         ))}
       </div>
-    </section>
-  );
-};
+  )
+}
 
-export default PopularCourses;
+export default PopularCourses
