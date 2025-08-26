@@ -41,6 +41,7 @@ const CTASection = () => {
         stagger: 0.2,
         ease: 'power2.out',
       }, "-=0.4");
+      return ()=>tl.kill()
   }, { scope: sectionRef });
 
 

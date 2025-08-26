@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { levels } from '../constants/courses'
-import capitalize from '../utils/capitalize'
+import capitalize from '../utils/string-func'
 
 const FilterByLevel = () => {
       const [sortBy, setSortBy] = useState("beginner")

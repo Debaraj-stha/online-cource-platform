@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef, useState } from 'react'
 import { categories } from '../constants/courses'
-import capitalize from '../utils/capitalize'
+import capitalize from '../utils/string-func'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
@@ -13,7 +13,7 @@ const FilterByCategory = memo(() => {
     const startX = useRef(0)
     // Stores the scrollLeft value of the container at the start of the drag
     const scrollLeft = useRef(0)
-    const [selected, setSelected] = useState("ai-ml")
+    const [selected, setSelected] = useState("all")
 
 
 

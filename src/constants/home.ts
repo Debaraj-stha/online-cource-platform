@@ -47,6 +47,9 @@ export const popularCourses: Course[] = [
     price: 59.99,
     rating: 4.7,
     totalEnrolled: 1820,
+    duration:"5 hours",
+    level:"intermediate",
+    language:"english"
   },
   {
     id: 'react-advanced',
@@ -111,6 +114,39 @@ export const popularCourses: Course[] = [
   {
     id: 'node-express-api',
     title: 'Node.js & Express API Development',
+    instructor: {
+      name: 'Alex',
+      email: null,
+      phone: null,
+      profile: null
+    },
+    description: 'Learn to build RESTful APIs using Node.js, Express, and MongoDB with proper authentication & testing.',
+    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    price: 54.99,
+    rating: 4.7,
+    totalEnrolled: 1140,
+  },
+    {
+    id: 'node-js-crash',
+    title: 'Node.js crash course',
+    instructor: {
+      name: 'Alex',
+      email: null,
+      phone: null,
+      profile: null
+    },
+    description: 'Learn to build RESTful APIs using Node.js, Express, and MongoDB with proper authentication & testing.',
+    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    price: 54.99,
+    rating: 4.7,
+    totalEnrolled: 1140,
+    duration:"10 hours",
+    level:"beginner",
+    language:"nepali"
+  },
+    {
+    id: 'frontend-developement',
+    title: 'frontend developmenet',
     instructor: {
       name: 'Alex',
       email: null,

@@ -24,7 +24,9 @@ const HomePopularCourses = () => {
         toggleActions: 'play none none reverse',
       },
     });
-
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   return (
@@ -32,10 +34,10 @@ const HomePopularCourses = () => {
       <div className="container">
         <h2 className="title-h2">Popular Courses</h2>
       </div>
-      <div className="container grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-        {popularCourses.map((course, index) => (
+      <div className="container gap-4 grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+        {popularCourses.slice(4).map((course, index) => (
           <div key={index} className="course-card card">
-            <CourseCard {...course} />
+            <CourseCard course={course} view='home' />
           </div>
         ))}
       </div>

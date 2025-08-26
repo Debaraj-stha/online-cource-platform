@@ -21,6 +21,10 @@ const Features = () => {
                 toggleActions: "play none none reverse",
             },
         });
+
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
     }, []);
 
     return (

@@ -18,7 +18,7 @@ const FilterOptions = memo(() => {
                 <BiExpandVertical size={20} />
             </div>
             {open && (
-                <AbsoluteCard extraClass='top-32'>
+                <AbsoluteCard extraClass='top-32 z-50'>
                     <SortDropdown setSortBy={setSortBy} sortBy={sortBy} />
                 </AbsoluteCard>
             )}

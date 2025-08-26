@@ -1,5 +1,5 @@
 import type { Instructor } from "./instructor";
-
+export type View = "home" | 'courses' | 'details'
 export type Category =
     | "web-development"
     | "design"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { languages } from '../constants/courses'
-import capitalize from '../utils/capitalize'
+import capitalize from '../utils/string-func'
 
 const FilterByLanguage = () => {
   const [sortBy, setSortBy] = useState("nepali")
