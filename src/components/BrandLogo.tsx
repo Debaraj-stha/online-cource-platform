@@ -1,7 +1,7 @@
 import React from 'react'
 import { SITE_NAME } from '../constants/common'
 
-const BrandLogo = ({isHeader=false}:{isHeader?:boolean}) => {
+const BrandLogo = ({isHeader=false,textClass=""}:{isHeader?:boolean,textClass?:string}) => {
     return (
         <div className="flex items-center gap-3">
             <img
@@ -9,7 +9,7 @@ const BrandLogo = ({isHeader=false}:{isHeader?:boolean}) => {
                 alt="Logo"
                 className={`brand-logo ${isHeader ? "hidden" :"sm:block"} sm:block`}
             />
-            <p className={`${isHeader ? " hidden sm:block":""} brand`}>{SITE_NAME}</p>
+            <p className={`${isHeader ? " hidden sm:block":""} brand ${textClass}`}>{SITE_NAME}</p>
         </div>
     )
 }

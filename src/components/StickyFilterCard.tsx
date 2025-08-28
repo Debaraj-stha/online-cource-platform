@@ -11,7 +11,6 @@ const StickyFilterCard = () => {
     const position = 70
     const handlScroll = () => {
       const boundingBox = current.getBoundingClientRect()
-      console.log(boundingBox.top)
       if (boundingBox.top <= position) {
         current.classList.add("pt-6", "pb-3")
       }

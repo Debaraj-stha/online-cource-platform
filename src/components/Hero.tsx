@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Bg from "../assets/images/bg4.jpg";
+import OnlineLearning from "../assets/svg/undraw_online-learning_tgmv.svg?react";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect } from 'react';
@@ -14,6 +14,7 @@ const Hero = () => {
         // Text animation
         const titleSplit = new SplitText(".title-h1", { type: "words,chars" });
         const paragraphSplit = new SplitText("p.hero-para", { type: "words,chars" });
+        gsap.set(".hero-image", { scale: 0.6,opacity:0.8 });
 
         const timeline = gsap.timeline({
             scrollTrigger: {
@@ -34,18 +35,18 @@ const Hero = () => {
         timeline.fromTo(paragraphSplit.chars,
             { opacity: 0, color: "#aaa" },
             { opacity: 1, color: "#ccc", stagger: 0.02, duration: 0.5, ease: "power2.out" },
-            ">0.2"
+            ">0.2" //tart this animation 0.2 seconds after the previous animation ends
         );
-        gsap.set(".hero-image", { borderRadius: "20%", scale: 0.7 })
-        gsap.to(".hero-image", {
-            borderRadius: "20px",
-            scale: 1,
-            ease: "power1.inOut",
-            scrollTrigger: {
-                trigger: ".hero-section",
-                start: "top 60%",
-                scrub: true
 
+        gsap.to(".hero-image", {
+            scale: 1.2,
+            opacity:1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".hero-image",
+                start: "top 90%",   // when image enters viewport
+                end: "bottom 60%",  // end zoom when scrolled past
+                scrub: true,        
             }
         })
 
@@ -59,10 +60,10 @@ const Hero = () => {
 
     return (
         <section className="hero-wrapper hero-section px-0">
-            <div className="container mt-20">
+            <div className="container-grid mt-20">
                 {/* Text Content */}
                 <div className="space-y-6">
-                    <h1 className="text-4xl font-heading md:text-6xl font-extrabold leading-tight tracking-tight sm:leading-snug sm:tracking-normal">
+                    <h1 className="title-h1 text-gradient">
                         <span className="text-gradient block mb-2">
                             Unlock Your Potential with
                         </span>
@@ -93,18 +94,12 @@ const Hero = () => {
                             <NumberAnimation target={1500} extraText="+" /><br />Courses
                         </div>
                         <div>
-                            <NumberAnimation target={300} extraText="+" /><br />Instructors
-                        </div>
-                        <div>
-                            <NumberAnimation target={98} extraText="+" /><br />Satisfaction Rate
-                        </div>
-                        <div>
                             <strong className='text-xl text-blue-600'>24/7</strong><br />Support
                         </div>
                     </div>
 
                     {/* Popular Categories */}
-                    <div className="flex gap-2 mt-4 flex-wrap text-sm">
+                    <div className="flex gap-4 mt-4 flex-wrap text-sm">
                         <span className="badge">Web Development</span>
                         <span className="badge">Design</span>
                         <span className="badge">AI & ML</span>
@@ -119,11 +114,7 @@ const Hero = () => {
 
                 {/* Hero Image (Static) */}
                 <div className="mt-10">
-                    <img
-                        src={Bg}
-                        alt="Online Learning"
-                        className="w-full rounded-lg shadow-lg hero-image"
-                    />
+                    <OnlineLearning className='transition  hero-image' />
                 </div>
             </div>
 

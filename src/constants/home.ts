@@ -1,37 +1,48 @@
 import type { Course } from "../@types/course";
+import type { Feature } from "../@types/Feature";
+import type { Testimonial } from "../@types/Testimonial";
 
-export const features = [
+
+
+export const features: Feature[] = [
   {
     title: "Expert Instructors",
-    description: "Learn from industry professionals with years of real-world experience. Our instructors are handpicked for their expertise and teaching skills.",
-    icon: "🎓", // You can replace with actual icon component if needed
+    description:
+      "Learn from industry professionals with years of real-world experience. Our instructors are handpicked for their expertise and teaching skills.",
+    icon: "🎓",
   },
   {
     title: "Flexible Learning",
-    description: "Access courses anytime, anywhere. Learn at your own pace with lifetime access to all your enrolled courses.",
+    description:
+      "Access courses anytime, anywhere. Learn at your own pace with lifetime access to all your enrolled courses.",
     icon: "⏰",
   },
   {
-    title: "Interactive Quizzes",
-    description: "Test your knowledge with quizzes after every module to reinforce learning and track your progress.",
-    icon: "✅",
+    title: "Affordable Price",
+    description:
+      "High-quality education at a price that doesn’t break the bank. We believe in making learning accessible for everyone.",
+    icon: "💲",
   },
   {
     title: "Certificates of Completion",
-    description: "Earn certificates for every course you complete to showcase your skills and enhance your resume.",
+    description:
+      "Earn certificates for every course you complete to showcase your skills and enhance your resume.",
     icon: "📜",
   },
   {
     title: "Community Support",
-    description: "Join a community of learners and instructors. Ask questions, get answers, and collaborate via our Q&A and discussion boards.",
+    description:
+      "Join a community of learners and instructors. Ask questions, get answers, and collaborate via our Q&A and discussion boards.",
     icon: "💬",
   },
   {
     title: "Secure Payments",
-    description: "Pay confidently with secure payment options like Stripe and PayPal. Your data is always protected.",
+    description:
+      "Pay confidently with secure payment options like Stripe and PayPal. Your data is always protected.",
     icon: "🔒",
-  }
+  },
 ];
+
 export const popularCourses: Course[] = [
   {
     id: 'web-dev-101',
@@ -162,7 +173,7 @@ export const popularCourses: Course[] = [
 ];
 
 
-export const testimonials = [
+export const testimonials:Testimonial[] = [
   {
     name: "Anjali K.",
     title: "Software Engineer at TechWorx",

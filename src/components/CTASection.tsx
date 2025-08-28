@@ -1,9 +1,11 @@
 
 import gsap from 'gsap';
-import  {  useRef } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import NumberAnimation from './NumberAnimation';
+import BrowseCourseAButton from './BrowseCourseAButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,22 +43,23 @@ const CTASection = () => {
         stagger: 0.2,
         ease: 'power2.out',
       }, "-=0.4");
-      return ()=>tl.kill()
+    return () => tl.kill()
   }, { scope: sectionRef });
 
 
   return (
     <section
       ref={sectionRef}
-      className="bg-gray-900  py-12 px-6 text-center"
+      className="bg-gradient-to-br from-gray-900 to-gray-950  py-12 px-6 text-center"
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto space-y-5">
         <h2 className="cta-heading title-h2 text-transparent font-headinng">
           Ready to Start Learning?
         </h2>
         <p className="cta-text text-lg md:text-xl mb-6 text-para font-body">
           Join thousands of students and gain access to expert-led courses, quizzes, and more!
         </p>
+        <p className='text-lg'><span className='text-blue-600 font-bold'><NumberAnimation target={2500}/></span>+ students joins today</p>
         <div className="flex justify-center gap-4 flex-wrap font-heading ">
           <Link
             to="/signup"
@@ -64,12 +67,7 @@ const CTASection = () => {
           >
             Get Started for Free
           </Link>
-          <Link
-            to="/courses"
-            className=" cta_button border border-white px-6 py-3 rounded-md font-semibold hover:bg-white hover:text-blue-600 transition"
-          >
-            Browse Courses
-          </Link>
+          <BrowseCourseAButton extraClass='cta_button'/>
         </div>
       </div>
     </section>

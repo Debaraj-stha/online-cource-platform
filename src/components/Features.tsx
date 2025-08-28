@@ -1,53 +1,77 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { features } from '../constants/home';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { featureImages } from '../constants/featureImages';
+import FeatureCard from './FeatureCard';
+
 
 const Features = () => {
-    useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
+    const ref = useRef<HTMLDivElement>(null)
+useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    if (!ref.current) return;
 
-        gsap.set(".feature-card", { opacity: 0, y: 50 });
+    const cards = ref.current.querySelectorAll(".feature-card");
+    const images = ref.current.querySelectorAll(".feature-image");
 
-        gsap.to(".feature-card", {
+    // Set initial state
+    gsap.set(cards, { opacity: 0, y: 50 });
+    gsap.set(images, { scale: 0.6, opacity: 0.5 });
+
+    // Animate cards (fade + slide in)
+    gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.2,
+        scrollTrigger: {
+            trigger: ref.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+        },
+    });
+
+    // Animate images (zoom in with scroll)
+    images.forEach((image) => {
+        gsap.to(image, {
+            scale: 1.2,
             opacity: 1,
-            y: 0,
-            duration: 0.6,
             ease: "power2.out",
-            stagger: 0.2,
             scrollTrigger: {
-                trigger: ".feature-card",
-                start: "top 85%",
-                toggleActions: "play none none reverse",
+                trigger: image,
+                start: "top 90%",   // when image enters viewport
+                end: "bottom 60%",  // end zoom when scrolled past
+                scrub: true,        // tie animation to scroll
             },
         });
+    });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
-    }, []);
+    return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+}, []);
+
+
+
 
     return (
-        <section className="wrapper py-16">
-            <div className="container ">
+        <section className="py-16" ref={ref}>
+            <div className="container grid grid-cols-1 sm:grid-cols-2">
                 <h2 className="title-h2 font-heading">Platform Features</h2>
-                <p className="text-para max-w-2xl mx-auto font-body">
-                    Everything you need to teach, learn, and grow your skills — all in one place.
-                </p>
+                <p className="text-para max-w-2xl mx-auto font-body sm:text-right"> Everything you need to teach, learn, and grow your skills — all in one place. </p>
             </div>
-
-            <div className="container grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {features.map((feature, index) => (
-                    <div key={index} className="feature-card card">
-                        <h3 className="text-lg font-semibold mb-2 flex items-center gap-2 text-black fonnt-heading">
-                            <span>{feature.icon}</span> {feature.title}
-                        </h3>
-                        <p className="text-gray-600 font-body">{feature.description}</p>
-                    </div>
-                ))}
+            <div className="container-grid">
+                {features.map((feature, index) => {
+                  
+                    return (
+                        <FeatureCard key={index} feature={feature}/>
+                    );
+                })}
             </div>
         </section>
-    );
+    )
 };
 
 export default Features;

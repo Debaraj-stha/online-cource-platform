@@ -38,10 +38,10 @@ const FAQ = () => {
 
   return (
     <div className="wrapper">
-      <div className="container">
+      <div className="container-grid">
         <h2 className="title-h2">Frequently Asked Questions</h2>
       </div>
-      <div className='container' >
+      <div className='container-grid' >
         {faq.map((item, index) => (
           <div key={index} className="border border-gray-200 rounded-lg shadow-sm bg-transparent mb-4">
             <button

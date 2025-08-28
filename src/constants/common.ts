@@ -38,12 +38,12 @@ export const navLinksFooter = [
   },
   {
     label: "Login",
-    path: "/login",
+    path: "/auth/login",
     roles: ["guest"],
   },
   {
-    label: "Register",
-    path: "/register",
+    label: "Sign Up",
+    path: "auth/signup",
     roles: ["guest"],
   },
   {
@@ -56,8 +56,23 @@ export const navLinksFooter = [
     path: "/support",
     roles: ["guest", "student", "instructor", "admin"],
   },
+  {
+    label: "About",
+    path: "/about",
+    roles: ["guest", "student", "instructor", "admin"],
+  },
+  {
+    label: "Contact",
+    path: "/contact",
+    roles: ["guest", "student", "instructor", "admin"],
+  },
 ];
 
-export const SITE_NAME="Coursely"
-export const SUPPORT_EMAIL="support@newlearning.com"
-export const SUPPORT_TEL="+1 (234) 567-890"
+export const SITE_NAME = "Coursely"
+export const SUPPORT_EMAIL = "support@newlearning.com"
+export const SUPPORT_TEL = "+1 (234) 567-890"
+export const SOCIAL_LINK:Record<string,string>={
+  "facebook":"https://facebook.com",
+  "x":"https://x.com",
+  "linkedin":"https://www.linkedin.com/"
+}

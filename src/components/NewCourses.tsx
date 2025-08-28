@@ -2,15 +2,19 @@ import React, { useEffect, useRef, useState } from 'react'
 import HighestRatedCoursesCard from './HighestRatedCoursesCard'
 import { Link } from 'react-router-dom';
 import NewCoursesCard from './NewCoursesCard';
+import GridWrapper from './GridWrapper';
+import CourseSkeleton from './CourseSkeleton';
 
 const NewCourses = () => {
     const newCoursesref = useRef<HTMLDivElement>(null);
     const [setStick, setStopStick] = useState(false);
     const newCourseTitleRef = useRef<HTMLDivElement>(null);
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
         const handleScroll = () => {
             if (!newCourseTitleRef.current || !newCoursesref.current) return;
-            //get position of both container
+            //get position of both container-grid
             const popularTitleRect = newCourseTitleRef.current.getBoundingClientRect();
             const popularRect = newCoursesref.current.getBoundingClientRect();
             // If the bottom of the filter option is about to exceed the bottom of popularCourses
@@ -36,7 +40,14 @@ const NewCourses = () => {
                 </div>
             </div>
             <div className='courses' ref={newCoursesref}>
-                <NewCoursesCard />
+                {
+                    loading ?
+                        <GridWrapper>
+                            <CourseSkeleton />
+                        </GridWrapper>
+                        :
+                        <NewCoursesCard />
+                }
             </div>
         </>
     )

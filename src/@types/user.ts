@@ -5,3 +5,4 @@ export interface User{
     id?:string
     conformPassword:string|null
 }
+export type Roles="student"|"guest"|"admin"|"instructor"

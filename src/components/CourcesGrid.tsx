@@ -24,8 +24,7 @@ const CourcesGrid = ({ courses, view = "home" }: { courses: Course[], view?: Vie
                 scrollTrigger: {
                     trigger: gridRef.current,
                     start: 'top bottom',
-                    toggleActions: 'play none none reverse',
-                    onEnter: () => console.log('Animation triggered'),
+                    toggleActions: 'play none none reverse'
                 }
             }
         );

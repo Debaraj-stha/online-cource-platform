@@ -16,17 +16,17 @@ const CourseCard = ({ course, view = 'home' }: { course: Course; view?: View }) 
     }
 
     return (
-        <div className="bg-white rounded shadow hover:scale-105 transition-transform duration-150">
+        <div className="rounded shadow hover:scale-105 transition-transform duration-150 space-y-4">
             <img src={course.thumbnail} alt={course.title} className="w-full h-48 object-cover rounded-t" />
             <div className="p-4">
-                <h2 className="title-h3">{course.title}</h2>
-                {isHome && <p className="text-sm text-gray-600 mt-1">{truncate(course.description)}</p>}
+                <h2 className="title">{course.title}</h2>
+                {isHome && <p className="text-smmt-1">{truncate(course.description)}</p>}
                 <p className="text-blue-600 mt-2 font-semibold">{course.isFree ? 'Free' : `$${course.price}`}</p>
-                <p className="text-sm text-gray-500">Instructor: {course.instructor?.name}</p>
-                <p className="text-sm text-gray-500">Rating: ⭐ {course.rating ?? 'N/A'}</p>
-                <p className="text-sm text-gray-500">Enrolled: {course.totalEnrolled ?? 0}</p>
+                <p className="text-sm">Instructor: {course.instructor?.name}</p>
+                <p className="text-sm">Rating: ⭐ {course.rating ?? 'N/A'}</p>
+                <p className="text-sm">Enrolled: {course.totalEnrolled ?? 0}</p>
                 {isCourses && (
-                    <div className="flex justify-between mt-2 text-xs text-gray-400">
+                    <div className="flex justify-between mt-2 text-xs ">
                         <span>🕒 {course.duration}</span>
                         <span>🎯 {capitalize(course.level)}</span>
                         <span> {flags[`${course.language}`]} {capitalize(course.language)}</span>
