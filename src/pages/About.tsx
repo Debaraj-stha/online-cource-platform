@@ -14,7 +14,7 @@ const About = () => {
     const introRef = useRef<HTMLDivElement>(null)
     const storyRef = useRef<HTMLDivElement>(null)
     const testimonialRef = useRef<HTMLDivElement>(null)
-    const ctaRef=useRef<HTMLDivElement>(null)
+    const ctaRef = useRef<HTMLDivElement>(null)
 
     useGSAP(() => {
         gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -45,7 +45,8 @@ const About = () => {
                 scrollTrigger: {
                     trigger: introRef.current,
                     start: "top 80%",
-                    // scrub: true,
+                    end: "top 50%",
+                    scrub: true,
                     toggleActions: "play none play reverse",
 
                 }
@@ -61,7 +62,9 @@ const About = () => {
             scrollTrigger: {
                 trigger: introRef.current,
                 start: "top 60%",
-               toggleActions: "play none none reverse"
+                end: "top 40%",
+                scrub: true,
+                toggleActions: "play none none reverse"
             }
         })
 
@@ -78,19 +81,14 @@ const About = () => {
         const current = storyRef.current
         const h = current?.querySelector("h2")
         const paras = current?.querySelectorAll(".para")
-        const headingChars = new SplitText(h!, { type: "words" })
-        gsap.from(headingChars.chars, {
+       const splitHeading = new SplitText(h!, { type: "chars" });
+        gsap.from(splitHeading.chars, {
             opacity: 0,
-            duration: 0.5,
-            stagger: 0.02,
-            ease: "power1.inOut",
-            scrollTrigger: {
-                trigger: storyRef.current,
-                // scrub: true,
-                start: "top 90%",
-               toggleActions: "play none none reverse"
-            }
-        })
+            y: 30,
+            stagger: 0.08,
+            duration: 0.8,
+            ease: "power2.out",
+        });
 
 
         paras!.forEach((p) => {
@@ -103,8 +101,9 @@ const About = () => {
                 ease: "power2.out",
                 scrollTrigger: {
                     trigger: storyRef.current,
-                    // scrub: true, //links the progress of the animation to the scroll progress.
+                    scrub: true, //links the progress of the animation to the scroll progress.
                     start: "top 70%",
+                    end: "top 40%",
                     toggleActions: "play none none reverse"
                 }
             });
@@ -112,7 +111,7 @@ const About = () => {
         })
         return () => {
             ScrollTrigger.getAll().forEach(tri => tri.kill())
-            headingChars.revert()
+            splitHeading.revert()
         }
 
     }, [storyRef])
@@ -129,6 +128,8 @@ const About = () => {
             scrollTrigger: {
                 trigger: testimonialRef.current,
                 start: "top 70%",
+                end:"top 50%",
+                scrub:true,
                 toggleActions: "play none none reverse"
             }
         })
@@ -138,20 +139,22 @@ const About = () => {
         }
     }, [testimonialRef])
 
-    useGSAP(()=>{
-        if(!ctaRef) return
-        gsap.from(ctaRef.current,{
-            opacity:0,
-            y:40,
-            ease:"power1.inOut",
-            scrollTrigger:{
-                trigger:ctaRef.current,
-                start:"top 80%",
-                toggleActions:"play none none reverse"
+    useGSAP(() => {
+        if (!ctaRef) return
+        gsap.from(ctaRef.current, {
+            opacity: 0,
+            y: 40,
+            ease: "power1.inOut",
+            scrollTrigger: {
+                trigger: ctaRef.current,
+                start: "top 80%",
+                scrub:true,
+                end:"top 50%",
+                toggleActions: "play none none reverse"
             }
         })
-        return ()=>ScrollTrigger.killAll()
-    },[ctaRef])
+        return () => ScrollTrigger.killAll()
+    }, [ctaRef])
 
 
 

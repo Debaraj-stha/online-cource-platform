@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const Footer = () => {
     const footerRef = useRef<HTMLDivElement | null>(null);
-    const currentUserRole = "guest"; // Replace with real auth role
+    const currentUserRole = "student"; // Replace with real auth role
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);

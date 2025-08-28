@@ -243,5 +243,40 @@ export const faq = [
     question: "How do I contact support?",
     answer:
       "You can reach our support team through the Help Center or by emailing support@newlearning.com. We're here to help!"
+  },
+  {
+    question: "How do I enroll in a course?",
+    answer:
+      "Simply click on the course you want to join, and then click the 'Enroll Now' button. For paid courses, you'll be prompted to complete the payment process first."
+  },
+  {
+    question: "Can I access courses on mobile devices?",
+    answer:
+      "Yes, our platform is fully responsive. You can access courses from your smartphone, tablet, or desktop browser."
+  },
+  {
+    question: "What payment methods are accepted?",
+    answer:
+      "We accept all major credit/debit cards, PayPal, and other secure payment methods depending on your region."
+  },
+  {
+    question: "Is there a refund policy?",
+    answer:
+      "Yes, we offer a refund policy for paid courses. Refund eligibility depends on the course and the time since purchase. Please check our Refund Policy for details."
+  },
+  {
+    question: "Can I interact with instructors?",
+    answer:
+      "Yes! Many courses offer discussion forums, Q&A sections, and direct messaging with instructors for guidance."
+  },
+  {
+    question: "Are the course materials downloadable?",
+    answer:
+      "Some courses provide downloadable PDFs, slides, or resources. Video lessons are usually streamed online and not downloadable."
+  },
+  {
+    question: "Do you provide group or corporate training?",
+    answer:
+      "Yes, we offer group and corporate training solutions. Contact our support team to discuss packages and pricing."
   }
 ];

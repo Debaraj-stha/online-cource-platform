@@ -42,11 +42,6 @@ export const navLinksFooter = [
     roles: ["guest"],
   },
   {
-    label: "Sign Up",
-    path: "auth/signup",
-    roles: ["guest"],
-  },
-  {
     label: "Logout",
     path: "/logout",
     roles: ["student", "instructor", "admin"],
@@ -54,17 +49,27 @@ export const navLinksFooter = [
   {
     label: "Support",
     path: "/support",
-    roles: ["guest", "student", "instructor", "admin"],
+    roles: ["guest", "student", "instructor"],
   },
   {
     label: "About",
     path: "/about",
-    roles: ["guest", "student", "instructor", "admin"],
+    roles: ["guest", "student", "instructor"],
   },
   {
     label: "Contact",
     path: "/contact",
-    roles: ["guest", "student", "instructor", "admin"],
+    roles: ["guest", "student", "instructor",],
+  },
+    {
+    label: "Cookie Policy",
+    path: "/cookie-policy",
+    roles: ["guest", "student", "instructor"],
+  },
+    {
+    label: "Terms and Conditions",
+    path: "/terms-conditions",
+    roles: ["guest", "student", "instructor"],
   },
 ];
 

@@ -1,5 +1,5 @@
 // AboutUs.jsx
-import image from "../assets/images/imag1.jpg";
+import image from "../assets/images/images1.jpg";
 
 const AboutUs = () => {
   return (

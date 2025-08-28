@@ -8,6 +8,10 @@ import About from '../pages/About'
 import AuthOutlet from './AuthOutlet'
 import Login from '../pages/Login'
 import SignUp from '../pages/SignUp'
+import CookiePolicy from '../pages/CookiePolicy'
+import Terms from '../pages/Terms'
+import Support from '../pages/Support'
+import QnA from '../pages/QnA'
 
 const AppRoutes = () => {
   return (
@@ -17,9 +21,13 @@ const AppRoutes = () => {
       <Route path='/courses' element={<Cources />} />
       <Route path='/about' element={<About />} />
       <Route path='/contact' element={<Contact />} />
+      <Route path='/cookie-policy' element={<CookiePolicy />} />
+      <Route path='/terms-conditions' element={<Terms />} />
+      <Route path='/support' element={<Support />} />
+      <Route path='/questions' element={<QnA />} />
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />
-         <Route path='signup' element={<SignUp />} />
+        <Route path='signup' element={<SignUp />} />
       </Route>
     </Routes>
   )
