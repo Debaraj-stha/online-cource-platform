@@ -12,6 +12,8 @@ import CookiePolicy from '../pages/CookiePolicy'
 import Terms from '../pages/Terms'
 import Support from '../pages/Support'
 import QnA from '../pages/QnA'
+import Course from '../pages/Course'
+import Logout from '../pages/Logout'
 
 const AppRoutes = () => {
   return (
@@ -25,9 +27,11 @@ const AppRoutes = () => {
       <Route path='/terms-conditions' element={<Terms />} />
       <Route path='/support' element={<Support />} />
       <Route path='/questions' element={<QnA />} />
+      <Route path='/courses/:course_id' element={<Course />} />
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
+        <Route path='logout' element={<Logout />} />
       </Route>
     </Routes>
   )

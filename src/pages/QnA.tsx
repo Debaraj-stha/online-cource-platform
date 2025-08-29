@@ -1,41 +1,85 @@
-import React, { useRef, useEffect, useState } from "react";
-import { qna } from "../constants/qna";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import QnAList from "../components/QnAList";
+import AskQuestionForm from "../components/AskQuestionForm";
+import { useGSAP } from "@gsap/react";
 
 const QnA = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+    const toggleAnswer = (index: number) => {
+        setOpenIndex(index)
+        const answers = containerRef.current!.querySelectorAll(".answer")
+        if (openIndex === index) {
+            gsap.set(answers[index], {
+                height: 0, opacity: 0, overflow: "hidden", duration: 0.4
+            })
+            setOpenIndex(null)
+        }
+        else {
+            if (openIndex !== null) {
+                gsap.to(answers[index], {
+                    height: 0,
+                    opacity: 0,
+                    duration: 0.4,
+                });
+            }
+            gsap.to(answers[index], {
+                opacity: 1,
+                height: "auto",
+                duration: 0.4
+            })
+            setOpenIndex(index)
+
+        }
+    }
+
+
     useEffect(() => {
-        if (!containerRef.current) return;
-        const allAnswers = containerRef.current.querySelectorAll<HTMLDivElement>(
-            ".answer"
-        );
-        //set all answer div height 0 i.e hide it
-        allAnswers.forEach((answer) => {
+        const current = containerRef.current
+        if (!current) return
+        const answers = current.querySelectorAll(".answer")
+        answers.forEach((answer) => {
             gsap.set(answer, { height: 0, opacity: 0, overflow: "hidden" });
         });
-    }, []);
+    }, [containerRef])
 
-    const toggleAnswer = (index: number) => {
-        const allAnswers = containerRef.current!.querySelectorAll<HTMLDivElement>(
-            ".answer"
-        );
-        //if cliced on opened answer
-        if (openIndex === index) {
-            gsap.to(allAnswers[index], { height: 0, opacity: 0, duration: 0.4 });
-            setOpenIndex(null);
-        } else {  //opening new answer
-                //closing already opened answer
-            if (openIndex !== null) {
-                gsap.to(allAnswers[openIndex], { height: 0, opacity: 0, duration: 0.4 });
-            }
-            //opening new answer
-            const element = allAnswers[index];
-            gsap.to(element, { height: "auto", opacity: 1, duration: 0.4 });
-            setOpenIndex(index);
-        }
-    };
+
+    useGSAP(() => {
+        const current = containerRef.current
+
+        gsap.from(current?.querySelector("header h1")!, {
+            opacity: 0,
+            y: 50,
+            ease: "power1.inOut"
+        })
+
+        gsap.from(current?.querySelector("header p")!, {
+            opacity: 0,
+            y: 50,
+            delay: 0.1,
+            ease: "power1.inOut"
+        })
+        gsap.from(current?.querySelector("form")!, {
+            opacity: 0,
+            y: 50,
+            delay: 0.2,
+            ease: "power1.inOut"
+        })
+        const question = current?.querySelectorAll(".question")
+        if (question)
+            gsap.from(question, {
+                opacity: 0,
+                y: 50,
+                delay: 0.2,
+
+                stagger: 0.1,
+                duration: 0.6,
+                ease: "power1.inOut"
+            })
+    }, [containerRef])
+
 
     return (
         <div ref={containerRef} className="wrapper py-12">
@@ -46,19 +90,11 @@ const QnA = () => {
                         Ask questions and get answers from instructors and fellow learners.
                     </p>
                 </header>
+                {/* Input Form */}
+                <AskQuestionForm />
 
-                <div className="space-y-4">
-                    {qna.map((item, index) => (
-                        <div
-                            key={index}
-                            className="p-4 border rounded-lg cursor-pointer"
-                            onClick={() => toggleAnswer(index)}
-                        >
-                            <h3 className="font-medium text-lg">{item.question}</h3>
-                            <div className="answer mt-2 text-gray-200">{item.answer}</div>
-                        </div>
-                    ))}
-                </div>
+                {/* Q&A List */}
+                <QnAList toggleAnswer={toggleAnswer} />
             </div>
         </div>
     );

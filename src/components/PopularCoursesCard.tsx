@@ -1,5 +1,5 @@
 import React from 'react'
-import { popularCourses } from '../constants/home'
+import { popularCourses } from '../constants/courses'
 
 import CourcesGrid from './CourcesGrid'
 import type { View } from '../@types/course'

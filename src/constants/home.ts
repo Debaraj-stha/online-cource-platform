@@ -1,6 +1,9 @@
 import type { Course } from "../@types/course";
 import type { Feature } from "../@types/Feature";
 import type { Testimonial } from "../@types/Testimonial";
+import { instructors } from "./instructors";
+import { webDevModules } from "./lessions";
+import { resources } from "./resources";
 
 
 
@@ -43,137 +46,8 @@ export const features: Feature[] = [
   },
 ];
 
-export const popularCourses: Course[] = [
-  {
-    id: 'web-dev-101',
-    title: 'Full-Stack Web Development',
-    instructor: {
-      name: 'John Doe',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'Master HTML, CSS, JavaScript, and backend technologies like Node.js and MongoDB to become a full-stack developer.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 59.99,
-    rating: 4.7,
-    totalEnrolled: 1820,
-    duration:"5 hours",
-    level:"intermediate",
-    language:"english"
-  },
-  {
-    id: 'react-advanced',
-    title: 'Advanced React & Redux',
-    instructor: {
-      name: 'Will Smith',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'Build scalable frontend apps using React, Redux Toolkit, RTK Query, and performance best practices.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 49.99,
-    rating: 4.8,
-    totalEnrolled: 1450,
-  },
-  {
-    id: 'python-beginner',
-    title: 'Python for Beginners',
-    instructor: {
-      name: 'Ajay Rana',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'A beginner-friendly course to learn Python programming, automation, and basic data handling.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 39.99,
-    rating: 4.6,
-    totalEnrolled: 2100,
-  },
-  {
-    id: 'data-science-bootcamp',
-    title: 'Data Science Bootcamp',
-    instructor: {
-      name: 'John Abharam',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'Dive into data analysis, visualization, machine learning, and real-world projects using Python and Pandas.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 79.99,
-    rating: 4.9,
-    totalEnrolled: 1320,
-  },
-  {
-    id: 'ui-ux-design',
-    title: 'UI/UX Design Masterclass',
-    instructor: {
-      name: 'Bikky',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'Learn user research, wireframing, Figma prototyping, and UI design best practices from scratch.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 44.99,
-    rating: 4.5,
-    totalEnrolled: 980,
-  },
-  {
-    id: 'node-express-api',
-    title: 'Node.js & Express API Development',
-    instructor: {
-      name: 'Alex',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'Learn to build RESTful APIs using Node.js, Express, and MongoDB with proper authentication & testing.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 54.99,
-    rating: 4.7,
-    totalEnrolled: 1140,
-  },
-    {
-    id: 'node-js-crash',
-    title: 'Node.js crash course',
-    instructor: {
-      name: 'Alex',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'Learn to build RESTful APIs using Node.js, Express, and MongoDB with proper authentication & testing.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 54.99,
-    rating: 4.7,
-    totalEnrolled: 1140,
-    duration:"10 hours",
-    level:"beginner",
-    language:"nepali"
-  },
-    {
-    id: 'frontend-developement',
-    title: 'frontend developmenet',
-    instructor: {
-      name: 'Alex',
-      email: null,
-      phone: null,
-      profile: null
-    },
-    description: 'Learn to build RESTful APIs using Node.js, Express, and MongoDB with proper authentication & testing.',
-    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 54.99,
-    rating: 4.7,
-    totalEnrolled: 1140,
-  }
-];
 
-
-export const testimonials:Testimonial[] = [
+export const testimonials: Testimonial[] = [
   {
     name: "Anjali K.",
     title: "Software Engineer at TechWorx",

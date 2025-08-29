@@ -1,5 +1,5 @@
-// AboutUs.jsx
-import image from "../assets/images/images1.jpg";
+// import gif from "../assets/videos/Course app.gif"
+import image from "../assets/images/about-us.avif";
 
 const AboutUs = () => {
   return (
@@ -24,7 +24,7 @@ const AboutUs = () => {
       <div className="md:w-1/2">
         <img
           src={image}
-          alt="Students learning online"
+          alt="About us"
           className="rounded-2xl shadow-lg w-full h-auto "
           loading="lazy"
         />

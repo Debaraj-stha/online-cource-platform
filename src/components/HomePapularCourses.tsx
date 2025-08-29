@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { popularCourses } from '../constants/home';
+import { popularCourses } from '../constants/courses';
 import CourseCard from './CourceCard';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

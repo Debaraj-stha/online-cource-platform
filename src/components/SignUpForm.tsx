@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import type { Roles } from '../@types/user';
+import Input from './Input';
+import capitalize from '../utils/string-func';
 
 const SignUpForm = () => {
     const [form, setForm] = useState({
@@ -7,11 +9,12 @@ const SignUpForm = () => {
         email: "",
         password: "",
         confirmPassword: "",
+        role: "student" as Roles | ""
     });
     const [message, setMessage] = useState("");
-    const roles: Roles[] = ["student",  "instructor"]
+    const roles: Roles[] = ["student", "instructor"]
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
@@ -29,47 +32,61 @@ const SignUpForm = () => {
     };
     return (
         <form className="flex flex-col gap-4 space-y-5" onSubmit={handleSubmit}>
-            <input
+            <Input
                 type="text"
-                name="name"
-                placeholder="Name"
-                className="p-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeHolder="Full Name"
+                name='name'
+                extraClass='text-white'
                 value={form.name}
                 onChange={handleChange}
+
             />
-           
-            <input
+
+            <Input
                 type="email"
-                name="email"
-                placeholder="Email"
-                className="p-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeHolder="Email"
+                name='email'
+                extraClass='text-white'
                 value={form.email}
                 onChange={handleChange}
+
             />
-            <input
+            <Input
                 type="password"
                 name="password"
-                placeholder="Password"
-                className="p-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeHolder="Password"
+                extraClass='text-white'
                 value={form.password}
                 onChange={handleChange}
+
             />
-            <input
+            <Input
                 type="password"
                 name="confirmPassword"
-                placeholder="Confirm Password"
-                className="p-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeHolder="Confirm Password"
+                extraClass='text-white'
                 value={form.confirmPassword}
                 onChange={handleChange}
-            />
-            <div className='flex flex-wrap gap-5 '>
-                {
-                    roles.map((role) =>
-                        <div ><input type='radio' name='role' id={role} value={role} /> <label htmlFor={role} className='cursor-pointer'>{role}</label></div>
 
-                    )
-                }
+            />
+            <div className='flex flex-wrap gap-5'>
+                {roles.map((roleOption) => (
+                    <div key={roleOption}>
+                        <input
+                            type='radio'
+                            name='role'
+                            id={roleOption}
+                            value={roleOption}
+                            checked={form.role === roleOption}
+                            onChange={() => setForm(prev => ({ ...prev, "role": roleOption }))}
+                        />
+                        <label htmlFor={roleOption} className='cursor-pointer px-2'>
+                            {capitalize(roleOption)}
+                        </label>
+                    </div>
+                ))}
             </div>
+
 
             <button
                 type="submit"

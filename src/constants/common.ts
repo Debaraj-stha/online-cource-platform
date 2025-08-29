@@ -43,7 +43,7 @@ export const navLinksFooter = [
   },
   {
     label: "Logout",
-    path: "/logout",
+    path: "/auth/logout",
     roles: ["student", "instructor", "admin"],
   },
   {

@@ -48,8 +48,8 @@ const useCookieAndTermAnimation = () => {
                 }
             })
         })
-        return () => ScrollTrigger.killAll()
-    }, [containerRef])
+       
+    }, {scope:containerRef})
 
     return { containerRef }
 }

@@ -5,7 +5,7 @@ import CTASection from '../components/CTASection'
 import FAQ from '../components/FAQ'
 import Features from '../components/Features'
 import HomePopularCourses from '../components/HomePapularCourses'
-import image from "../assets/images/librar.jpg"
+import image from "../assets/images/library1.jpg"
 import ParallexSection from '../components/ParallcxSection'
 import ParallaxStats from '../components/ParallalStats'
 const Home = () => {

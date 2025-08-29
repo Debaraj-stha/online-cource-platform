@@ -5,7 +5,7 @@ import TeamCarousel from '../components/TeamCarousel';
 import BrowseCourseAButton from '../components/BrowseCourseAButton';
 import AboutUs from '../components/AboutUs';
 import Story from '../components/Story';
-import { useEffect, useRef } from 'react';
+import {  useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -15,9 +15,8 @@ const About = () => {
     const storyRef = useRef<HTMLDivElement>(null)
     const testimonialRef = useRef<HTMLDivElement>(null)
     const ctaRef = useRef<HTMLDivElement>(null)
-
+    gsap.registerPlugin(ScrollTrigger, SplitText);
     useGSAP(() => {
-        gsap.registerPlugin(ScrollTrigger, SplitText);
         if (!introRef.current) return;
         const paras = introRef.current.querySelectorAll(".para");
         const h2 = introRef.current.querySelector("h2");
@@ -42,14 +41,7 @@ const About = () => {
                 stagger: 0.2, // lines appear one by one
                 duration: 0.6,
                 ease: "power2.out",
-                scrollTrigger: {
-                    trigger: introRef.current,
-                    start: "top 80%",
-                    end: "top 50%",
-                    scrub: true,
-                    toggleActions: "play none play reverse",
 
-                }
             });
         });
 
@@ -57,31 +49,23 @@ const About = () => {
         gsap.from(img, {
             y: 40,
             duration: 0.2,
-            ease: "power2.out",
+            ease: "power1.inOut",
             scale: 0.6,
-            scrollTrigger: {
-                trigger: introRef.current,
-                start: "top 60%",
-                end: "top 40%",
-                scrub: true,
-                toggleActions: "play none none reverse"
-            }
+
         })
 
-
         return () => {
-            ScrollTrigger.getAll().forEach(tri => tri.kill())
             splitHeading.revert()
         }
 
-    }, [introRef]);
+    }, { scope: introRef });
 
     useGSAP(() => {
         if (!storyRef) return
         const current = storyRef.current
         const h = current?.querySelector("h2")
         const paras = current?.querySelectorAll(".para")
-       const splitHeading = new SplitText(h!, { type: "chars" });
+        const splitHeading = new SplitText(h!, { type: "chars" });
         gsap.from(splitHeading.chars, {
             opacity: 0,
             y: 30,
@@ -99,22 +83,14 @@ const About = () => {
                 stagger: 0.2, // lines appear one by one
                 duration: 0.6,
                 ease: "power2.out",
-                scrollTrigger: {
-                    trigger: storyRef.current,
-                    scrub: true, //links the progress of the animation to the scroll progress.
-                    start: "top 70%",
-                    end: "top 40%",
-                    toggleActions: "play none none reverse"
-                }
             });
 
         })
         return () => {
-            ScrollTrigger.getAll().forEach(tri => tri.kill())
             splitHeading.revert()
         }
 
-    }, [storyRef])
+    }, { scope: storyRef })
 
 
     useGSAP(() => {
@@ -128,16 +104,13 @@ const About = () => {
             scrollTrigger: {
                 trigger: testimonialRef.current,
                 start: "top 70%",
-                end:"top 50%",
-                scrub:true,
+                end: "top 50%",
+                scrub: true,
                 toggleActions: "play none none reverse"
             }
         })
-        return () => {
-            ScrollTrigger.getAll().forEach(tri => tri.kill())
 
-        }
-    }, [testimonialRef])
+    }, { scope: testimonialRef })
 
     useGSAP(() => {
         if (!ctaRef) return
@@ -148,13 +121,12 @@ const About = () => {
             scrollTrigger: {
                 trigger: ctaRef.current,
                 start: "top 80%",
-                scrub:true,
-                end:"top 50%",
+                scrub: true,
+                end: "top 50%",
                 toggleActions: "play none none reverse"
             }
         })
-        return () => ScrollTrigger.killAll()
-    }, [ctaRef])
+    }, { scope: ctaRef })
 
 
 
@@ -166,7 +138,8 @@ const About = () => {
                     <AboutUs />
                 </section>
                 {/* Story */}
-                <div className='space-y-5 story-section' ref={storyRef}>
+                <div 
+  className="grid md:grid-cols-2 gap-8 items-center story-section"ref={storyRef}>
                     <Story />
                 </div>
 

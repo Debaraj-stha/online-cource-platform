@@ -1,34 +1,35 @@
 import { navLinksFooter, SUPPORT_EMAIL, SUPPORT_TEL } from '../constants/common';
 import { Link } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 
 const Footer = () => {
     const footerRef = useRef<HTMLDivElement | null>(null);
     const currentUserRole = "student"; // Replace with real auth role
 
-    useEffect(() => {
+    useGSAP(() => {
         gsap.registerPlugin(ScrollTrigger);
 
         const columns = footerRef.current?.querySelectorAll('.footer-column');
 
         if (!columns) return;
-        gsap.set(columns, { opacity: 0, y: 50 })
-        gsap.to(columns, {
+
+        gsap.from(columns, {
             scrollTrigger: {
                 trigger: footerRef.current,
                 start: "top 80%",
             },
-            opacity: 1,
-            y: 0,
+            opacity: 0,
+            y: 40,
             stagger: 0.3,
             duration: 0.8,
             ease: "power3.out",
         });
 
-    }, []);
+    }, { scope: footerRef });
 
     return (
         <footer className="footer" ref={footerRef}>
