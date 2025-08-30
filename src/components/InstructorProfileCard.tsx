@@ -1,22 +1,16 @@
 
-import InstructorStatsCard from './InstructorStatsCard';
-import InstructorCourses from './InstructorCourses';
-import InstructorPopularCourses from './InstructorPopularCourses';
-import InstructorRecentCourses from './InstructorRecentCourses';
-import InstructorSkills from './InstructorSkills';
-import InstructorTopReviews from './InstructorTopReviews';
 import { reviews } from '../constants/reviews';
 import InstructorCertificates from './InstructorCertificates';
 import type { InstructorCertificate } from '../@types/instructor';
-import InstructorTargetAudience from './InstructorTargetAudience';
 
+import { lazy, Suspense } from 'react';
 
 
 
 
 
 const InstructorProfileCard = () => {
-  const targetAudiences = ["Beginners", "Intermediate learners", "Business professionals"]
+
   const certificates: InstructorCertificate[] = [
     { id: '1', title: 'Full-Stack Web Development', issuedBy: 'Udemy', date: 'Jan 2025', imageUrl: 'https://img.freepik.com/premium-photo/classy-design-achievement-certificate-template_53876-1081611.jpg' },
     {
@@ -25,31 +19,66 @@ const InstructorProfileCard = () => {
     },
   ];
 
-  return (
-    <div className="space-y-6">
-      <InstructorStatsCard
-        averageRating={4.5}
-        totalCourses={33}
-        totalReviews={54}
-        totalStudents={152}
-      />
+//dynamically importing components
+  const InstructorStatsCard = lazy(() => import("./InstructorStatsCard"))
+  const InstructorRecentCourses = lazy(() => import("./InstructorRecentCourses"))
+  const InstructorCourses = lazy(() => import("./InstructorCourses"))
+  const InstructorPopularCourses = lazy(() => import("./InstructorPopularCourses"))
+  const InstructorSkills = lazy(() => import("./InstructorSkills"))
+  const InstructorTopReviews = lazy(() => import("./InstructorTopReviews"))
+  const InstructorTargetAudience = lazy(() => import("./InstructorTargetAudience"))
 
-      <h2 className="text-2xl font-bold text-gray-200">Recent Courses</h2>
-      <InstructorRecentCourses />
-      <h2 className="text-2xl font-bold text-gray-200">Courses</h2>
-      <InstructorCourses />
-      <h2 className="text-2xl font-bold text-gray-200">Popular Courses</h2>
-      <InstructorPopularCourses />
+  return (
+    <div className="space-y-6" >
+
+      <Suspense fallback={<p className='text-white'>Loading instructor stats</p>}>
+        <InstructorStatsCard
+          averageRating={4.5}
+          totalCourses={33}
+          totalReviews={54}
+          totalStudents={152}
+        />
+      </Suspense>
+      <div className='space-y-5 recent-courses'>
+        <h2 className="text-2xl font-bold text-gray-200">Recent Courses</h2>
+        <Suspense fallback={<p className='text-white'>Loading recent courses...</p>}>
+          <InstructorRecentCourses />
+        </Suspense>
+      </div>
+      <div className='space-y-5 courses'>
+        <h2 className="text-2xl font-bold text-gray-200">Courses</h2>
+        <Suspense fallback={<p>Loading courses...</p>}>
+          <InstructorCourses />
+        </Suspense>
+      </div>
+      <div className='space-y-5 popular-courses'>
+        <h2 className="text-2xl font-bold text-gray-200">Popular Courses</h2>
+        <Suspense fallback={<p>Loading popular courses...</p>}>
+          <InstructorPopularCourses />
+        </Suspense>
+      </div>
       <h2 className="text-2xl font-bold text-gray-200">Skills</h2>
-      <InstructorSkills skills={["javascript", "marketing", "business", "ai", "ml", "graphics", "nodejs", "react"]} />
-      <h2 className="text-2xl font-bold text-gray-200">Top reviews</h2>
-      <InstructorTopReviews reviews={reviews} />
+      <Suspense fallback={<p>Loading skills...</p>}>
+        <InstructorSkills skills={["javascript", "marketing", "business", "ai", "ml", "graphics", "nodejs", "react"]} />
+      </Suspense>
+      <div className='space-y-5 instructor-reviews'>
+        <h2 className="text-2xl font-bold text-gray-200">Top reviews</h2>
+        <Suspense fallback={<p>Loading reviews...</p>}>
+          <InstructorTopReviews reviews={reviews} />
+        </Suspense>
+      </div>
       <h2 className="text-2xl font-bold text-gray-200">Target Audiences</h2>
-        <InstructorTargetAudience/>
-      <h2 className="text-2xl font-bold text-gray-200">Certificates</h2>
-      <InstructorCertificates
-        certificates={certificates}
-      />
+      <Suspense fallback={<p>Loading target audiences...</p>}>
+        <InstructorTargetAudience />
+      </Suspense>
+      <div className='space-y-5 instructor-certificates'>
+        <h2 className="text-2xl font-bold text-gray-200">Certificates</h2>
+        <Suspense fallback={<p>Loading certificates...</p>}>
+          <InstructorCertificates
+            certificates={certificates}
+          />
+        </Suspense>
+      </div>
 
     </div>
   );

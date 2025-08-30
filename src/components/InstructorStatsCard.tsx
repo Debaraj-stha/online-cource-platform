@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import NumberAnimation from './NumberAnimation'
 import Skeleton from './Skeleton'
-
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 const CustomSkeleton = () => (
     <>
         <Skeleton extraClass="w-16 h-7 bg-gray-300" />
@@ -22,11 +23,23 @@ const InstructorStatsCard = ({
     averageRating = 1,
     loading = true,
 }: Props) => {
+    const ref = useRef<HTMLDivElement>(null)
+    useGSAP(() => {
+        if (!ref.current) return
+        gsap.from(ref.current, {
+            opacity: 0,
+            y: 40,
+            ease: "power1.inOut",
+            delay: 0.1
+        })
+
+    }, { scope: ref })
 
     return (
         <div
+            ref={ref}
             className={`grid grid-cols-2 sm:grid-cols-4 gap-6 ${!loading ? 'bg-gray-50' : 'bg-gray-200'
-                } p-6 rounded-xl shadow-md`}
+                } p-6 rounded-xl shadow-md `}
         >
             {/* Total Courses */}
             <div className="flex flex-col items-center">

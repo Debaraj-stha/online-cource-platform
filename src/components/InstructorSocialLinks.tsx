@@ -35,7 +35,7 @@ const InstructorSocialLinks = ({
   }
 
   return (
-    <div className="flex flex-wrap gap-3 mt-2 ">
+    <div className="flex flex-wrap gap-3 mt-2 social_links">
       {email && (
         <a
           href={`mailto:${email}`}

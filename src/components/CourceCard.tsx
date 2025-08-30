@@ -18,7 +18,7 @@ const CourseCard = ({ course, view = 'home', onClick }: { course: Course; view?:
     return (
         <div
             onClick={onClick}
-            className="rounded bg-gray-900 cursor-pointer shadow hover:scale-105 hover:shadow-2xl transition-transform duration-150 space-y-4">
+            className="course-card rounded bg-gray-900 cursor-pointer shadow hover:scale-105 hover:shadow-2xl transition-transform duration-150 space-y-4">
             <img
                 src={course.thumbnail}
                 alt={course.title}
