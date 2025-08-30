@@ -14,6 +14,7 @@ import Support from '../pages/Support'
 import QnA from '../pages/QnA'
 import Course from '../pages/Course'
 import Logout from '../pages/Logout'
+import Profile from '../pages/Profile'
 
 const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
       <Route path='/support' element={<Support />} />
       <Route path='/questions' element={<QnA />} />
       <Route path='/courses/:course_id' element={<Course />} />
+      <Route path='/profile' element={<Profile />} />
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />

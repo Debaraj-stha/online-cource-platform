@@ -1,5 +1,5 @@
 import NumberAnimation from "./NumberAnimation";
-import bgImage from "../assets/images/educational.jpg"; 
+import bgImage from "../assets/images/educational.jpg";
 
 const ParallaxStats = () => {
   return (
@@ -14,25 +14,34 @@ const ParallaxStats = () => {
       <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         <div>
           <h2 className="title-h2">
-            <NumberAnimation target={50000} extraText="+" />
+            <span className="text-blue-600">
+              <NumberAnimation target={50000} extraText="+" />
+            </span>
+
           </h2>
           <p className="title">Students Enrolled</p>
         </div>
         <div>
           <h2 className="title-h2">
-            <NumberAnimation target={120} extraText="+" />
+            <span className="text-blue-600">
+              <NumberAnimation target={120} extraText="+" />
+            </span>
           </h2>
           <p className="title">Countries</p>
         </div>
         <div>
           <h2 className="title-h2">
-            <NumberAnimation target={300} extraText="+" />
+            <span className="text-blue-600">
+              <NumberAnimation target={300} extraText="+" />
+            </span>
           </h2>
           <p className="title">Instructors</p>
         </div>
         <div>
           <h2 className="title-h2">
-            <NumberAnimation target={98} extraText="%" />
+            <span className="text-blue-600">
+              <NumberAnimation target={98} extraText="%" />
+            </span>
           </h2>
           <p className="title">Satisfaction Rate</p>
         </div>

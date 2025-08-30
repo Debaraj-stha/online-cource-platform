@@ -36,7 +36,7 @@ const PositionedInput = ({ label, name, type = "text", as = "input" }: Props) =>
             <label
                 htmlFor={name}
                 className={`absolute left-3 transition-all duration-200 pointer-events-none
-          ${focused || false ? 'text-blue-500 text-sm top-0' : 'text-gray-400 top-5 text-base'}`}
+          ${focused || false ? 'text-blue-500 text-sm top-0' : 'text-gray-400 top-3 text-base'}`}
             >
                 {label}
             </label>

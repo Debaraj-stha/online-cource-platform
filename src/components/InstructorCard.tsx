@@ -1,10 +1,11 @@
 import React from "react";
 import type { Instructor } from "../@types/instructor";
-import { FaEnvelope, FaPhone, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
+
+import InstructorSocialLinks from "./InstructorSocialLinks";
 
 const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
   return (
-    <div className="shadow-md rounded-xl p-6 space-y-4">
+    <div className="bg-white shadow-md rounded-xl p-6 space-y-4">
       {/* Profile */}
       <div className="flex items-center gap-4">
         <img
@@ -42,33 +43,14 @@ const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
       </div>
 
       {/* Contact */}
-      <div className="flex flex-wrap gap-3 mt-2 text-blue-600">
-        {instructor.email && (
-          <a href={`mailto:${instructor.email}`} className="flex items-center gap-1 hover:underline">
-            <FaEnvelope /> Email
-          </a>
-        )}
-        {instructor.phone && (
-          <a href={`tel:${instructor.phone}`} className="flex items-center gap-1 hover:underline">
-            <FaPhone /> Call
-          </a>
-        )}
-        {instructor.linkedin && (
-          <a href={instructor.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline">
-            <FaLinkedin /> LinkedIn
-          </a>
-        )}
-        {instructor.twitter && (
-          <a href={instructor.twitter} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline">
-            <FaTwitter /> Twitter
-          </a>
-        )}
-        {instructor.website && (
-          <a href={instructor.website} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline">
-            <FaGlobe /> Website
-          </a>
-        )}
-      </div>
+      <InstructorSocialLinks
+        email={instructor.email}
+        facebook={instructor.facebook}
+        linkedin={instructor.linkedin}
+        website={instructor.website}
+        phone={instructor.phone}
+        twitter={instructor.twitter}
+      />
     </div>
   );
 };

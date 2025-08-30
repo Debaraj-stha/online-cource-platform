@@ -8,11 +8,11 @@ const CertificateCard = ({ certificate }: { certificate: Certificate }) => {
     const [isPreview, setPreview] = useState(false)
  
     if (isPreview) return (
-        <Modal>
+        <Modal onClick={()=>setPreview(false)}>
             <div className="space-y-4">
                 <button 
                 onClick={()=>setPreview(false)}
-                className="bg-red-700 font-bold rounded hover:bg-red-600 transition-colors  animate-slide-in">
+                className="font-bold rounded hover:bg-red-600 transition-colors  animate-slide-in">
                     <CgClose size={20}
                     className="text-gray-200 font-bold"
                 /></button>
@@ -31,6 +31,7 @@ const CertificateCard = ({ certificate }: { certificate: Certificate }) => {
                 🏅 {certificate.title}
             </h2>
             <img
+            //show large image on click
                 onClick={()=>setPreview(true)}
                 src={certificate.imageUrl}
                 alt={certificate.title}

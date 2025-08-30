@@ -27,11 +27,13 @@ const Course = () => {
                     <CoursePreview url={course.preview!} />
                 </div>
             </div>
-            <Curriculum modules={course.module!} />
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16 lg:gap-24 xl:gap-32  bg-gray-50 rounded-xl p-6 space-y-4'>
-                <InstructorCard instructor={course.instructor!} />
-                <TargetAudienceCard audience={course.targetedAudiences!} />
+            <div>
+                <Curriculum modules={course.module!} />
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16 lg:gap-24 xl:gap-32  bg-gray-50  p-6 space-y-4'>
+                    <InstructorCard instructor={course.instructor!} />
+                    <TargetAudienceCard audience={course.targetedAudiences!} />
 
+                </div>
             </div>
             {/* <CertificateCard certificate={course.certificate!}/> */}
             <div className='space-y-4 md:space-y-8 lg:space-y-12'>

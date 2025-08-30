@@ -165,6 +165,14 @@
     animation: slide-up 0.3s ease-in 1 forwards;
   }
 
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
   @keyframes slide-in {
     from {
       transform: translateX(-100px);
@@ -174,7 +182,8 @@
       transform: translateX(0);
     }
   }
- @keyframes slide-up {
+
+  @keyframes slide-up {
     from {
       transform: translateY(-50px);
     }
@@ -183,4 +192,5 @@
       transform: translateY(0);
     }
   }
+
 }

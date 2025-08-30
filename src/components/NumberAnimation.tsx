@@ -16,7 +16,7 @@ const NumberAnimation = ({ duration = 300, target = 200,extraText="" }) => {
     }, [duration, target])
     return (
 
-        <strong className='text-xl text-blue-600'>{count}{extraText}</strong>
+        <span>{count}{extraText}</span>
 
     )
 }

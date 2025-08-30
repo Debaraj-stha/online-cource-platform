@@ -29,7 +29,7 @@ export const navLinksFooter = [
   {
     label: "Profile",
     path: "/profile",
-    roles: ["student", "instructor", "admin"],
+    roles: ["student", "instructor"],
   },
   {
     label: "Admin",
