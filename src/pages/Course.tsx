@@ -8,10 +8,10 @@ import InstructorCard from '../components/InstructorCard'
 import Reviews from '../components/Reviews'
 import ResourcesCard from '../components/ResourcesCard'
 import CourseFAQCard from '../components/CourseFAQCard'
-import ReviewForm from '../components/ReviewForm'
+
 import CoursePreview from '../components/CoursePreview'
 import TargetAudienceCard from '../components/TargetAudience'
-import CertificateCard from '../components/CertificateCard'
+
 
 
 const Course = () => {

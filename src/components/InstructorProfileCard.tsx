@@ -8,6 +8,7 @@ import InstructorTopReviews from './InstructorTopReviews';
 import { reviews } from '../constants/reviews';
 import InstructorCertificates from './InstructorCertificates';
 import type { InstructorCertificate } from '../@types/instructor';
+import InstructorTargetAudience from './InstructorTargetAudience';
 
 
 
@@ -16,7 +17,7 @@ import type { InstructorCertificate } from '../@types/instructor';
 
 const InstructorProfileCard = () => {
   const targetAudiences = ["Beginners", "Intermediate learners", "Business professionals"]
-  const certificates:InstructorCertificate[] = [
+  const certificates: InstructorCertificate[] = [
     { id: '1', title: 'Full-Stack Web Development', issuedBy: 'Udemy', date: 'Jan 2025', imageUrl: 'https://img.freepik.com/premium-photo/classy-design-achievement-certificate-template_53876-1081611.jpg' },
     {
       id: '2', title: 'React Advanced',
@@ -44,16 +45,7 @@ const InstructorProfileCard = () => {
       <h2 className="text-2xl font-bold text-gray-200">Top reviews</h2>
       <InstructorTopReviews reviews={reviews} />
       <h2 className="text-2xl font-bold text-gray-200">Target Audiences</h2>
-      <div className='flex gap-3 flex-wrap'>
-        {targetAudiences.map((audience, index) => (
-          <div
-            key={index}
-            className='rounded-3xl bg-yellow-600 py-2 px-4 text-white text-sm hover:bg-yellow-400 transition'
-          >
-            {audience}
-          </div>
-        ))}
-      </div>
+        <InstructorTargetAudience/>
       <h2 className="text-2xl font-bold text-gray-200">Certificates</h2>
       <InstructorCertificates
         certificates={certificates}

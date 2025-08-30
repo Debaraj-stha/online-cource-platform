@@ -1,11 +1,17 @@
 import React from 'react'
 import { popularCourses } from '../constants/courses'
 import CourseCard from './CourceCard'
+import CourseSkeleton from './CourseSkeleton'
 
 const InstructorPopularCourses = () => {
+  const loading=true
   return (
    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-        {popularCourses.slice(0, 3).map((course) => (
+        {
+        loading ?
+         <CourseSkeleton />
+         :
+        popularCourses.slice(0, 3).map((course) => (
           <div
             key={course.id}
             className="bg-white rounded-xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-200"

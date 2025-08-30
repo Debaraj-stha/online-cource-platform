@@ -1,12 +1,28 @@
 import React from 'react'
+import Skeleton from './Skeleton'
+import RoundedSkeleton from './RoundedSkeleton'
 
 const StudentAchievement = () => {
+  const loading = true
+
   return (
     <section>
       <h2 className="title font-semibold mb-3">Achievements</h2>
       <div className="flex gap-4 flex-wrap md:gap-8">
-        <span className="px-4 py-2 bg-yellow-200 text-gray-800 rounded-full hover:-translate-x-3 transition-transform">🔥 7-day Streak</span>
-        <span className="px-4 py-2 bg-green-200 text-gray-800 rounded-full hover:-translate-x-3 transition-transform">🎯 Top Quiz Score</span>
+        {loading ? (
+          <>
+            <RoundedSkeleton length={3}/>
+          </>
+        ) : (
+          <>
+            <span className="px-4 py-2 bg-yellow-200 text-gray-800 rounded-full hover:-translate-x-3 transition-transform">
+              🔥 7-day Streak
+            </span>
+            <span className="px-4 py-2 bg-green-200 text-gray-800 rounded-full hover:-translate-x-3 transition-transform">
+              🎯 Top Quiz Score
+            </span>
+          </>
+        )}
       </div>
     </section>
   )

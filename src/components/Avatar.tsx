@@ -6,14 +6,16 @@ interface Props {
 }
 const Avatar = ({ url, username = "user profile" }: Props) => {
   return (
-    <div>
+<>
       {
         url ?
           <img
             src={url}
             alt="profile avatar"
-            className="size-14 sm:size-16 md:size-20 xl:size-24 rounded-full object-cover border"
+            className="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 xl:w-24 xl:h-24 rounded-full object-cover  border"
           />
+
+
           ://if profile is not available show username as avatar
           <div className='size-14 sm:size-16 md:size-20 xl:size-24 rounded-full object-cover border flex items-center justify-center'
             style={{ background: getColorBasedOnName(username!) }} //generate random color based on username
@@ -24,7 +26,7 @@ const Avatar = ({ url, username = "user profile" }: Props) => {
 
       }
 
-    </div>
+    </>
   )
 }
 

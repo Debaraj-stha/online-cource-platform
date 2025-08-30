@@ -1,17 +1,21 @@
-import React from 'react'
+import React, { memo } from 'react'
 import type { Review } from '../@types/reviews'
 import ReviewCard from './ReviewCard'
-interface Props{
-    reviews:Review[]
+import ReviewSkeleton from './ReviewSkeleton'
+interface Props {
+  reviews: Review[]
 }
-const InstructorTopReviews = ({reviews}:Props) => {
+const InstructorTopReviews = memo(({ reviews }: Props) => {
+  const loading = true
   return (
-    <div className='bg-white rounded-2xl'>
+    <div className={`${!loading ? "" : "bg-white"} rounded-2xl`}>
       {
-        reviews.map((review)=><ReviewCard key={review.id} review={review}/>)
+        !loading ?
+          <ReviewSkeleton />
+          :
+          reviews.map((review) => <ReviewCard key={review.id} review={review} />)
       }
     </div>
   )
-}
-
+})
 export default InstructorTopReviews

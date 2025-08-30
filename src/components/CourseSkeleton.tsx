@@ -1,11 +1,11 @@
 import React from 'react'
 import Skeleton from './Skeleton'
 
-const CourseSkeleton = () => {
+const CourseSkeleton = ({itemLength=5}:{itemLength?:number}) => {
     const now=Date.now()
     return (
         <>
-            {Array.from({ length: 8 }).map((_, i) => (
+            {Array.from({ length: itemLength }).map((_, i) => (
                 <Skeleton key={now+i} extraClass='h-96 p-6 space-y-4 shadow-xl hover:opacity-80 cursor-pointer hover:scale-105'>
                     <Skeleton extraClass='bg-gray-600 z-50 w-full h-32' />
                     <Skeleton extraClass='bg-gray-600 z-50 w-64 h-7 ' />
