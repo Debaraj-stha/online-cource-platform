@@ -1,0 +1,28 @@
+.cta_button {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.text-gradient {
+  background: linear-gradient(to bottom, #f0f0f0, #c0c0c0);
+  -webkit-background-clip: text;
+  /* Chrome, Safari */
+  background-clip: text;
+  /* Standard syntax */
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* For Safari */
+}
+
+.badge {
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Hide scrollbar across browsers */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}

@@ -15,6 +15,7 @@ import QnA from '../pages/QnA'
 import Course from '../pages/Course'
 import Logout from '../pages/Logout'
 import Profile from '../pages/Profile'
+import NotFound from '../pages/NotFound'
 
 const AppRoutes = () => {
   return (
@@ -35,6 +36,7 @@ const AppRoutes = () => {
         <Route path='signup' element={<SignUp />} />
         <Route path='logout' element={<Logout />} />
       </Route>
+      <Route path='/*' element={<NotFound />} />
     </Routes>
   )
 }

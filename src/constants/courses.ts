@@ -67,7 +67,8 @@ export const popularCourses: Course[] = [
       issuer: "LearnHub Academy",
       imageUrl: "https://img.freepik.com/premium-photo/classy-design-achievement-certificate-template_53876-1081611.jpg",
       description: "Receive a shareable Certificate of Completion to showcase on LinkedIn and your resume."
-    }
+    },
+    discount:12
 
   },
   {

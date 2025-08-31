@@ -1,12 +1,20 @@
-import React from 'react'
+import { useState } from 'react'
 import type { Course } from '../@types/course'
 import { flags } from '../constants/flags'
 import capitalize from '../utils/string-func'
-import Curriculum from './Curriculm'
-import InstructorCard from './InstructorCard'
 import CertificateCard from './CertificateCard'
+import PaymentMethodModal from './PaymentMethodModal'
 
 const DetailsCourseCard = ({ course }: { course: Course }) => {
+    const [isModalOpen, setModalOpen] = useState(false)
+
+    const handleEnroll = () => {
+        setModalOpen(true)
+    }
+    if (isModalOpen) return <PaymentMethodModal
+        onClose={() => setModalOpen(false)}
+    />
+
     return (
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl overflow-hidden">
             <div className="grid md:grid-cols-2 gap-8 p-6 md:p-12">
@@ -21,10 +29,25 @@ const DetailsCourseCard = ({ course }: { course: Course }) => {
 
                     {/* Price + CTA */}
                     <div className="mt-6 bg-white rounded-xl p-6 shadow-md sticky top-6">
+
+
                         <p className="text-2xl font-bold text-blue-600">
-                            {course.isFree ? "Free" : `$${course.price}`}
+                            {course.isFree ? (
+                                "Free"
+                            ) : course.discount ? (
+                                <>
+                                    <span className="line-through mr-2">${course.price}</span>
+                                    <span>${course.price - course.discount}</span>
+                                </>
+                            ) : (
+                                <span>${course.price}</span>
+                            )}
                         </p>
-                        <button className="mt-4 w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition">
+
+                        <button
+                            title='Enroll To Course'
+                            onClick={handleEnroll}
+                            className="mt-4 w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition">
                             🚀 Enroll Now
                         </button>
                         <p className="mt-2 text-xs text-gray-500 text-center">
@@ -33,7 +56,7 @@ const DetailsCourseCard = ({ course }: { course: Course }) => {
                     </div>
 
                     {/* certificate card */}
-                    <CertificateCard certificate={course.certificate!}/>
+                    <CertificateCard certificate={course.certificate!} />
                 </div>
 
                 {/* Right: Course Details */}
@@ -83,10 +106,10 @@ const DetailsCourseCard = ({ course }: { course: Course }) => {
                             </ul>
                         </div>
                     )}
-                    
+
                 </div>
             </div>
-            
+
         </div>
     )
 }

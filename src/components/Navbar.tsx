@@ -8,6 +8,7 @@ import { CgMoreVerticalAlt } from 'react-icons/cg';
 import UserOptionsCard from './UserOptionsCard';
 import Searchbar from './Searchbar';
 import { useGSAP } from '@gsap/react';
+import ThemeToggler from './ThemeToggler';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -123,7 +124,7 @@ const Navbar = () => {
                     )}
                 </ul>
             }
-            <div className={`relative items-center  lg:max-w-md ${isSearchbarOpen ? 'w-full' : 'flex justify-around md:justify-between'}`}>
+            <div className={`relative items-center gap-3  lg:max-w-md ${isSearchbarOpen ? 'w-full' : 'flex justify-around md:justify-between'}`}>
 
                 <Searchbar
                     onMouseClick={handleSearchbarClick}
@@ -132,6 +133,9 @@ const Navbar = () => {
                     onSearch={onSearch}
                     onBack={onBack}
                 />
+                <div>
+                    <ThemeToggler/>
+                </div>
                 {
                     !isSearchbarOpen &&
                     <div className='flex justify-between items-center whitespace-nowrap'>
