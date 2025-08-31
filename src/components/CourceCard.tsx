@@ -1,45 +1,31 @@
-import React, { useMemo } from 'react';
 import type { Course, View } from '../@types/course';
 import capitalize, { truncate } from '../utils/string-func';
 import { Link } from 'react-router-dom';
 import DetailsCourseCard from './DetailsCourseCard';
 import { flags } from '../constants/flags';
+import { formatDateTime, formatPrice } from '../utils/localeFormatter';
 
 const CourseCard = ({
     course,
     view = 'home',
     onClick,
+    locale="en_US",
 }: {
     course: Course;
     view?: View;
     onClick?: () => void;
+    locale?:string
 }) => {
     const isHome = view === 'home';
     const isCourses = view === 'courses';
     const isDetails = view === 'details';
-    const locale = useMemo(() => localStorage.getItem('i18nextLng') || 'Nep', []);
 
-    const currencyMap: Record<string, string> = {
-        en: 'USD',
-        np: 'NPR',
-        hi: 'INR',
-        fr: 'EUR',
-        es: 'EUR',
-    };
 
     if (isDetails) return <DetailsCourseCard course={course} />;
+ 
+    const [countryCode,countryShortName]=locale.split("_")
 
 
-
-    const formatPrice = (price: number) => {
-        const countryCode = locale.split("_")[0]
-        console.log(countryCode)
-        const currency = currencyMap[countryCode] || 'USD';
-        return new Intl.NumberFormat(countryCode, {
-            style: 'currency',
-            currency,
-        }).format(price);
-    };
     return (
         <div
             onClick={onClick}
@@ -59,12 +45,15 @@ const CourseCard = ({
                         'Free'
                     ) : course.discount ? (
                         <>
-                            <span className="line-through mr-2">{formatPrice(course.price)}</span>
-                            <span>{formatPrice(course.price - course.discount)}</span>
+                            <span className="line-through mr-2">{formatPrice(course.price, countryCode)}</span>
+                            <span>{formatPrice(course.price - course.discount, countryCode)}</span>
                         </>
                     ) : (
-                        <span>{formatPrice(course.price)}</span>
+                        <span>{formatPrice(course.price, countryCode)}</span>
                     )}
+                </p>
+                <p>
+                    {formatDateTime(course.createdAt!,countryShortName)}
                 </p>
 
                 <Link to="/" className="text-sm">

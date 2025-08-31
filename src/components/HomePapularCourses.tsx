@@ -29,6 +29,8 @@ const HomePopularCourses = () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
+  const locale = localStorage.getItem('i18nextLng') || 'en_US'
+
 
   return (
     <section ref={sectionRef} className="wrapper">
@@ -38,7 +40,7 @@ const HomePopularCourses = () => {
       <div className="container-grid">
         {popularCourses.slice(0, 6).map((course, index) => (
           <div key={index} className="course-card card">
-            <CourseCard course={course} view='home' />
+            <CourseCard course={course} view='home' locale={locale} />
           </div>
         ))}
       </div>
