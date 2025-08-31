@@ -1,0 +1,28 @@
+{
+  "nav": {
+    "Home": "मुखपृष्ठ",
+    "Courses": "कोर्स",
+    "My Learning": "मेरा अध्ययन",
+    "Teach": "शिक्षण",
+    "Q&A": "प्रश्न और उत्तर",
+    "Profile": "प्रोफ़ाइल",
+    "Admin": "व्यवस्थापक",
+    "Login": "लॉगिन",
+    "Logout": "लॉगआउट",
+    "Support": "सहायता",
+    "About": "हमारे बारे में",
+    "Contact": "संपर्क करें",
+    "Cookie Policy": "कुकी नीति",
+    "Terms and Conditions": "नियम और शर्तें"
+  },
+  "site": {
+    "SITE_NAME": "Coursely",
+    "SUPPORT_EMAIL": "support@newlearning.com",
+    "SUPPORT_TEL": "+1 (234) 567-890"
+  },
+  "social": {
+    "facebook": "फेसबुक",
+    "x": "एक्स",
+    "linkedin": "लिंक्डइन"
+  }
+}

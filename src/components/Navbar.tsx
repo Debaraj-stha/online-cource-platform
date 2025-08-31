@@ -9,6 +9,7 @@ import UserOptionsCard from './UserOptionsCard';
 import Searchbar from './Searchbar';
 import { useGSAP } from '@gsap/react';
 import ThemeToggler from './ThemeToggler';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,8 +97,9 @@ const Navbar = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+    const { t } = useTranslation()
 
-
+   
     return (
         <nav
             ref={navRef}
@@ -116,7 +118,7 @@ const Navbar = () => {
                         return (
                             <li key={index}>
                                 <Link to={link.path} state={{ from: location.pathname }} className={`navbar-link ${isActive ? "active_link" : ""}`}>
-                                    {link.label}
+                                    {t(`nav.${link.label}`)}
                                 </Link>
                             </li>
                         )
@@ -134,7 +136,7 @@ const Navbar = () => {
                     onBack={onBack}
                 />
                 <div>
-                    <ThemeToggler/>
+                    <ThemeToggler />
                 </div>
                 {
                     !isSearchbarOpen &&

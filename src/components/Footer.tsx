@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
     const footerRef = useRef<HTMLDivElement | null>(null);
@@ -31,6 +32,9 @@ const Footer = () => {
 
     }, { scope: footerRef });
 
+
+    const {t}=useTranslation()
+
     return (
         <footer className="footer" ref={footerRef}>
             <div className="footer-container flex flex-wrap gap-8">
@@ -52,7 +56,7 @@ const Footer = () => {
                             .map((link, index) => (
                                 <li key={index}>
                                     <Link to={link.path} className="footer-link hover:underline">
-                                        {link.label}
+                                       {t(`nav.${link.label}`)}
                                     </Link>
                                 </li>
                             ))}

@@ -1,0 +1,28 @@
+{
+  "nav": {
+    "Home": "Home",
+    "Courses": "Courses",
+    "My Learning": "My Learning",
+    "Teach": "Teach",
+    "Q&A": "Q&A",
+    "Profile": "Profile",
+    "Admin": "Admin",
+    "Login": "Login",
+    "Logout": "Logout",
+    "Support": "Support",
+    "About": "About",
+    "Contact": "Contact",
+    "Cookie Policy": "Cookie Policy",
+    "Terms and Conditions": "Terms and Conditions"
+  },
+  "site": {
+    "SITE_NAME": "Coursely",
+    "SUPPORT_EMAIL": "support@newlearning.com",
+    "SUPPORT_TEL": "+1 (234) 567-890"
+  },
+  "social": {
+    "facebook": "Facebook",
+    "x": "X",
+    "linkedin": "LinkedIn"
+  }
+}
