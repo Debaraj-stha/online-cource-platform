@@ -16,6 +16,10 @@ import Course from '../pages/Course'
 import Logout from '../pages/Logout'
 import Profile from '../pages/Profile'
 import NotFound from '../pages/NotFound'
+import InstructorOutlet from './InstructorOutlet'
+import InstructorDashboard from './Instructor/InstructorDashboard'
+import Setting from '../pages/Setting'
+import Reports from './Instructor/Reports'
 
 const AppRoutes = () => {
   return (
@@ -31,12 +35,21 @@ const AppRoutes = () => {
       <Route path='/questions' element={<QnA />} />
       <Route path='/courses/:course_id' element={<Course />} />
       <Route path='/profile' element={<Profile />} />
+      <Route path='/setting' element={<Setting />} />
+      {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='logout' element={<Logout />} />
       </Route>
+      {/* instructor routes */}
+      <Route path='/instructor' element={<InstructorOutlet />}>
+       <Route index  path='dashboard' element={<InstructorDashboard />} />
+        <Route   path='reports' element={<Reports />} />
+      </Route>
+      {/* route for any path */}
       <Route path='/*' element={<NotFound />} />
+
     </Routes>
   )
 }

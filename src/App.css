@@ -152,6 +152,12 @@
   .word_placeholder {
     @apply inline-block h-6 bg-gray-600 rounded-sm mr-1 align-middle animate-pulse transition-colors duration-200;
   }
+  .secondary-button{
+    @apply text-gray-800 bg-gray-300 rounded-lg hover:bg-gray-400 transition-colors duration-150 hover:text-gray-100
+  }
+  .chart_bg{
+    @apply bg-gray-800 text-white p-6 rounded-xl shadow-md
+  }
 
 
 }

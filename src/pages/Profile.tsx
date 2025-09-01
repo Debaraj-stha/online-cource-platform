@@ -22,7 +22,7 @@ const Profile = () => {
     // Example user object
     const user = {
         name: "John Doe",
-        role: "student" as Roles,
+        role: "instructor" as Roles,
         isVerified: true
     }
 

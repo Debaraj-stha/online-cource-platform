@@ -20,6 +20,7 @@ const Navbar = () => {
     const [searchQuery, setSearchQuery] = useState<string>()
     const SMALL_DEVICE_WIDTH = 768
     const location = useLocation()
+    const role = "student"
 
 
 
@@ -99,7 +100,7 @@ const Navbar = () => {
     }, []);
     const { t } = useTranslation()
 
-   
+
     return (
         <nav
             ref={navRef}
@@ -135,9 +136,13 @@ const Navbar = () => {
                     onSearch={onSearch}
                     onBack={onBack}
                 />
-                <div>
-                    <ThemeToggler />
-                </div>
+                {
+                    role === "student"  &&
+                    <div className='hidden sm:block'>
+                        <ThemeToggler />
+                    </div>
+                }
+
                 {
                     !isSearchbarOpen &&
                     <div className='flex justify-between items-center whitespace-nowrap'>
