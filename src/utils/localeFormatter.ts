@@ -67,3 +67,11 @@ export const formatDateTime = (date: string | Date, countryShortName: string) =>
         minute: "2-digit",
     }).format(dateObj);
 };
+
+export const formatNumber = (value: number, countryShortName: string,options:Intl.NumberFormatOptions) => {
+    return new Intl.NumberFormat(countryShortName, {
+        maximumFractionDigits: 2,
+        ...options
+    }).format(value)
+
+}

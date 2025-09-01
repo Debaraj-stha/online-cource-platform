@@ -45,7 +45,7 @@ export const sidebarNavLinks: SidebarLink[] = [
   },
     {
     label: "Site Settings",
-    path: "/admin/settings",
+    path: "/instructor/settings",
     icon: FaCog,
     role: ["instructor"]
   },

@@ -44,8 +44,9 @@ const AppRoutes = () => {
       </Route>
       {/* instructor routes */}
       <Route path='/instructor' element={<InstructorOutlet />}>
-       <Route index  path='dashboard' element={<InstructorDashboard />} />
-        <Route   path='reports' element={<Reports />} />
+        <Route index element={<InstructorDashboard />} />
+        <Route index path='dashboard' element={<InstructorDashboard />} />
+        <Route path='reports' element={<Reports />} />
       </Route>
       {/* route for any path */}
       <Route path='/*' element={<NotFound />} />

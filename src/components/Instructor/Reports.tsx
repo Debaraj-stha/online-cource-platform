@@ -40,7 +40,7 @@ const Reports = () => {
             {/* ==================== Earnings / Revenue ==================== */}
             <div>
                 <button
-                    className="primary-button"
+                    className="primary-button w-md"
                     onClick={() => setShowEarnings((prev) => !prev)}
                 >
                     {showEarnings ? "Hide" : "Show"} Earnings / Revenue Charts
@@ -63,7 +63,7 @@ const Reports = () => {
             {/* ==================== Course Performance ==================== */}
             <div>
                 <button
-                    className=" primary-button"
+                    className=" primary-button w-md"
                     onClick={() => setShowCoursePerformance((prev) => !prev)}
                 >
                     {showCoursePerformance ? "Hide" : "Show"} Course Performance Charts
@@ -89,7 +89,7 @@ const Reports = () => {
             {/* ==================== Student Insights / Engagement ==================== */}
             <div className="">
                 <button
-                    className="primary-button"
+                    className="primary-button w-md"
                     onClick={() => setShowStudentInsights((prev) => !prev)}
                 >
                     {showStudentInsights ? "Hide" : "Show"} Student Insights
@@ -112,7 +112,7 @@ const Reports = () => {
             {/* ==================== Student Satisfaction / Issues ==================== */}
             <div className="">
                 <button
-                    className="primary-button"
+                    className="primary-button w-md"
                     onClick={() => setShowSatisfaction((prev) => !prev)}
                 >
                     {showSatisfaction ? "Hide" : "Show"} Feedback & Refunds

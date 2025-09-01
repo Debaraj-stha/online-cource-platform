@@ -1,4 +1,4 @@
-import React from "react";
+
 import DynamicChart from "../DynamicChart";
 
 
@@ -42,6 +42,7 @@ const EarningByCourse = () => {
         text: "Earnings by Course",
         color: "#fff",
       },
+
     },
     scales: {
       x: {
@@ -55,8 +56,9 @@ const EarningByCourse = () => {
     },
   };
 
+
   return (
-    <div className="chart_bg">
+    <div className="chart_bg" >
       <DynamicChart type="bar" data={data} options={options} />
     </div>
   );

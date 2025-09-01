@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaChartLine } from "react-icons/fa";
 import DynamicChart from "../DynamicChart";
-import EarningByCourse from "./EarningByCourse";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Skeleton from "../Skeleton";
 
 
 const EarningChart = () => {
   const [chartType, setChartType] = useState<"line" | "bar">("line");
   const earnings = [500, 700, 2800, 1200, 1500, 2000, 3400, 3000, 1200, 5000, 1800, 3211];
   const maxEarning = Math.max(...earnings);
-    const minEarning = Math.min(...earnings);
+  const minEarning = Math.min(...earnings);
   const maxIndex = earnings.indexOf(maxEarning); // Index of highest month
-    const minIndex = earnings.indexOf(minEarning); // Index of highest month
+  const minIndex = earnings.indexOf(minEarning); // Index of highest month
 
-
+  const loading = true
 
   const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -61,30 +63,50 @@ const EarningChart = () => {
     },
   };
 
+  const ref = useRef<HTMLDivElement>(null)
+  useGSAP(() => {
+    if (!ref.current) return
+    gsap.from(ref.current, {
+      opacity: 0,
+      y: 40,
+      ease: "power1.inOut",
+      delay: 0.2,
+    })
+  }, { scope: ref })
+
   return (
-    <div className="chart_bg">
-      <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-        <FaChartLine /> Earnings Overview
-      </h3>
+    <>
+      {
+        loading ?
+         <div className="h-96 p-6">
+           <Skeleton extraClass="h-full w-2xl  bg-gray-700" />
+         </div>
+          : <div className="chart_bg" ref={ref}>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <FaChartLine /> Earnings Overview
+            </h3>
 
-      {/* Chart Type Selector */}
-      <div className="mb-4">
-        <label className="mr-2">Chart Type:</label>
-        <select
-          className=" p-1 rounded"
-          value={chartType}
-          onChange={(e) => setChartType(e.target.value as "line" | "bar")}
-        >
-          <option value="line">Line</option>
-          <option value="bar">Bar</option>
-        </select>
-      </div>
+            {/* Chart Type Selector */}
+            <div className="mb-4">
+              <label className="mr-2">Chart Type:</label>
+              <select
+                className=" p-1 rounded"
+                value={chartType}
+                onChange={(e) => setChartType(e.target.value as "line" | "bar")}
+              >
+                <option value="line">Line</option>
+                <option value="bar">Bar</option>
+              </select>
+            </div>
 
-      {/* Chart */}
-      <div className="h-96 w-full">
-        <DynamicChart type={chartType} data={data} options={options} />
-      </div>
-    </div>
+            {/* Chart */}
+            <div className="h-96 w-full">
+              <DynamicChart type={chartType} data={data} options={options} />
+            </div>
+          </div>
+      }
+    </>
+
   );
 };
 

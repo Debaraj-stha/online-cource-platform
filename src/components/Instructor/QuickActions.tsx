@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { FaChartLine, FaPen, FaPlus } from 'react-icons/fa'
 import CreateTodo from './CreateTodo'
 import { useNavigate } from 'react-router-dom'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 
 const QuickActions = () => {
     const [modalOpen, setModalOpen] = useState(false)
@@ -33,13 +35,24 @@ const QuickActions = () => {
             }
         }
     ]
+    const ref = useRef<HTMLDivElement>(null)
 
+    useGSAP(() => {
+        if (!ref.current) return
+        gsap.from("button", {
+            opacity: 0,
+            y: 40,
+            ease: "power1.inOut",
+            stagger: 0.1,
+            duration: 0.4,
+        })
+    }, { scope: ref })
 
     return (
         <>
             <div className="bg-gray-800 text-white p-6 rounded-xl shadow-md">
                 <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-                <div className="flex gap-4">
+                <div className="flex gap-4" ref={ref}>
                     {
                         actions.map((action) => (
                             <button
