@@ -4,6 +4,7 @@ import InstructorCertificates from './InstructorCertificates';
 import type { InstructorCertificate } from '../@types/instructor';
 
 import { lazy, Suspense } from 'react';
+import InstructorAllCoursesCards from './InstructorAllCoursesCards';
 
 
 
@@ -21,9 +22,6 @@ const InstructorProfileCard = () => {
 
 //dynamically importing components
   const InstructorStatsCard = lazy(() => import("./InstructorStatsCard"))
-  const InstructorRecentCourses = lazy(() => import("./InstructorRecentCourses"))
-  const InstructorCourses = lazy(() => import("./InstructorCourses"))
-  const InstructorPopularCourses = lazy(() => import("./InstructorPopularCourses"))
   const InstructorSkills = lazy(() => import("./InstructorSkills"))
   const InstructorTopReviews = lazy(() => import("./InstructorTopReviews"))
   const InstructorTargetAudience = lazy(() => import("./InstructorTargetAudience"))
@@ -39,24 +37,7 @@ const InstructorProfileCard = () => {
           totalStudents={152}
         />
       </Suspense>
-      <div className='space-y-5 recent-courses'>
-        <h2 className="text-2xl font-bold text-gray-200">Recent Courses</h2>
-        <Suspense fallback={<p className='text-white'>Loading recent courses...</p>}>
-          <InstructorRecentCourses />
-        </Suspense>
-      </div>
-      <div className='space-y-5 courses'>
-        <h2 className="text-2xl font-bold text-gray-200">Courses</h2>
-        <Suspense fallback={<p>Loading courses...</p>}>
-          <InstructorCourses />
-        </Suspense>
-      </div>
-      <div className='space-y-5 popular-courses'>
-        <h2 className="text-2xl font-bold text-gray-200">Popular Courses</h2>
-        <Suspense fallback={<p>Loading popular courses...</p>}>
-          <InstructorPopularCourses />
-        </Suspense>
-      </div>
+      <InstructorAllCoursesCards/>
       <h2 className="text-2xl font-bold text-gray-200">Skills</h2>
       <Suspense fallback={<p>Loading skills...</p>}>
         <InstructorSkills skills={["javascript", "marketing", "business", "ai", "ml", "graphics", "nodejs", "react"]} />

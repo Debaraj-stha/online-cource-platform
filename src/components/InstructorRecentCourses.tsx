@@ -5,8 +5,10 @@ import CourseSkeleton from './CourseSkeleton'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-
-const InstructorRecentCourses = () => {
+interface Props{
+  includeStudent?:boolean
+}
+const InstructorRecentCourses = ({includeStudent=true}:Props) => {
   const loading = false
   const ref = useRef<HTMLDivElement>(null)
 
@@ -43,9 +45,12 @@ const InstructorRecentCourses = () => {
             style={{ opacity: 0, transform: "translateY(40px)" }}
           >
             <CourseCard course={course} view="courses" />
-            <div className="bg-gray-100 px-4 py-2 text-center text-sm text-gray-700 font-medium">
+            {
+              includeStudent &&     <div className="bg-gray-100 px-4 py-2 text-center text-sm text-gray-700 font-medium">
               👥 {course.totalEnrolled ?? 0} students
             </div>
+            }
+        
           </div>
         ))
       )}

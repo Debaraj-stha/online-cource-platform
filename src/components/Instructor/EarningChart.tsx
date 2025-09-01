@@ -78,7 +78,7 @@ const EarningChart = () => {
     <>
       {
         loading ?
-         <div className="h-96 p-6">
+         <div className="h-96">
            <Skeleton extraClass="h-full w-2xl  bg-gray-700" />
          </div>
           : <div className="chart_bg" ref={ref}>

@@ -20,6 +20,9 @@ import InstructorOutlet from './InstructorOutlet'
 import InstructorDashboard from './Instructor/InstructorDashboard'
 import Setting from '../pages/Setting'
 import Reports from './Instructor/Reports'
+import Instructorcourses from './Instructor/Instructorcourses'
+import CreateCourse from './Instructor/CreateCourse'
+import EditCourse from './Instructor/EditCourse'
 
 const AppRoutes = () => {
   return (
@@ -47,6 +50,10 @@ const AppRoutes = () => {
         <Route index element={<InstructorDashboard />} />
         <Route index path='dashboard' element={<InstructorDashboard />} />
         <Route path='reports' element={<Reports />} />
+        <Route path='courses' element={<Instructorcourses />} />
+        <Route path='create-course' element={<CreateCourse />} />
+        <Route path='edit-course' element={<EditCourse />} />
+        <Route path='settings' element={<Setting />} />
       </Route>
       {/* route for any path */}
       <Route path='/*' element={<NotFound />} />
