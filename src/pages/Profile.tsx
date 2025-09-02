@@ -9,6 +9,7 @@ import Skeleton from '../components/Skeleton'
 import { useEffect, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Profile = () => {
     //scroll to top at first
@@ -33,6 +34,10 @@ const Profile = () => {
     const loading = false
     const isUser = true //flag to user himself/herself has visited the page
     const ref = useRef<HTMLDivElement>(null)
+    const location = useLocation()
+    const navigate = useNavigate()
+    const state = location.state
+    const from = state?.from
     //animating profile header
     useGSAP(() => {
         if (!ref) return
@@ -95,7 +100,7 @@ const Profile = () => {
     }, [ref])
 
     return (
-        <div className="container  mx-auto p-6" >
+        <div className="mx-auto p-6" >
             {/* profile header */}
             <div className="flex items-start space-x-4 mb-6 sm:gap-4 profile-header" ref={ref}>
                 {
@@ -139,7 +144,7 @@ const Profile = () => {
                                 instructor.bio && (
                                     <p className="text-sm text-gray-300  bio">{instructor.bio}</p>
                                 )
-                            }
+                            }Profile
                             {
                                 instructor.title && (
                                     <p className="text-sm text-gray-300 instructor-title">{instructor.title}</p>
@@ -160,7 +165,12 @@ const Profile = () => {
                     )
                     }
                     {
-                        isUser && !loading && <button className="mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors">
+                        isUser && !loading && <button
+                            onClick={() => {
+                                from === "instructor" ? navigate("/instructor/profile/edit",{state:{from:from}}) :
+                                    navigate("/profile/edit")
+                            }}
+                            className="mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors">
                             Edit Profile
                         </button>
                     }
@@ -172,10 +182,11 @@ const Profile = () => {
                     <StudentProfileCard />
                 </>
             )}
-
-            {role === "instructor" && (
-                <InstructorProfileCard />
-            )}
+            {/* only include instructor details if it was visited from instructor page */}
+            {
+                from !== "instructor" && (
+                    <InstructorProfileCard />
+                )}
 
 
         </div>

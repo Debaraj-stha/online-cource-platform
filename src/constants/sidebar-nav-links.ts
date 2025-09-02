@@ -14,6 +14,7 @@ export interface SidebarLink {
   label: string;
   path: string;
   icon: React.ComponentType;
+  from?: string,
   role: ("admin" | "instructor")[];
 }
 
@@ -33,17 +34,25 @@ export const sidebarNavLinks: SidebarLink[] = [
   },
   {
     label: "Profile",
-    path: "/profile", // same for both
+    path: "/instructor/profile", // same for both
     icon: FaUser,
-    role: ["admin", "instructor"],
+    role: ["instructor"],
+    from: "instructor",
   },
-    {
+  {
+    label: "Profile",
+    path: "/admin/profile", // same for both
+
+    icon: FaUser,
+    role: ["admin"],
+  },
+  {
     label: "Site Settings",
     path: "/admin/settings",
     icon: FaCog,
     role: ["admin"],
   },
-    {
+  {
     label: "Site Settings",
     path: "/instructor/settings",
     icon: FaCog,

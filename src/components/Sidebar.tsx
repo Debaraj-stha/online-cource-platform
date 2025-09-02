@@ -15,6 +15,7 @@ const Sidebar = ({ userRole = "instructor" }: { userRole?: "admin" | "instructor
             return (
               <li key={link.path}>
                 <Link
+                  state={{ from: link.from }}
                   to={link.path}
                   className="flex items-center gap-3 p-2 rounded-lg transition-all duration-200 hover:bg-purple-600 hover:text-white"
                 >

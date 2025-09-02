@@ -26,6 +26,8 @@ const InstructorProfileCard = () => {
   const InstructorTopReviews = lazy(() => import("./InstructorTopReviews"))
   const InstructorTargetAudience = lazy(() => import("./InstructorTargetAudience"))
 
+  
+
   return (
     <div className="space-y-6" >
 

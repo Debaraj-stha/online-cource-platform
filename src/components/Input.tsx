@@ -10,10 +10,11 @@ interface Props {
     placeHolder?: string,
     required?: boolean
     isTextArea?: boolean
+    textColorClass?: string
 }
-const Input = ({ extraClass, type = "text", label, name, value, onChange, placeHolder, required = true, isTextArea = false }: Props) => {
+const Input = ({ extraClass, type = "text", label, name, value, onChange, placeHolder, required = true, isTextArea = false, textColorClass = "text-gray-900" }: Props) => {
     return (
-        <>
+        <div className='space-y-3 input-card'>
             {
                 label && <label htmlFor={`${name}`}>{label}</label>
             }
@@ -22,7 +23,7 @@ const Input = ({ extraClass, type = "text", label, name, value, onChange, placeH
                     <textarea
                         placeholder={placeHolder}
                         name={name}
-                        className={`w-full p-3 border rounded-lg h-32 resize-none text-gray-900  border-purple-600  outline-0  focus:ring-purple-700 focus:ring-2 ${extraClass && extraClass} `}
+                        className={`w-full placeholder-gray-400 p-3 border rounded-lg h-32 resize-none  border-gray-700  outline-0  focus:ring-purple-700 focus:ring-2 ${extraClass && extraClass} ${textColorClass}`}
                         value={value}
                         onChange={onChange}
                         required={required}
@@ -31,14 +32,14 @@ const Input = ({ extraClass, type = "text", label, name, value, onChange, placeH
                     <input
                         type={type}
                         placeholder={placeHolder}
-                        className={`text-gray-900 p-3 border border-gray-700 rounded-lg outline-0  focus:ring-purple-700 focus:ring-2 ${extraClass && extraClass}`}
+                        className={`w-full placeholder-gray-400  p-3 border border-gray-700 rounded-lg outline-0  focus:ring-purple-700 focus:ring-2 ${textColorClass} ${extraClass && extraClass}`}
                         value={value}
                         name={name}
                         onChange={onChange}
                         required={required}
                     />
             }
-        </>
+        </div>
     )
 }
 
