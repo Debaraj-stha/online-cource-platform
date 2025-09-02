@@ -1,23 +1,35 @@
-import React, { useState } from 'react'
+import React, { } from 'react'
 import { levels } from '../constants/courses'
 import capitalize from '../utils/string-func'
+interface Props {
+  sortBy?: string
+  label?: string
+  className?: string
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
+}
 
-const FilterByLevel = () => {
-      const [sortBy, setSortBy] = useState("beginner")
+const FilterByLevel = ({ sortBy, onChange, label, className }: Props) => {
+
   return (
-
-    <select
-      value={sortBy}
-      className='border-b-2 sm:border-b-0'
-      onChange={e => setSortBy(e.target.value)}
-    >
+    <div>
       {
-        levels.map((level) => (
-          <option key={level} value={level}>{capitalize(level)}</option>
-
-        ))
+        label && <label htmlFor='lavel' className='block text-sm'>{label}</label>
       }
-    </select>
+      <select
+        value={sortBy}
+        name='level'
+        className={`${className ? className : "border-b-2 sm:border-b-0 "}`}
+        onChange={onChange}
+
+      >
+        {
+          levels.map((level) => (
+            <option key={level} value={level}>{capitalize(level)}</option>
+
+          ))
+        }
+      </select>
+    </div>
 
 
 

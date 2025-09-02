@@ -28,7 +28,7 @@ const LoginForm = () => {
      
       <Input
         type="email"
-        placeHolder="Email"
+        placeholder="Email"
         name='email'
          extraClass='text-white'
         value={email}
@@ -37,7 +37,7 @@ const LoginForm = () => {
       />
        <Input
         type="password"
-        placeHolder="Password"
+        placeholder="Password"
         extraClass='text-white'
         name='password'
         value={password}

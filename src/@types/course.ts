@@ -81,6 +81,7 @@ export interface Course {
     price: number;
     discount?: number | null;
     isFree?: boolean;
+    discountReason?:string|null //if has discount and what is the reasom of discount
 
     // Meta
     rating: number | null;

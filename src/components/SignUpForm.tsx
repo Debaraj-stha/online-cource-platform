@@ -34,7 +34,7 @@ const SignUpForm = () => {
         <form className="flex flex-col gap-4 space-y-5" onSubmit={handleSubmit}>
             <Input
                 type="text"
-                placeHolder="Full Name"
+                placeholder="Full Name"
                 name='name'
                 extraClass='text-white'
                 value={form.name}
@@ -44,7 +44,7 @@ const SignUpForm = () => {
 
             <Input
                 type="email"
-                placeHolder="Email"
+                placeholder="Email"
                 name='email'
                 extraClass='text-white'
                 value={form.email}
@@ -54,7 +54,7 @@ const SignUpForm = () => {
             <Input
                 type="password"
                 name="password"
-                placeHolder="Password"
+                placeholder="Password"
                 extraClass='text-white'
                 value={form.password}
                 onChange={handleChange}
@@ -63,7 +63,7 @@ const SignUpForm = () => {
             <Input
                 type="password"
                 name="confirmPassword"
-                placeHolder="Confirm Password"
+                placeholder="Confirm Password"
                 extraClass='text-white'
                 value={form.confirmPassword}
                 onChange={handleChange}

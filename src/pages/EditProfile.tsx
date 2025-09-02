@@ -88,7 +88,7 @@ const EditProfile = () => {
                     value={formData.name}
                     onChange={handleChange}
                     textColorClass="text-gray-100"
-                    placeHolder="Enter full name"
+                    placeholder="Enter full name"
                 />
                 {
                     from === "instructor" && (
@@ -99,7 +99,7 @@ const EditProfile = () => {
                                 value={formData.title || ""}
                                 onChange={handleChange}
                                 textColorClass="text-gray-100"
-                                placeHolder="Senior Web Developer"
+                                placeholder="Senior Web Developer"
                             />
                             <div className="col-span-2">
                                 <Input
@@ -108,7 +108,7 @@ const EditProfile = () => {
                                     isTextArea
                                     value={formData.bio || ""}
                                     onChange={handleChange}
-                                    placeHolder="Write something about yourself..."
+                                    placeholder="Write something about yourself..."
                                     extraClass="col-span-2"
                                     textColorClass="text-gray-100"
                                 />
@@ -123,7 +123,7 @@ const EditProfile = () => {
                                 value={formData.phone || ""}
                                 onChange={handleChange}
                                 textColorClass="text-gray-100"
-                                placeHolder="+977-98XXXXXXXX"
+                                placeholder="+977-98XXXXXXXX"
                             />
 
                             {/* Social Links */}
@@ -133,7 +133,7 @@ const EditProfile = () => {
                                 name="linkedin"
                                 value={formData.linkedin || ""}
                                 onChange={handleChange}
-                                placeHolder="https://linkedin.com/in/username"
+                                placeholder="https://linkedin.com/in/username"
                             />
                             <Input
                                 label="Twitter"
@@ -141,7 +141,7 @@ const EditProfile = () => {
                                 value={formData.twitter || ""}
                                 textColorClass="text-gray-100"
                                 onChange={handleChange}
-                                placeHolder="https://twitter.com/username"
+                                placeholder="https://twitter.com/username"
                             />
                             <Input
                                 label="Website"
@@ -149,7 +149,7 @@ const EditProfile = () => {
                                 value={formData.website || ""}
                                 onChange={handleChange}
                                 textColorClass="text-gray-100"
-                                placeHolder="https://yourwebsite.com"
+                                placeholder="https://yourwebsite.com"
                             />
                             <Input
                                 label="Facebook"
@@ -157,7 +157,7 @@ const EditProfile = () => {
                                 value={formData.facebook || ""}
                                 textColorClass="text-gray-100"
                                 onChange={handleChange}
-                                placeHolder="https://facebook.com/username"
+                                placeholder="https://facebook.com/username"
                             />
                         </>
                     )
@@ -169,7 +169,7 @@ const EditProfile = () => {
                     value={formData.email || ""}
                     onChange={handleChange}
                     textColorClass="text-gray-100"
-                    placeHolder="example@email.com"
+                    placeholder="example@email.com"
                 />
 
 
