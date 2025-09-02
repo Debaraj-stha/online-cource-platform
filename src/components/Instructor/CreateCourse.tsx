@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useRef, useState } from "react";
 import type { Course, } from "../../@types/course";
 import StepControlButton from "./StepControlButton";
+import StepIndecitor from "./StepIndecitor";
 
 const CreateCourseFAQ = lazy(() => import("./CreateCourseFAQ"));
 const CreateCouseResources = lazy(() => import("./CreateCouseResources"));
@@ -68,10 +69,13 @@ const CreateCourse = () => {
   const [step, setStep] = useState(1)
   const handleNext = () => setStep((prev) => prev + 1)
   const handlePrev = () => setStep(prev => prev - 1)
+  const goToStep=(step:number)=>setStep(step)
 
   return (
     <div className="container mt-6 md:mt-14 lg:mt-20 xl:mt-32 bg-gray-900 rounded-xl space-y-6 p-6 text-white">
+    
       <h1 className="text-2xl font-bold">Create Course</h1>
+        <StepIndecitor steps={10} currentStep={step} onClick={goToStep} />
       {
         step === 1 && <Suspense>
           <BookBasicInfoStep course={course} handleChange={handleChange} handleNext={handleNext} />
