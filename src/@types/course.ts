@@ -116,5 +116,5 @@ export interface Course {
     //preview video url
     preview?:string,
     targetedAudiences?:TargetAudience[]
-    certificate?:Certificate
+    certificate?:File
 }

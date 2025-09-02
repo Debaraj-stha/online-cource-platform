@@ -1,6 +1,5 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useRef, useState } from "react";
 import type { Course, } from "../../@types/course";
-import Input from "../Input";
 import StepControlButton from "./StepControlButton";
 
 const CreateCourseFAQ = lazy(() => import("./CreateCourseFAQ"));
@@ -9,6 +8,9 @@ const CreateCourseTargetAudience = lazy(() => import("./CreateCourseTargetAudien
 const BookBasicInfoStep = lazy(() => import("./BookBasicInfoStep"));
 const BookClassificationStep = lazy(() => import("./BookClassificationStep"));
 const CreateCourseModule = lazy(() => import("./CreateCourseModule"));
+const CreateCourseTags = lazy(() => import("./CreateCourseTags"));
+const CreateCoursePrerequisites = lazy(() => import("./CreateCoursePrerequisites"));
+const CreateWhatWillLearn = lazy(() => import("./CreateWhatWillLearn"));
 
 const CreateCourse = () => {
   const [course, setCourse] = useState<Partial<Course>>({
@@ -25,10 +27,33 @@ const CreateCourse = () => {
     tags: [],
   });
 
+  const previewRef = useRef<HTMLDivElement>(null)
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
+    if (name === "certificate" && type === "file") {
+      const files = (e.target as HTMLInputElement).files;
+      if (!files || files.length === 0) return
+      const img = document.createElement("img")
+      img.classList.add("w-full","h-full")
+      img.src = URL.createObjectURL(files[0])
+      previewRef.current?.appendChild(img)
+      const file = files[0]
+      setCourse((prev) => ({ ...prev, certificate: file }))
+      return
+
+    }
+    if (name === "tags" || name === "prerequisites" || name === "whatYouWillLearn") {
+      const values = value.split(",").map(t => t.trim())
+
+      setCourse((prev) => ({
+        ...prev,
+        [name]: values
+      }));
+      console.log("changing", value)
+      return
+    }
     setCourse((prev) => ({
       ...prev,
       [name]: value
@@ -91,46 +116,28 @@ const CreateCourse = () => {
         </div>
       }
       {
-        step == 7 && <div className="space-y-4">
-          <Input
-            type="text"
-            name="tags"
-            label="Tags"
-            value={course.tags?.join(",") || ""}
-            onChange={handleChange}
-            placeholder="Tags"
-            textColorClass="text-gray-100"
-          />
+        step == 7 &&
+        <div className="space-y-4">
+          <Suspense>
+            <CreateCourseTags tags={course.tags} handleChange={handleChange} />
 
+          </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
       }
       {
         step === 8 && <div className="space-y-4">
-          <h2 className="title">Prequisites</h2>
-          <Input
-            type="text"
-            value=""
-            name="prerequisites"
-            onChange={handleChange}
-            isTextArea={true}
-            placeholder="Prerequisites"
-          />
-
+          <Suspense>
+            <CreateCoursePrerequisites handleChange={handleChange} prerequisites={course.prerequisites} />
+          </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
       }
       {
         step === 9 && <div className="space-y-4">
-          <h2 className="title">What you will learn?</h2>
-          <Input
-            type="text"
-            value=""
-            isTextArea={true}
-            name="whatYouWillLearn"
-            onChange={handleChange}
-            placeholder="What you will learn?"
-          />
+          <Suspense>
+            <CreateWhatWillLearn handleChange={handleChange} whatYouWillLearn={course.whatYouWillLearn} selectedCategory="ai-ml" />
+          </Suspense>
 
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -151,11 +158,14 @@ const CreateCourse = () => {
             <input
               id="certificates"
               type="file"
-              name="certificates"
+              name="certificate"
               accept="image/*"
               className="hidden"
+              onChange={handleChange}
             />
             <p className="mt-2 text-sm text-gray-400">Accepted formats: JPG, PNG (Max size 5MB)</p>
+          </div>
+          <div ref={previewRef} className="w-96">
           </div>
 
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
