@@ -24,6 +24,7 @@ import Instructorcourses from './Instructor/Instructorcourses'
 import CreateCourse from './Instructor/CreateCourse'
 import EditCourse from './Instructor/EditCourse'
 import EditProfile from '../pages/EditProfile'
+import ChangeEmail from '../pages/ChangeEmail'
 
 const AppRoutes = () => {
   return (
@@ -55,8 +56,10 @@ const AppRoutes = () => {
         <Route path='create-course' element={<CreateCourse />} />
         <Route path='edit-course' element={<EditCourse />} />
         <Route path='settings' element={<Setting />} />
+        <Route path='settings/change-email' element={<ChangeEmail />} />
         <Route path='profile' element={<Profile />} />
         <Route path='profile/edit' element={<EditProfile />} />
+        
       </Route>
       {/* route for any path */}
       <Route path='/*' element={<NotFound />} />

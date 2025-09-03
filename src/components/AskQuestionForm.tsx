@@ -18,7 +18,7 @@ const AskQuestionForm = () => {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="Ask your question..."
-                className="flex-1 p-2 border focus:border-0 focus:outline-0 focus:ring-2 focus:ring-blue-500 rounded-lg bg-transparent"
+                className="flex-1 p-2 border-0 ring-2 ring-inset focus:border-0 focus:outline-0 focus:ring-2 focus:ring-blue-500 rounded-lg bg-transparent"
             />
             <button
                 type="submit"

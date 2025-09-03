@@ -9,7 +9,7 @@ const QnAList = ({toggleAnswer}:{toggleAnswer:(index:number)=>void}) => {
       {qna.map((item, index) => (
         <div
           key={index}
-          className="p-4 border rounded-lg cursor-pointer question"
+          className="p-4 ring ring-inset rounded-lg cursor-pointer question"
           onClick={() => toggleAnswer(index)}
         >
           <h3 className="font-medium text-lg">{item.question}</h3>

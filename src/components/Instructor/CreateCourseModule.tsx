@@ -191,7 +191,7 @@ const CreateCourseModule
                 className="primary-button flex items-center gap-2"
                 onClick={addModule}
             >
-                <CgAdd /> Add Module
+                <CgAdd /> 
             </button>
         </div>
     );

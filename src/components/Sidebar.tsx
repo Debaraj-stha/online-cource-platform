@@ -27,10 +27,7 @@ const Sidebar = ({ userRole = "instructor" }: { userRole?: "admin" | "instructor
           })}
       </ul>
 
-      {/* Footer */}
-      <div className="mt-6 border-t border-gray-700 pt-4 flex justify-center">
-        <ThemeToggler />
-      </div>
+
     </aside>
   );
 };
