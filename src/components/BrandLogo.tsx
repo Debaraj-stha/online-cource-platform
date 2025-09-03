@@ -1,15 +1,16 @@
 import React from 'react'
 import { SITE_NAME } from '../constants/common'
+import logo from "../assets/images/logo.png"
 
-const BrandLogo = ({isHeader=false,textClass=""}:{isHeader?:boolean,textClass?:string}) => {
+const BrandLogo = ({ isHeader = false, textClass = "" }: { isHeader?: boolean, textClass?: string }) => {
     return (
         <div className="flex items-center gap-3">
             <img
-                src="https://images.icon-icons.com/2108/PNG/512/react_icon_130845.png"
-                alt="Logo"
-                className={`brand-logo ${isHeader ? "hidden" :"sm:block"} sm:block`}
+                src={logo}
+                alt="coursely logo"
+                className={`brand-logo rounded w-32 h-12 bg-gray-200  ${isHeader ? "hidden" : "sm:block"} sm:block`}
             />
-            <p className={`${isHeader ? " hidden sm:block":""} brand ${textClass}`}>{SITE_NAME}</p>
+            {/* <p className={`${isHeader ? " hidden sm:block" : ""} brand ${textClass}`}>{SITE_NAME}</p> */}
         </div>
     )
 }
