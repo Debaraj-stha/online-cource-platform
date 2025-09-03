@@ -20,7 +20,7 @@ const StepIndicator = ({ steps, currentStep ,onClick}: StepIndicatorProps) => {
             <div
             // rounded at forst and list
               className={`h-3 ${index==0 ? "rounded-tl-lg rounded-bl-lg" :""} ${index==steps-1 ? "rounded-tr-lg rounded-br-lg" :""} transition-colors ${
-                isCompleted ? "bg-purple-600" : "bg-gray-300"
+                isCompleted ? "bg-blue-600" : "bg-gray-300"
               }`}
             />
 
@@ -29,7 +29,7 @@ const StepIndicator = ({ steps, currentStep ,onClick}: StepIndicatorProps) => {
             title={`Goto step ${index+1}`}
             onClick={()=>onClick?.(index+1)}
               className={`absolute top-1/2 -translate-y-1/2 left-1/2 cursor-pointer -translate-x-1/2 size-8 rounded-full border-2 flex items-center justify-center text-sm font-medium
-              ${isActive ? "bg-purple-600 text-white border-purple-600" : isCompleted ? "bg-purple-600 text-white border-purple-600" : "bg-white text-gray-500 border-gray-400"}
+              ${isActive ? "bg-blue-600 text-white border-blue-600" : isCompleted ? "bg-blue-600 text-white border-blue-600" : "bg-gray-500  border-gray-400"}
               `}
             >
               {stepNumber}
