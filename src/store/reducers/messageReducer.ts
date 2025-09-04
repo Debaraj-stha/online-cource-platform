@@ -6,11 +6,11 @@ type MessageType = "info" | "warning" | "success" | "error";
 export interface Message {
   type: MessageType;
   id: number;
-  messages: string[];
+  messages: string[]|string;
 }
 
 // Thunk to set a message with auto-clear timeout
-export const setMessageWithTimeout = (message: Message, timeout: number) => {
+export const setMessageWithTimeout = (message: Message, timeout= 300) => {
   return (dispatch: AppDispatch) => {
     dispatch(setMessage(message));
 
