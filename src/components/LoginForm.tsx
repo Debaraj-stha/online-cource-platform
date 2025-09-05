@@ -1,23 +1,34 @@
 import React, { useState } from 'react'
 import Input from './Input';
+import { useDispatch, useSelector } from 'react-redux';
+import { type AppDispatch, type RootState } from '../store/store';
+import { login, setFields } from '../store/reducers/authReducer';
+import validator from '../utils/validator';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const dispatch = useDispatch<AppDispatch>()
+  const { user, isProcessing } = useSelector((state: RootState) => state.auth)
+  const [errors, setErrors] = useState<string[]>()
+  const navigate = useNavigate()
 
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setMessage("⚠️ Please enter email and password");
-      return;
+    const { errors, emailValidator, passwordValidator } = validator()
+    emailValidator(user.email)
+    passwordValidator(user.password!)
+    const inputErrors = errors()
+    const error = Object.values(inputErrors).filter((er) => er != null)
+    if (error.length > 0) {
+      setErrors(error)
+      return
     }
-    if (email === "admin@example.com" && password === "123456") {
-      setMessage("✅ Login successful! Welcome back.");
-    } else {
-      setMessage("❌ Invalid email or password");
+    setErrors([])
+    const result = await dispatch(login({ email: user.email, password: user.password! }))
+    if (login.fulfilled.match(result)) {
+      navigate("/")
     }
+
   };
 
   return (
@@ -25,29 +36,39 @@ const LoginForm = () => {
       className="flex flex-col gap-4 space-y-5"
       onSubmit={handleLogin}
     >
-     
       <Input
         type="email"
         placeholder="Email"
         name='email'
-         extraClass='text-white'
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        
+        extraClass='text-white'
+        value={user.email}
+        required={true}
+        onChange={(e) => dispatch(setFields({ field: "email", value: e.target.value }))}
+
       />
-       <Input
+      <Input
         type="password"
         placeholder="Password"
         extraClass='text-white'
         name='password'
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        
+        required={true}
+        value={user.password}
+        onChange={(e) => dispatch(setFields({ field: "password", value: e.target.value }))}
       />
-    
+      {
+        errors?.length! > 0 && (
+          <>
+            {
+              errors?.map((err, i) => <p key={i} className='text-sm text-red-600'>{err}</p>)
+            }
+          </>
+        )
+      }
+
       <button
         type="submit"
-        className="bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition"
+        disabled={isProcessing}
+        className="bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
       >
         Login
       </button>

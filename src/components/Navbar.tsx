@@ -10,6 +10,8 @@ import Searchbar from './Searchbar';
 import { useGSAP } from '@gsap/react';
 import ThemeToggler from './ThemeToggler';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,9 +23,8 @@ const Navbar = () => {
     const SMALL_DEVICE_WIDTH = 768
     const location = useLocation()
     const role = "student"
-
-
-
+    const { isAuthenticating, user } = useSelector((state: RootState) => state.auth)
+    console.log(user)
 
     const handleSearchbarClick = () => {
         if (window.innerWidth <= SMALL_DEVICE_WIDTH) {
@@ -137,7 +138,7 @@ const Navbar = () => {
                     onBack={onBack}
                 />
                 {
-                    role === "student"  &&
+                    role === "student" &&
                     <div className='hidden sm:block'>
                         <ThemeToggler />
                     </div>
@@ -146,7 +147,11 @@ const Navbar = () => {
                 {
                     !isSearchbarOpen &&
                     <div className='flex justify-between items-center whitespace-nowrap'>
-                        <p className='hidden md:block '>Jhon Doe</p>
+                        {
+                            isAuthenticating ? <p className='hidden md:block text-blue-500 animate-pulse '>Authenticating...</p>
+                                :
+                                <p className='hidden md:block '>{user.name}</p>
+                        }
                         <div className='hover:animate-pulse px-2 cursor-pointer' onClick={() => setShowUserCard((prev) => !prev)}>
                             <CgMoreVerticalAlt size={20} />
                         </div>

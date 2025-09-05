@@ -3,7 +3,7 @@ export interface User{
     email:string
     password:string|null
     id?:string|null
-    conformPassword:string|null
+    confirmPassword:string|null
     role:Roles|null
     profilePicture?:string|null
 }

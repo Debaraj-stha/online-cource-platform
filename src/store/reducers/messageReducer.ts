@@ -10,15 +10,16 @@ export interface Message {
 }
 
 // Thunk to set a message with auto-clear timeout
-export const setMessageWithTimeout = (message: Message, timeout= 300) => {
-  return (dispatch: AppDispatch) => {
-    dispatch(setMessage(message));
 
+
+export const setMessageWithTimeout = (message: Message, timeout= 3000) => (dispatch: AppDispatch) => {
+    dispatch(setMessage(message))
     setTimeout(() => {
-      dispatch(clearMessage(message.id));
-    }, timeout);
-  };
-};
+        dispatch(clearMessage(message.id))
+    }, timeout)
+}
+
+
 
 const initialState: Message[] = [];
 

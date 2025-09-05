@@ -1,15 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState,  useEffect } from "react";
 import BrandLogo from "../components/BrandLogo";
 import gif from "../assets/videos/Sign in.gif";
-import gsap from "gsap";
 import LoginForm from "../components/LoginForm";
-import { useGSAP } from "@gsap/react";
 import useLoginSignupAnimation from "../hooks/useLoginSignupAnimation";
+import { useNavigate } from "react-router-dom";
+import { getCookie } from "../utils/manage-cookie";
 
 const Login = () => {
-    const [message, setMessage] = useState("");
-
    const {containerRef,gifRef,formRef}=useLoginSignupAnimation()
+   const navigate=useNavigate()
+   const token=getCookie("token")
+   const user=getCookie("user")
+
+   useEffect(()=>{
+    console.log(token,user)
+    if(user || token) navigate("/")
+   },[navigate])
 
     return (
         <div
@@ -39,9 +45,7 @@ const Login = () => {
                     {/* Login Form */}
                     <LoginForm />
                     {/* Login Message */}
-                    {message && (
-                        <p className="mt-4 text-sm text-center text-gray-300">{message}</p>
-                    )}
+                    
 
                     {/* Extra Links */}
                     <div className="mt-6 text-center text-gray-400 text-sm">

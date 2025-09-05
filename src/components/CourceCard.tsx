@@ -9,12 +9,12 @@ const CourseCard = ({
     course,
     view = 'home',
     onClick,
-    locale="en_US",
+    locale = "en_US",
 }: {
     course: Course;
     view?: View;
     onClick?: () => void;
-    locale?:string
+    locale?: string
 }) => {
     const isHome = view === 'home';
     const isCourses = view === 'courses';
@@ -22,8 +22,8 @@ const CourseCard = ({
 
 
     if (isDetails) return <DetailsCourseCard course={course} />;
- 
-    const [countryCode,countryShortName]=locale.split("_")
+
+    const [countryCode, countryShortName] = locale.split("_")
 
 
     return (
@@ -31,11 +31,13 @@ const CourseCard = ({
             onClick={onClick}
             className="course-card rounded bg-gray-900 cursor-pointer shadow hover:scale-105 hover:shadow-2xl transition-transform duration-150 space-y-4"
         >
-            <img
-                src={course.thumbnail}
-                alt={course.title}
-                className="w-full h-48 object-cover rounded-t"
-            />
+            
+                <img
+                    src={course.thumbnail}
+                    alt={course.title}
+                    className="w-full h-48 object-cover rounded-t"
+                />
+            
             <div className="p-4">
                 <h2 className="title">{course.title}</h2>
                 {isHome && <p className="text-sm mt-1">{truncate(course.description)}</p>}
@@ -53,7 +55,7 @@ const CourseCard = ({
                     )}
                 </p>
                 <p>
-                    {formatDateTime(course.createdAt!,countryShortName)}
+                    {formatDateTime(course.createdAt!, countryShortName)}
                 </p>
 
                 <Link to="/" className="text-sm">

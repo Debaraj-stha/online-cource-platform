@@ -21,7 +21,7 @@ const Footer = () => {
         gsap.from(columns, {
             scrollTrigger: {
                 trigger: footerRef.current,
-                start: "top 80%",
+                start: "top 60%",
             },
             opacity: 0,
             y: 40,
@@ -33,7 +33,7 @@ const Footer = () => {
     }, { scope: footerRef });
 
 
-    const {t}=useTranslation()
+    const { t } = useTranslation()
 
     return (
         <footer className="footer" ref={footerRef}>
@@ -56,7 +56,7 @@ const Footer = () => {
                             .map((link, index) => (
                                 <li key={index}>
                                     <Link to={link.path} className="footer-link hover:underline">
-                                       {t(`nav.${link.label}`)}
+                                        {t(`nav.${link.label}`)}
                                     </Link>
                                 </li>
                             ))}

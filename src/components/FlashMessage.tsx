@@ -26,7 +26,7 @@ const FlashMessage: React.FC = () => {
               : "bg-blue-500"
           }`}
         >
-          {msg.messages.map((text, i) => (
+          {[msg.messages].map((text, i) => (
             <div key={i}>{text}</div>
           ))}
         </div>

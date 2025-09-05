@@ -25,6 +25,7 @@ import CreateCourse from './Instructor/CreateCourse'
 import EditCourse from './Instructor/EditCourse'
 import EditProfile from '../pages/EditProfile'
 import ChangeEmail from '../pages/ChangeEmail'
+import EmailVerification from '../pages/EmailVerification'
 
 const AppRoutes = () => {
   return (
@@ -41,6 +42,8 @@ const AppRoutes = () => {
       <Route path='/courses/:course_id' element={<Course />} />
       <Route path='/profile' element={<Profile />} />
       <Route path='/setting' element={<Setting />} />
+      <Route path='/verify-email/' element={<EmailVerification />} />
+      <Route path='/verify-email/:token' element={<EmailVerification />} />
       {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />
@@ -59,7 +62,7 @@ const AppRoutes = () => {
         <Route path='settings/change-email' element={<ChangeEmail />} />
         <Route path='profile' element={<Profile />} />
         <Route path='profile/edit' element={<EditProfile />} />
-        
+
       </Route>
       {/* route for any path */}
       <Route path='/*' element={<NotFound />} />

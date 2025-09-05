@@ -5,7 +5,7 @@ interface Props {
     type?: InputType,
     label?: string,
     name: string,
-    value?: string,
+    value?: string|null,
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
     placeholder?: string,
     required?: boolean
@@ -25,7 +25,7 @@ const Input = ({ extraClass, type = "text", label, name, value, onChange, placeh
                         placeholder={placeholder}
                         name={name}
                         className={`w-full placeholder-gray-400 p-3 border rounded-lg h-32 resize-none  border-gray-700  outline-0  focus:ring-purple-700 focus:ring-2 ${extraClass && extraClass} ${textColorClass}`}
-                        value={value}
+                        value={value!}
                         onChange={onChange}
                         required={required}
                     />
@@ -34,7 +34,7 @@ const Input = ({ extraClass, type = "text", label, name, value, onChange, placeh
                         type={type}
                         placeholder={placeholder}
                         className={`w-full placeholder-gray-400  p-3 border border-gray-700 rounded-lg outline-0  focus:ring-purple-700 focus:ring-2 ${textColorClass} ${extraClass && extraClass}`}
-                        value={value}
+                        value={value!}
                         name={name}
                         onChange={onChange}
                         required={required}

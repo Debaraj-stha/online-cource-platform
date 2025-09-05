@@ -20,7 +20,7 @@ const SignUp = () => {
                 {/* Right Side Form */}
                 <div className="sm:w-1/2 p-8 flex flex-col justify-center space-y-6" ref={formRef}>
                     {/* Branding */}
-                    <BrandLogo textClass="text-white" />
+                    {/* <BrandLogo textClass="text-white" /> */}
                     <h2 className="text-xl font-medium text-gray-300 mb-6">
                         Create your account
                     </h2>
