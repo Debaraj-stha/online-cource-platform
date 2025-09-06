@@ -1,0 +1,227 @@
+{
+  "_id": {
+    "$oid": "68bc222e10485867c72270cd"
+  },
+  "title": "d",
+  "description": "d",
+  "instructor": {
+    "$oid": "68baedad8b94ba9c6c0e93e2"
+  },
+  "thumbnail": "/home/jeevan/Documents/online-cource-platform/backend/uploads/courses/1_H90ZEKu0LMMIp96R6jbH3w-1757159982001-541752.webp",
+  "price": 11,
+  "discount": null,
+  "isFree": false,
+  "discountReason": null,
+  "category": "other",
+  "level": "beginner",
+  "language": "english",
+  "prerequisites": [
+    "basichtml",
+    "basicofcss",
+    "js"
+  ],
+  "whatYouWillLearn": [
+    "introductionofhtml",
+    "cssandjs",
+    "understandingrealworldprobloems"
+  ],
+  "certificateAvailable": false,
+  "module": [
+    {
+      "title": "Introduction & Setup",
+      "lessons": [
+        {
+          "title": "Welcome & Course Overview",
+          "duration": "1h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270cf"
+          }
+        },
+        {
+          "title": "Installation of vs code ",
+          "duration": "1h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d0"
+          }
+        },
+        {
+          "title": "project setup",
+          "duration": "1h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d1"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "68bc222e10485867c72270ce"
+      }
+    },
+    {
+      "title": "Frontend Basics",
+      "lessons": [
+        {
+          "title": "HTML struture",
+          "duration": "1h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d3"
+          }
+        },
+        {
+          "title": "CSS styling",
+          "duration": "2h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d4"
+          }
+        },
+        {
+          "title": "js basic",
+          "duration": "1h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d5"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "68bc222e10485867c72270d2"
+      }
+    },
+    {
+      "title": "Backend with Node js and EXpress",
+      "lessons": [
+        {
+          "title": "Intro to Node.js & NPM",
+          "duration": "1 h 30m",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d7"
+          }
+        },
+        {
+          "title": "Express js basics",
+          "duration": "2h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d8"
+          }
+        },
+        {
+          "title": "connecting to mongodb",
+          "duration": "2h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270d9"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "68bc222e10485867c72270d6"
+      }
+    },
+    {
+      "title": "Final project",
+      "lessons": [
+        {
+          "title": "project overview",
+          "duration": "2h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270db"
+          }
+        },
+        {
+          "title": "building project",
+          "duration": "5h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270dc"
+          }
+        },
+        {
+          "title": "deploying project",
+          "duration": "1h",
+          "resources": [],
+          "_id": {
+            "$oid": "68bc222e10485867c72270dd"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "68bc222e10485867c72270da"
+      }
+    }
+  ],
+  "tags": [
+    "website",
+    "nodejs",
+    "html",
+    "css",
+    "js"
+  ],
+  "faq": [
+    {
+      "question": "Do I need prior experience to take this course?",
+      "answer": "No prior experience is required. This course starts from the basics of HTML, CSS, and JavaScript.",
+      "_id": {
+        "$oid": "68bc222e10485867c72270de"
+      },
+      "createdAt": {
+        "$date": "2025-09-06T11:59:42.024Z"
+      }
+    },
+    {
+      "question": "How long will it take to complete the course?",
+      "answer": "The course has approximately 5 hours of video content, but you can take your own pace to complete it.",
+      "_id": {
+        "$oid": "68bc222e10485867c72270df"
+      },
+      "createdAt": {
+        "$date": "2025-09-06T11:59:42.024Z"
+      }
+    },
+    {
+      "question": "Will I get a certificate after completion?",
+      "answer": "es! You will receive a certificate of completion once you finish all the course modules.",
+      "_id": {
+        "$oid": "68bc222e10485867c72270e0"
+      },
+      "createdAt": {
+        "$date": "2025-09-06T11:59:42.024Z"
+      }
+    }
+  ],
+  "targetedAudiences": [
+    {
+      "role": "beginner",
+      "description": "Anyone new to web development who wants to build a strong foundation.",
+      "_id": {
+        "$oid": "68bc222e10485867c72270e1"
+      }
+    },
+    {
+      "role": "students",
+      "description": "College or school students who want hands-on coding experience",
+      "_id": {
+        "$oid": "68bc222e10485867c72270e2"
+      }
+    }
+  ],
+  "certificate": null,
+  "isPublished": false,
+  "publishedAt": {
+    "$date": "2025-09-06T11:59:42.009Z"
+  },
+  "resources": [],
+  "createdAt": {
+    "$date": "2025-09-06T11:59:42.042Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-06T11:59:42.042Z"
+  },
+  "__v": 0
+}

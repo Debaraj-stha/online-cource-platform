@@ -1,50 +1,55 @@
-import React, { useState } from 'react'
-import type { CourseResource, ResourceType, } from '../../@types/course'
+import React, { } from 'react'
+import type { CourseResource, } from '../../@types/course'
 import { CgAdd, CgClose } from 'react-icons/cg'
 import Input from '../Input'
 import { resourceTypes } from '../../constants/resourceTypes'
+import type { AppDispatch, RootState } from '../../store/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { addDynamicField, removeDynamicField, updateDynamicField } from '../../store/reducers/courseReducer'
+
+
 
 const CreateCouseResources = () => {
-    const [resources, setResources] = useState<CourseResource[]>([{
-            title: "", url: "", id: `${new Date().getTime()}`, courseId: "demo",
-            type: "code", size: undefined,
-            createdAt: `${new Date().toISOString()}`
-        }])
+    const dispatch = useDispatch<AppDispatch>()
+    const resources = useSelector((state: RootState) => state.course.course.resources)
+
     const addResource = () => {
-        setResources((prev) => ([...prev, {
-            title: "", url: "", id: `${new Date().getTime()}`, courseId: "demo",
-            type: "code", size: undefined,
-            createdAt: `${new Date().toISOString()}`
-        }]))
+        dispatch(addDynamicField({
+            field: "resources",
+            value: {
+                title: "", url: "", id: `${new Date().getTime()}`, courseId: "demo",
+                type: "code", size: undefined,
+                createdAt: `${new Date().toISOString()}`
+            }
+        }))
+
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, resourceId: string) => {
         const { value, name } = e.target
-        setResources((prev) => (
-            prev.map((m) => m.id === resourceId ? {
-                ...m,
-                [name]: value
-            } : m)
-        ))
+        dispatch(updateDynamicField({
+            field: "resources",
+            id: resourceId,
+            value: { [name]: value } as Partial<CourseResource>
+        }))
     }
 
     const handleTypeSelection = (e: React.ChangeEvent<HTMLSelectElement>, resourceId: string) => {
-        setResources((prev) => (
-            prev.map((m) => m.id === resourceId ? {
-                ...m,
-                type: e.target.value as ResourceType
-            } : m)
-        ))
+        dispatch(updateDynamicField({
+            field: "resources",
+            id: resourceId,
+            value: { "type": e.target.value } as Partial<CourseResource>
+        }))
     }
 
     const removeResource = (id: string) => {
-        setResources((prev) => prev.filter(f => f.id !== id))
+        dispatch(removeDynamicField({ field: "resources", id }))
     }
     return (
         <div className='input_section'>
             <h2 className='title'>Course Resources</h2>
             {
-                resources.map((resource) => (
+                (resources || []).map((resource) => (
                     <div key={resource.id} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 '>
                         <Input
                             name='title'

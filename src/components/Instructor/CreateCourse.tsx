@@ -1,7 +1,12 @@
 import React, { lazy, Suspense, useRef, useState } from "react";
-import type { Course, } from "../../@types/course";
 import StepControlButton from "./StepControlButton";
 import StepIndecitor from "./StepIndecitor";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store/store";
+import { createCourse, setCourseFields, setFileFields, type EditableFields } from "../../store/reducers/courseReducer";
+import { getCourseFormData } from "../../utils/helper";
+import { useNavigate } from "react-router-dom";
+import type { CourseFAQ, CourseResource, Module, TargetAudience } from "../../@types/course";
 
 const CreateCourseFAQ = lazy(() => import("./CreateCourseFAQ"));
 const CreateCouseResources = lazy(() => import("./CreateCouseResources"));
@@ -14,83 +19,106 @@ const CreateCoursePrerequisites = lazy(() => import("./CreateCoursePrerequisites
 const CreateWhatWillLearn = lazy(() => import("./CreateWhatWillLearn"));
 
 const CreateCourse = () => {
-  const [course, setCourse] = useState<Partial<Course>>({
-    title: "",
-    description: "",
-    price: 0,
-    discount: 0,
-    isFree: false,
-    category: null,
-    level: null,
-    language: "english",
-    faq: [],
-    module: [],
-    tags: [],
-  });
-
+  const dispatch = useDispatch<AppDispatch>()
+  const { course, isProcessing } = useSelector((state: RootState) => state.course)
+  const { token, user } = useSelector((state: RootState) => state.auth)
+  const navigate = useNavigate()
   const previewRef = useRef<HTMLDivElement>(null)
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const thumbnailRef = useRef<HTMLDivElement>(null)
+
+  const [modules, setModules] = useState<Module[]>([
+    {
+      id: Date.now().toString(), title: "", lessons: [
+        { id: Date.now().toString(), title: "", duration: "", resources: [] }
+      ],
+    },
+  ]);
+  const [faqs, setFaqs] = useState<CourseFAQ[]>([
+    { answer: "", question: "", id: new Date().getTime().toString(), courseId: `demo-${new Date().getTime()}` }
+  ])
+   const [targetAudiences, setTargetAudiences] = useState<TargetAudience[]>([{ description: "", role: "", id: `${new Date().getTime()}` }])
+
+  const [resources, setResources] = useState<CourseResource[]>([{
+            title: "", url: "", id: `${new Date().getTime()}`, courseId: "demo",
+            type: "code", size: undefined,
+            createdAt: `${new Date().toISOString()}`
+        }])
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    if (name === "certificate" && type === "file") {
+    if (type === "checkbox") {
+      const target = (e.target) as HTMLInputElement
+      const { checked } = target
+      dispatch(setCourseFields({ field: name as keyof EditableFields, value: checked as any }));
+      return;
+    }
+    if ((name === "certificate" || name === 'thumbnail') && type === "file") {
       const files = (e.target as HTMLInputElement).files;
       if (!files || files.length === 0) return
+
       const img = document.createElement("img")
-      img.classList.add("w-full","h-full")
+      img.classList.add("w-full", "h-full")
       img.src = URL.createObjectURL(files[0])
-      previewRef.current?.appendChild(img)
+
+      if (name === "certificate") {
+        previewRef.current?.appendChild(img)
+      }
+      else {
+        thumbnailRef.current?.appendChild(img)
+      }
       const file = files[0]
-      setCourse((prev) => ({ ...prev, certificate: file }))
+      dispatch(setFileFields({ field: name, value: file }))
       return
 
     }
     if (name === "tags" || name === "prerequisites" || name === "whatYouWillLearn") {
       const values = value.split(",").map(t => t.trim())
-
-      setCourse((prev) => ({
-        ...prev,
-        [name]: values
-      }));
-      console.log("changing", value)
+      dispatch(setCourseFields({ field: name as keyof EditableFields, value: values }))
       return
     }
-    setCourse((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    dispatch(setCourseFields({ field: name as keyof EditableFields, value: value }))
+
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("New Course:", course);
-    // TODO: send to backend (Firebase/Firestore/REST API)
+  const handleSubmit = async () => {
+
+    const courseData = getCourseFormData(course, user.id!);
+    if (!courseData || !token) return;
+    const result = await dispatch(createCourse({ courseData, token }));
+    if (createCourse.fulfilled.match(result)) {
+      navigate("/instructor")
+    }
+
   };
+
   const [step, setStep] = useState(1)
   const handleNext = () => setStep((prev) => prev + 1)
   const handlePrev = () => setStep(prev => prev - 1)
-  const goToStep=(step:number)=>setStep(step)
+  const goToStep = (step: number) => setStep(step)
 
   return (
     <div className="container mt-6 md:mt-14 lg:mt-20 xl:mt-32 bg-gray-900 rounded-xl space-y-6 p-6 text-white">
-    
+
       <h1 className="text-2xl font-bold">Create Course</h1>
-        <StepIndecitor steps={10} currentStep={step} onClick={goToStep} />
+      <StepIndecitor steps={10} currentStep={step} onClick={goToStep} />
       {
         step === 1 && <Suspense>
-          <BookBasicInfoStep course={course} handleChange={handleChange} handleNext={handleNext} />
+          <BookBasicInfoStep course={course} handleChange={handleChange} handleNext={handleNext} ref={thumbnailRef} />
         </Suspense>
 
       }
       {
         step === 2 && <Suspense>
-          <BookClassificationStep onNext={handleNext} onPrevious={handlePrev} />
+          <BookClassificationStep handleChange={handleChange} onNext={handleNext} onPrevious={handlePrev}
+            category={course.category || "other"}
+            language={course.language || "english"}
+            level={course.level || "beginner"}
+          />
         </Suspense>
       }
       {
         step == 3 && <div className="space-y-4">
           <Suspense>
-            <CreateCourseModule />
+            <CreateCourseModule modules={modules} setModules={setModules} />
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -98,7 +126,7 @@ const CreateCourse = () => {
       {
         step == 4 && <div className="space-y-4">
           <Suspense>
-            <CreateCourseFAQ />
+            <CreateCourseFAQ faqs={faqs} setFaqs={setFaqs} />
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -106,7 +134,7 @@ const CreateCourse = () => {
       {
         step == 5 && <div className="space-y-4">
           <Suspense>
-            <CreateCouseResources />
+            <CreateCouseResources resources={resources}  setResources={setResources}/>
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -172,7 +200,7 @@ const CreateCourse = () => {
           <div ref={previewRef} className="w-96">
           </div>
 
-          <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
+          <StepControlButton onNext={handleSubmit} disabled={isProcessing} onPrevious={handlePrev} />
         </div>
 
       }

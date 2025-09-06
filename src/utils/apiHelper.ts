@@ -4,24 +4,41 @@ type ApiOptions = {
   body?: any;
 };
 
-const apiHelper = async (url: string, options: ApiOptions = {}) => {
+const apiHelper = async (
+  url: string,
+  options: ApiOptions = {},
+  isFormData = false
+) => {
   try {
+    const headers: Record<string, string> = {
+      ...(options.headers || {}),
+    };
+
+    // Only set JSON content-type if NOT FormData
+    if (!isFormData) {
+      headers["Content-Type"] = "application/json";
+    }
+
     const response = await fetch(url, {
       method: options.method || "GET",
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
-      body: options.body ? JSON.stringify(options.body) : undefined,
+      headers,
+      body: options.body
+        ? isFormData
+          ? options.body // FormData → send directly
+          : JSON.stringify(options.body)
+        : undefined,
     });
+
     const res = await response.json();
+
     if (response.status !== 200 && response.status !== 201) {
-      throw new Error(` ${res.message}`);
+      throw new Error(res.message || "API error");
     }
-    return res
-  } catch (error:any){
-    console.error("API call failed:", error)
-    throw error
+
+    return res;
+  } catch (error: any) {
+    console.error("API call failed:", error);
+    throw error;
   }
 };
 

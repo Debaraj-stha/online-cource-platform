@@ -8,7 +8,7 @@ const CertificateCard = ({ certificate }: { certificate: Certificate }) => {
     const [isPreview, setPreview] = useState(false)
  
     if (isPreview) return (
-        <Modal onClick={()=>setPreview(false)}>
+        <Modal onClose={()=>setPreview(false)}>
             <div className="space-y-4">
                 <button 
                 onClick={()=>setPreview(false)}

@@ -1,62 +1,84 @@
-import React, { useState } from 'react'
-import type { TargetAudience } from '../../@types/course'
+import React from 'react'
 import { CgAdd, CgClose } from 'react-icons/cg'
 import Input from '../Input'
+import { useDispatch, useSelector } from 'react-redux'
+import type { AppDispatch, RootState } from '../../store/store'
+import { addDynamicField, removeDynamicField, updateDynamicField } from '../../store/reducers/courseReducer'
+import type { TargetAudience } from '../../@types/course'
 
 const CreateCourseTargetAudience = () => {
-  const [targetAudiences, setTargetAudiences] = useState<TargetAudience[]>([{ description: "", role: "", id: `${new Date().getTime()}` }])
+  const dispatch = useDispatch<AppDispatch>()
+  const targetedAudiences = useSelector((state: RootState) => state.course.course.targetedAudiences)
 
-  const addTargetResources = () => {
-    setTargetAudiences((prev) => ([...prev, { description: "", role: "", id: `${new Date().getTime()}` }]))
+  const addTargetAudience = () => {
+    dispatch(
+      addDynamicField({
+        field: "targetedAudiences",
+        value: { description: "", role: "", id: `${Date.now()}` } as TargetAudience
+      })
+    )
   }
+
   const removeTargetAudience = (audienceId: string) => {
-    setTargetAudiences((prev) => prev.filter(f => f.id !== audienceId))
+    dispatch(removeDynamicField({
+      field: "targetedAudiences",
+      id: audienceId
+    }))
   }
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, audienceId: string) => {
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    audienceId: string
+  ) => {
     const { name, value } = e.target
-    setTargetAudiences((prev) => prev.map((ele) => ele.id === audienceId ? { ...ele, [name]: value } : ele))
+    dispatch(updateDynamicField({
+      field: "targetedAudiences",
+      id: audienceId,
+      value: { [name]: value } as Partial<TargetAudience>
+    }))
   }
 
   return (
     <div className='input_section'>
       <h2 className='title'>Target Audiences</h2>
-      {
-        targetAudiences.map((audience) => (
-          <div key={audience.id} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' >
-            <Input
-              name='role'
-              value={audience.role}
-              textColorClass='text-gray-100'
-              onChange={(e) => handleChange(e, audience.id)}
-              placeholder='Beginners,Students, Professionals'
-            />
-            <Input
-              name='description'
-              value={audience.description}
-              textColorClass='text-gray-100'
-              onChange={(e) => handleChange(e, audience.id)}
-              placeholder='who they are and why this course fits them'
-            />
-            <div>
-              <button title='Remove resources'
-                className='danger-button'
-                type='button'
-                onClick={() => removeTargetAudience(audience.id)}
-              >
-                <CgClose />
-              </button>
-            </div>
+      {(targetedAudiences || []).map((audience) => (
+        <div key={audience.id} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+          <Input
+            name='role'
+            value={audience.role}
+            textColorClass='text-gray-100'
+            onChange={(e) => handleChange(e, audience.id)}
+            placeholder='Beginners, Students, Professionals'
+          />
+          <Input
+            name='description'
+            value={audience.description}
+            textColorClass='text-gray-100'
+            onChange={(e) => handleChange(e, audience.id)}
+            placeholder='Who they are and why this course fits them'
+          />
+          <div>
+            <button
+              title='Remove audience'
+              className='danger-button'
+              type='button'
+              onClick={() => removeTargetAudience(audience.id)}
+            >
+              <CgClose />
+            </button>
           </div>
-        ))
-      }
-      <button title='Add TargetResources'
+        </div>
+      ))}
+
+      <button
+        title='Add Target Audience'
         className='primary-button'
         type='button'
-        onClick={addTargetResources}
+        onClick={addTargetAudience}
       >
         <CgAdd />
       </button>
-    </div >
+    </div>
   )
 }
 

@@ -24,7 +24,7 @@ const Navbar = () => {
     const location = useLocation()
     const role = "student"
     const { isAuthenticating, user } = useSelector((state: RootState) => state.auth)
-    console.log(user)
+
 
     const handleSearchbarClick = () => {
         if (window.innerWidth <= SMALL_DEVICE_WIDTH) {

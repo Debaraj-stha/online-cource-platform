@@ -1,7 +1,7 @@
 import React from 'react'
 import { categories } from '../../constants/courses'
 interface Props {
-  handleChange?: () => void
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
   category?: string
 
 }

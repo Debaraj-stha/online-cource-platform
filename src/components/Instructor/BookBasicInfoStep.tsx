@@ -2,7 +2,13 @@ import React from 'react'
 import Input from '../Input'
 import type { Course } from '../../@types/course'
 
-const BookBasicInfoStep = ({course,handleChange,handleNext}:{course:Partial<Course>,handleChange:(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>void,handleNext:()=>void}) => {
+const BookBasicInfoStep = ({ course, handleChange, handleNext, ref }: {
+    course: Partial<Course>,
+    handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
+    handleNext: () => void,
+    ref: React.Ref<HTMLDivElement>
+}) => {
+
     return (
         <div className="space-y-6">
             {/* Basic Info */}
@@ -53,7 +59,7 @@ const BookBasicInfoStep = ({course,handleChange,handleNext}:{course:Partial<Cour
                 />
                 <Input
                     type="text"
-                    name="discount-reason"
+                    name="discountReason"
                     label="Discoun Reason"
                     value={course.discountReason?.toString() || ""}
                     onChange={handleChange}
@@ -62,15 +68,31 @@ const BookBasicInfoStep = ({course,handleChange,handleNext}:{course:Partial<Cour
                 />
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 cursor-pointer">
                 <input
                     type="checkbox"
                     name="isFree"
+                    id='isFree'
+                    className='cursor-pointer accent-blue-500'
                     checked={course.isFree || false}
                     onChange={handleChange}
                 />
-                <label>Mark as Free</label>
+                <label htmlFor='isFree' className='cursor-pointer accent-blue-500'>Mark as Free</label>
+
             </div>
+            <div className="flex items-center gap-2">
+                <input
+                    type="checkbox"
+                    name="isPublished"
+                    id='isPublished'
+                    className='cursor-pointer accent-blue-500'
+                    checked={course.isPublished || false}
+                    onChange={handleChange}
+                />
+                <label htmlFor='isPublished' className='cursor-pointer accent-blue-500'>Publish</label>
+
+            </div>
+
 
             <div>
                 <label className="block text-sm">Thumbnail</label>
@@ -78,10 +100,12 @@ const BookBasicInfoStep = ({course,handleChange,handleNext}:{course:Partial<Cour
                     type="file"
                     name="thumbnail"
                     accept="image/*"
+                    onChange={handleChange}
                     className="w-full p-2 rounded border border-gray-700"
                 />
+                <div ref={ref} className="w-96">
+                </div>
             </div>
-
 
 
 

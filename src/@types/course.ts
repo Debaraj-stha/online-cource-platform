@@ -129,7 +129,7 @@ export interface Course {
     title: string;
     description: string;
     instructor?: Instructor | null;
-    thumbnail: string;
+    thumbnail:File| string;
     // Pricing
     price: number;
     discount?: number | null;
@@ -169,5 +169,5 @@ export interface Course {
     //preview video url
     preview?:string,
     targetedAudiences?:TargetAudience[]
-    certificate?:File
+    certificate?:File|null|string
 }

@@ -14,8 +14,6 @@ export const categories: Category[] = [
   "marketing",
   "data-science",
   "personal-development",
-  "app development",
-  "software development",
   "leadership",
   "other"
 ]
@@ -46,10 +44,10 @@ export const popularCourses: Course[] = [
     category: 'web-development',
     prerequisites: ['Basic HTML & CSS knowledge', 'Basic computer literacy'],
     whatYouWillLearn: [
-      'Build responsive websites',
-      'Use JavaScript to add interactivity',
-      'Work with Node.js & Express backend',
-      'Manage databases with MongoDB',
+    "Build responsive websites",
+    "Use JavaScript to add interactivity",
+    "Work with Node.js & Express backend",
+    "Manage databases with MongoD",
     ],
     resources: resources,
     certificateAvailable: true,
@@ -62,12 +60,7 @@ export const popularCourses: Course[] = [
     faq: faqs,
     preview: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
     targetedAudiences: targetAudience,
-    certificate: {
-      title: "Certificate of Completion",
-      issuer: "LearnHub Academy",
-      imageUrl: "https://img.freepik.com/premium-photo/classy-design-achievement-certificate-template_53876-1081611.jpg",
-      description: "Receive a shareable Certificate of Completion to showcase on LinkedIn and your resume."
-    },
+    certificate: "https://img.freepik.com/premium-photo/classy-design-achievement-certificate-template_53876-1081611.jpg",
     discount:12
 
   },
@@ -117,7 +110,6 @@ export const popularCourses: Course[] = [
     level: 'beginner',
     language: 'english',
     lessonCount: 50,
-    category: 'software development',
     prerequisites: ['No prior programming required'],
     whatYouWillLearn: [
       'Install and set up Python',
@@ -204,7 +196,7 @@ export const popularCourses: Course[] = [
     level: 'intermediate',
     language: 'english',
     lessonCount: 40,
-    category: 'software development',
+    category: 'other',
     prerequisites: ['Basic JavaScript knowledge'],
     whatYouWillLearn: [
       'Set up Node.js projects',
@@ -244,7 +236,7 @@ export const popularCourses: Course[] = [
     certificateAvailable: false,
     tags: ['node', 'express', 'mongodb'],
     module: webDevModules,
-    resources,
+    resources:resources,
     faq: faqs
   },
   {
