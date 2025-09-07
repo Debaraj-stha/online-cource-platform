@@ -26,6 +26,7 @@ import EditCourse from './Instructor/EditCourse'
 import EditProfile from '../pages/EditProfile'
 import ChangeEmail from '../pages/ChangeEmail'
 import EmailVerification from '../pages/EmailVerification'
+import MoreCourse from '../pages/MoreCourse'
 
 const AppRoutes = () => {
   return (
@@ -39,6 +40,7 @@ const AppRoutes = () => {
       <Route path='/terms-conditions' element={<Terms />} />
       <Route path='/support' element={<Support />} />
       <Route path='/questions' element={<QnA />} />
+      <Route path='/courses/view-more' element={<MoreCourse />} />
       <Route path='/courses/:course_id' element={<Course />} />
       <Route path='/profile' element={<Profile />} />
       <Route path='/setting' element={<Setting />} />

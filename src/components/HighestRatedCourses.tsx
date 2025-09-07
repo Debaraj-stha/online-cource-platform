@@ -3,12 +3,20 @@ import HighestRatedCoursesCard from './HighestRatedCoursesCard'
 import { Link } from 'react-router-dom';
 import GridWrapper from './GridWrapper';
 import CourseSkeleton from './CourseSkeleton';
+import { loadHighestRatedCourses, type LoadCourseOptions } from '../store/reducers/courseReducer';
+import type { AppDispatch, RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import ErrorCard from './ErrorCard';
+import type { CourseType } from '../@types/course';
+interface Props {
+    viewMore?: boolean
+}
 
-const HighestRatedCourses = () => {
+const HighestRatedCourses = ({ viewMore = true }: Props) => {
     const highestRatedCourseRef = useRef<HTMLDivElement>(null);
     const [stopStick, setShouldStopStick] = useState(false);
     const highestRatedTitleRef = useRef<HTMLDivElement>(null);
-    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         const handleScroll = () => {
             if (!highestRatedTitleRef.current || !highestRatedCourseRef.current) return;
@@ -27,28 +35,43 @@ const HighestRatedCourses = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const options: LoadCourseOptions = {
+        limit: 8
+    }
+    useEffect(() => {
+        dispatch(loadHighestRatedCourses(options))
+    }, [dispatch])
+    const { highestRatedCourses, loadingHighestRated, highestRatedError } = useSelector((state: RootState) => state.course)
+
     return (
-        <>
+        <div className='space-y-4 md:space-y-6 lg:space-y-8'>
             <div
                 ref={highestRatedTitleRef}
-                className={` transition-all py-4  z-50 flex-center justify-between ${stopStick ? '' : 'sticky top-32 bg-black'}`}>
+                className={`course-wrapper ${stopStick ? '' : 'sticky top-32 bg-black'}`}>
                 <h2 className="title font-heading whitespace-nowrap ">Highest Rated Courses</h2>
-                <div>
-                    <Link to={"view-more"} className='transition-colors hover:text-blue-500' title='view more highest rated courses' state={{ courseType: "highest-rated" }}>View More</Link>
-                </div>
-            </div>
-            <div className='courses' ref={highestRatedCourseRef}>
                 {
-                    loading ?
-                        <GridWrapper>
-                            <CourseSkeleton />
-                        </GridWrapper>
-                        :
-                        <HighestRatedCoursesCard />
+                    viewMore && <div>
+                        <Link to="/courses/view-more" className='transition-colors hover:text-blue-500' title='view more highest rated courses' state={{ courseType: "highest-rated" as CourseType }}>View More</Link>
+                    </div>
                 }
-
             </div>
-        </>
+            {
+                highestRatedError ?
+                    <ErrorCard error={highestRatedError} />
+                    :
+                    <div className='highest-rated-courses' ref={highestRatedCourseRef}>
+                        {
+                            loadingHighestRated ?
+                                <GridWrapper>
+                                    <CourseSkeleton />
+                                </GridWrapper>
+                                :
+                                <HighestRatedCoursesCard courses={highestRatedCourses} />
+                        }
+
+                    </div>
+            }
+        </div>
     )
 }
 

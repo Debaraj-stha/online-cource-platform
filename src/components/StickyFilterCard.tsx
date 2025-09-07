@@ -22,7 +22,7 @@ const StickyFilterCard = () => {
     return () => window.removeEventListener("scroll", handlScroll)
   }, [categoryRef])
   return (
-     <div className='sticky top-14 z-10 bg-black items-center' ref={categoryRef}>
+     <div className='sticky top-14 z-40 bg-black items-center' ref={categoryRef}>
         <div className=' relative justify-between items-center'>
           {/* Category scroll area */}
           <div className='overflow-x-auto no-scrollbar w-[95%]'>

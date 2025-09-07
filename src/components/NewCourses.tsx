@@ -4,12 +4,20 @@ import { Link } from 'react-router-dom';
 import NewCoursesCard from './NewCoursesCard';
 import GridWrapper from './GridWrapper';
 import CourseSkeleton from './CourseSkeleton';
+import { loadNewestCourses, type LoadCourseOptions } from '../store/reducers/courseReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../store/store';
+import ErrorCard from './ErrorCard';
+import type { CourseType } from '../@types/course';
 
-const NewCourses = () => {
+interface Props {
+    viewMore?: boolean
+}
+const NewCourses = ({ viewMore = true }: Props) => {
     const newCoursesref = useRef<HTMLDivElement>(null);
     const [setStick, setStopStick] = useState(false);
     const newCourseTitleRef = useRef<HTMLDivElement>(null);
-    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
         const handleScroll = () => {
@@ -29,27 +37,42 @@ const NewCourses = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const options: LoadCourseOptions = {
+        limit: 8
+    }
+    useEffect(() => {
+        dispatch(loadNewestCourses(options))
+    }, [dispatch])
+    const { newestCourses, loadingNewCourses, newCourseError } = useSelector((state: RootState) => state.course)
+
+
     return (
-        <>
+ <div className='space-y-4 md:space-y-6 lg:space-y-8'>
             <div
                 ref={newCourseTitleRef}
-                className={` transition-all py-4 z-50 flex-center justify-between ${setStick ? '' : 'sticky top-32 bg-black'}`}>
+                className={`course-wrapper ${setStick ? '' : 'sticky top-32 bg-black'}`}>
                 <h2 className="title font-heading whitespace-nowrap ">New Courses</h2>
-                <div>
-                    <Link to={"view-more"} className='transition-colors hover:text-blue-500' title='view more new courses' state={{ courseType: "new-course" }}>View More</Link>
-                </div>
-            </div>
-            <div className='courses' ref={newCoursesref}>
                 {
-                    loading ?
-                        <GridWrapper>
-                            <CourseSkeleton />
-                        </GridWrapper>
-                        :
-                        <NewCoursesCard />
+                    viewMore && <div>
+                        <Link to={"view-more"} className='transition-colors hover:text-blue-500' title='view more new courses' state={{ courseType: "new" as CourseType }}>View More</Link>
+                    </div>
                 }
             </div>
-        </>
+            {
+                newCourseError ? <ErrorCard error={newCourseError} />
+                    :
+                    <div className='newest-courses' ref={newCoursesref}>
+                        {
+                            loadingNewCourses ?
+                                <GridWrapper>
+                                    <CourseSkeleton />
+                                </GridWrapper>
+                                :
+                                <NewCoursesCard courses={newestCourses} />
+                        }
+                    </div>
+            }
+        </div>
     )
 }
 

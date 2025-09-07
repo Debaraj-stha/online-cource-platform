@@ -11,26 +11,25 @@ const Footer = () => {
     const footerRef = useRef<HTMLDivElement | null>(null);
     const currentUserRole = "student"; // Replace with real auth role
 
-    useGSAP(() => {
-        gsap.registerPlugin(ScrollTrigger);
+   useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const columns = footerRef.current?.querySelectorAll('.footer-column');
+    if (!columns) return;
 
-        const columns = footerRef.current?.querySelectorAll('.footer-column');
+    gsap.from(columns, {
+        opacity: 0,
+        y: 40,
+        stagger: 0.3,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top 95%",
+            end:"top 50%"
+        },
+    });
+}, { scope: footerRef });
 
-        if (!columns) return;
-
-        gsap.from(columns, {
-            scrollTrigger: {
-                trigger: footerRef.current,
-                start: "top 60%",
-            },
-            opacity: 0,
-            y: 40,
-            stagger: 0.3,
-            duration: 0.8,
-            ease: "power3.out",
-        });
-
-    }, { scope: footerRef });
 
 
     const { t } = useTranslation()

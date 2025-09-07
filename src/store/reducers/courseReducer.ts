@@ -7,13 +7,22 @@ import type { AppDispatch } from "../store";
 
 interface CourseState {
     course: Course
-    courses: Course[]
+    courses: Course[] | []
     loadingCourse: boolean
     loadingCourses: boolean
     isProcessing: boolean
     error: string | null
     totalpages: number | null
     totalCourses: number | null
+    popularCourses: Course[] | [],
+    newestCourses: Course[] | []
+    highestRatedCourses: Course[] | []
+    loadingPopularCourse: boolean
+    popularError: string | null
+    loadingNewCourses: boolean
+    newCourseError: string | null
+    loadingHighestRated: boolean
+    highestRatedError: string | null
 }
 const initialState: CourseState = {
     loadingCourse: false,
@@ -23,7 +32,16 @@ const initialState: CourseState = {
     error: null,
     totalCourses: null,
     totalpages: 0,
-    loadingCourses: false
+    loadingCourses: false,
+    popularCourses: [],
+    highestRatedCourses: [],
+    newestCourses: [],
+    highestRatedError: null,
+    popularError: null,
+    newCourseError: null,
+    loadingHighestRated: false,
+    loadingNewCourses: false,
+    loadingPopularCourse: false
 };
 
 
@@ -64,7 +82,7 @@ export interface LoadCourseOptions {
     page?: number
     q?: string
     sortBy?: string
-    order?: "asc" | "desc"
+    sortOrder?: "asc" | "desc"
     filter?: Record<string, string>
 }
 
@@ -98,25 +116,22 @@ export const createCourse = createAsyncThunk(
         }
     }
 )
-export const loadCourse = createAsyncThunk(
+export const loadCourses = createAsyncThunk(
     "loadCourse",
     async (options: LoadCourseOptions, { rejectWithValue, dispatch }) => {
         try {
-            const { limit, page, filter, order, sortBy, q } = options;
+            const { limit, page, filter, sortOrder, sortBy, q } = options;
 
             // Collect params
             const params: Record<string, string> = {};
 
             if (filter) {
-                Object.entries(filter).forEach(([key, value]) => {
-                    params[key] = String(value);
-                });
+                params["filterOptions"] = JSON.stringify(filter);
             }
-
             if (limit) params["limit"] = String(limit);
             if (page) params["page"] = String(page);
             if (sortBy) params["sortBy"] = sortBy;
-            if (order) params["order"] = order;
+            if (sortOrder) params["sortOrder"] = sortOrder;
             if (q) params["q"] = q
 
             // Build query string
@@ -142,6 +157,120 @@ export const loadCourse = createAsyncThunk(
         }
     }
 );
+export const loadPopularCourses = createAsyncThunk(
+    "popularCourses",
+    async (options: Omit<LoadCourseOptions, "sortBy">, { rejectWithValue, dispatch }) => {
+        try {
+            const { limit, page, sortOrder, q, filter } = options;
+            // Collect params
+            const params: Record<string, string> = {};
+            if (filter) {
+                // Backend expects JSON string under "filterOptions"
+                params["filterOptions"] = JSON.stringify(filter);
+            }
+            if (limit) params["limit"] = String(limit);
+            if (page) params["page"] = String(page);
+            if (sortOrder) params["sortOrder"] = sortOrder;
+            if (q) params["q"] = q
+            params["sortBy"] = "enrollment"
+            // Build query string
+            const queryString = new URLSearchParams(params).toString();
+            const url = `${SERVER_URL}/course${queryString ? `?${queryString}` : ""}`;
+
+            const res = await apiHelper(url, { method: "GET" }, false, dispatch);
+
+            if (res)
+                return {
+                    courses: res.courses,
+                };
+            return {
+                courses: [],
+            }
+
+
+        } catch (error: any) {
+            return rejectWithValue(error.message || "Exception while fetching popular courses")
+        }
+    }
+)
+export const loadNewestCourses = createAsyncThunk(
+    "newestCourses",
+    async (options: Omit<LoadCourseOptions, "sortBy" | "sortOrder">, { rejectWithValue, dispatch }) => {
+        try {
+            const { limit, page, q, filter } = options;
+            // Collect params
+            const params: Record<string, string> = {};
+            if (filter) {
+                // Backend expects JSON string under "filterOptions"
+                params["filterOptions"] = JSON.stringify(filter);
+            }
+            if (q) params["q"] = q
+            if (limit) params["limit"] = String(limit);
+            if (page) params["page"] = String(page);
+            //sort by created date in descending sortOrder
+            params["sortBy"] = "createdAt"
+            params["ordre"] = "desc"
+
+            // Build query string
+            const queryString = new URLSearchParams(params).toString();
+            const url = `${SERVER_URL}/course${queryString ? `?${queryString}` : ""}`;
+
+            const res = await apiHelper(url, { method: "GET" }, false, dispatch);
+
+            if (res)
+                return {
+                    courses: res.courses,
+
+                };
+            return {
+                courses: [],
+            }
+
+
+        } catch (error: any) {
+            return rejectWithValue(error.message || "Exception while fetching popular courses")
+        }
+    }
+)
+export const loadHighestRatedCourses = createAsyncThunk(
+    "highestedRated",
+    async (options: Omit<LoadCourseOptions, "sortBy">, { rejectWithValue, dispatch }) => {
+        try {
+            const { limit, page, sortOrder, q, filter } = options;
+            // Collect params
+            const params: Record<string, string> = {};
+
+            if (filter) {
+                // Backend expects JSON string under "filterOptions"
+                params["filterOptions"] = JSON.stringify(filter);
+            }
+            if (q) params["q"] = q
+            if (limit) params["limit"] = String(limit);
+            if (page) params["page"] = String(page);
+            params["sortBy"] = "rating"
+            if (sortOrder) params["order"] = sortOrder
+
+            // Build query string
+            const queryString = new URLSearchParams(params).toString();
+            const url = `${SERVER_URL}/course${queryString ? `?${queryString}` : ""}`;
+
+            const res = await apiHelper(url, { method: "GET" }, false, dispatch);
+
+            if (res)
+                return {
+                    courses: res.courses,
+                };
+            return {
+                courses: [],
+
+            }
+
+
+        } catch (error: any) {
+            return rejectWithValue(error.message || "Exception while fetching popular courses")
+        }
+    }
+)
 
 
 
@@ -215,20 +344,59 @@ const courseReducer = createSlice({
                 state.isProcessing = false
             })
         //loading courses
-        builder.addCase(loadCourse.pending, (state) => {
+        builder.addCase(loadCourses.pending, (state) => {
             state.loadingCourses = true
         })
-            .addCase(loadCourse.rejected, (state, action) => {
+            .addCase(loadCourses.rejected, (state, action) => {
                 state.loadingCourses = false
                 state.error = action.payload as string
             })
-            .addCase(loadCourse.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [], totalPages: number | null, totalCourses: number | null }>) => {
+            .addCase(loadCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [], totalPages: number | null, totalCourses: number | null }>) => {
                 const { totalCourses, totalPages, courses } = action.payload
                 state.loadingCourses = false
                 state.courses = courses
                 state.totalCourses = totalCourses
                 state.totalpages = totalPages
                 state.totalpages = totalPages
+            })
+        //new courese
+        builder.addCase(loadNewestCourses.pending, (state) => {
+            state.loadingNewCourses = true
+        })
+            .addCase(loadNewestCourses.rejected, (state, action) => {
+                state.loadingNewCourses = false
+                state.newCourseError = action.payload as string
+            })
+            .addCase(loadNewestCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
+                const { courses } = action.payload
+                state.loadingNewCourses = false
+                state.newestCourses = courses
+            })
+        // popular courses
+        builder.addCase(loadPopularCourses.pending, (state) => {
+            state.loadingPopularCourse = true
+        })
+            .addCase(loadPopularCourses.rejected, (state, action) => {
+                state.loadingPopularCourse = false
+                state.popularError = action.payload as string
+            })
+            .addCase(loadPopularCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
+                const { courses } = action.payload
+                state.loadingPopularCourse = false
+                state.popularCourses = courses
+            })
+        //loading highest rated
+        builder.addCase(loadHighestRatedCourses.pending, (state) => {
+            state.loadingHighestRated = true
+        })
+            .addCase(loadHighestRatedCourses.rejected, (state, action) => {
+                state.loadingHighestRated = false
+                state.highestRatedError = action.payload as string
+            })
+            .addCase(loadHighestRatedCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
+                const { courses } = action.payload
+                state.loadingHighestRated = false
+                state.highestRatedCourses = courses
             })
     },
 });

@@ -164,6 +164,9 @@
   .input_section{
     @apply space-y-6  rounded border-2 border-gray-500 p-4 
   }
+  .course-wrapper{
+    @apply  space-y-4 transition-all z-50 flex items-center justify-between
+  }
 
 
 

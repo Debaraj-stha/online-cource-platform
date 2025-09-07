@@ -171,3 +171,5 @@ export interface Course {
     targetedAudiences?:TargetAudience[]
     certificate?:File|null|string
 }
+
+export type CourseType="popular"|"new"|"highest-rated"|null

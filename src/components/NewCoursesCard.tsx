@@ -1,10 +1,11 @@
 import React from 'react'
 import { popularCourses } from '../constants/courses'
 import CourcesGrid from './CourcesGrid'
+import type { Course } from '../@types/course'
 
-const NewCoursesCard = () => {
+const NewCoursesCard = ({courses}:{courses:Course[]}) => {
   return (
-     <CourcesGrid courses={popularCourses} view='courses'/>
+     <CourcesGrid courses={courses} view='courses' id='new-courses'/>
   )
 }
 

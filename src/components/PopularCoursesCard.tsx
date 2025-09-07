@@ -8,7 +8,7 @@ interface Props {
 
 const PopularCoursescard = ({ courses, view = "courses" }: Props) => {
   return (
-    <CourcesGrid courses={courses} view={view} />
+    <CourcesGrid courses={courses} view={view}  id='popular-courses'/>
   )
 }
 
