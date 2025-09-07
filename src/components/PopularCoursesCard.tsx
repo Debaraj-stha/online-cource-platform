@@ -1,12 +1,14 @@
-import React from 'react'
-import { popularCourses } from '../constants/courses'
 
 import CourcesGrid from './CourcesGrid'
-import type { View } from '../@types/course'
+import type { Course, View } from '../@types/course'
+interface Props {
+  courses: Course[],
+  view?: View
+}
 
-const PopularCoursescard = ({view="courses"}:{view?:View}) => {
+const PopularCoursescard = ({ courses, view = "courses" }: Props) => {
   return (
-    <CourcesGrid courses={popularCourses} view={view}/>
+    <CourcesGrid courses={courses} view={view} />
   )
 }
 

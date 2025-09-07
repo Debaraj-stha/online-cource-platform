@@ -6,18 +6,26 @@ import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 
 interface CourseState {
-    course: Course;
-    loadingCourse: boolean;
-    isProcessing: boolean;
-    error: string | null;
+    course: Course
+    courses: Course[]
+    loadingCourse: boolean
+    loadingCourses: boolean
+    isProcessing: boolean
+    error: string | null
+    totalpages: number | null
+    totalCourses: number | null
 }
-
 const initialState: CourseState = {
     loadingCourse: false,
     isProcessing: false,
     course: initialCourse,
+    courses: [],
     error: null,
+    totalCourses: null,
+    totalpages: 0,
+    loadingCourses: false
 };
+
 
 // Fields we don't want to be directly editable
 type FieldsToOmit =
@@ -51,10 +59,14 @@ type DynamicFields = {
 
 type DynamicFieldValue<K extends keyof DynamicFields> = DynamicFields[K][number];
 
-
-
-
-
+export interface LoadCourseOptions {
+    limit?: number
+    page?: number
+    q?: string
+    sortBy?: string
+    order?: "asc" | "desc"
+    filter?: Record<string, string>
+}
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
 export const createCourse = createAsyncThunk(
@@ -86,7 +98,50 @@ export const createCourse = createAsyncThunk(
         }
     }
 )
+export const loadCourse = createAsyncThunk(
+    "loadCourse",
+    async (options: LoadCourseOptions, { rejectWithValue, dispatch }) => {
+        try {
+            const { limit, page, filter, order, sortBy, q } = options;
 
+            // Collect params
+            const params: Record<string, string> = {};
+
+            if (filter) {
+                Object.entries(filter).forEach(([key, value]) => {
+                    params[key] = String(value);
+                });
+            }
+
+            if (limit) params["limit"] = String(limit);
+            if (page) params["page"] = String(page);
+            if (sortBy) params["sortBy"] = sortBy;
+            if (order) params["order"] = order;
+            if (q) params["q"] = q
+
+            // Build query string
+            const queryString = new URLSearchParams(params).toString();
+            const url = `${SERVER_URL}/course${queryString ? `?${queryString}` : ""}`;
+
+            const res = await apiHelper(url, { method: "GET" }, false, dispatch);
+
+            if (res)
+                return {
+                    courses: res.courses,
+                    totalPages: res.totalPages,
+                    totalCourses: res.totalCourses,
+                };
+            return {
+                courses: [],
+                totalCourses: null,
+                totalPages: null
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error?.message || "Something went wrong");
+        }
+    }
+);
 
 
 
@@ -158,6 +213,22 @@ const courseReducer = createSlice({
                 state.error = action.payload as string
             }).addCase(createCourse.fulfilled, (state) => {
                 state.isProcessing = false
+            })
+        //loading courses
+        builder.addCase(loadCourse.pending, (state) => {
+            state.loadingCourses = true
+        })
+            .addCase(loadCourse.rejected, (state, action) => {
+                state.loadingCourses = false
+                state.error = action.payload as string
+            })
+            .addCase(loadCourse.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [], totalPages: number | null, totalCourses: number | null }>) => {
+                const { totalCourses, totalPages, courses } = action.payload
+                state.loadingCourses = false
+                state.courses = courses
+                state.totalCourses = totalCourses
+                state.totalpages = totalPages
+                state.totalpages = totalPages
             })
     },
 });

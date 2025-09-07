@@ -1,13 +1,18 @@
+import { setMessageWithTimeout, type Message } from "../store/reducers/messageReducer";
+import type { AppDispatch } from "../store/store";
+
 type ApiOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   headers?: Record<string, string>;
   body?: any;
+  
 };
 
 const apiHelper = async (
   url: string,
   options: ApiOptions = {},
-  isFormData = false
+  isFormData = false,
+  dispatch?:any
 ) => {
   try {
     const headers: Record<string, string> = {
@@ -37,7 +42,14 @@ const apiHelper = async (
 
     return res;
   } catch (error: any) {
-    console.error("API call failed:", error);
+    const message:Message={
+      messages:error?.message||"API called failed",
+      id:Date.now(),
+      type:"error"
+    };
+     console.error("API call failed:", error);
+    (dispatch as AppDispatch)(setMessageWithTimeout(message))
+   
     throw error;
   }
 };

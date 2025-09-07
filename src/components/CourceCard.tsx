@@ -24,7 +24,8 @@ const CourseCard = ({
     if (isDetails) return <DetailsCourseCard course={course} />;
 
     const [countryCode, countryShortName] = locale.split("_")
-
+    const SERVER_URL=import.meta.env.VITE_SERVER_BASE_URL
+    const thumbnail=`${SERVER_URL}/uploads/${course.thumbnail.toString()}`
 
     return (
         <div
@@ -33,7 +34,7 @@ const CourseCard = ({
         >
             
                 <img
-                    src={course.thumbnail}
+                    src={thumbnail}
                     alt={course.title}
                     className="w-full h-48 object-cover rounded-t"
                 />

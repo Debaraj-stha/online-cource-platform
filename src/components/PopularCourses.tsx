@@ -4,12 +4,17 @@ import PopularCoursescard from './PopularCoursesCard';
 import GridWrapper from './GridWrapper';
 import Skeleton from './Skeleton';
 import CourseSkeleton from './CourseSkeleton';
+import type { Course } from '../@types/course';
+import type { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
+interface Props {
 
+}
 const PopularCourses = () => {
     const popularCoursesRef = useRef<HTMLDivElement>(null);
     const popularCouseTitleRef = useRef<HTMLDivElement>(null);
     const [shouldStopSticky, setShouldStopSticky] = useState(false);
-    const [loading, setLoading] = useState(false)
+    const { courses, loadingCourses } = useSelector((state: RootState) => state.course)
 
 
     useEffect(() => {
@@ -44,12 +49,12 @@ const PopularCourses = () => {
 
             {/* Popular courses */}
             <div ref={popularCoursesRef} className='courses'>
-                {loading ?
+                {loadingCourses ?
                     <GridWrapper>
                         <CourseSkeleton />
                     </GridWrapper>
                     :
-                    <PopularCoursescard />
+                    <PopularCoursescard courses={courses} />
                 }
             </div>
 

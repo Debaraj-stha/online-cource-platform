@@ -16,7 +16,7 @@ const FlashMessage: React.FC = () => {
       {messages.map((msg:Message) => (
         <div
           key={msg.id}
-          className={`p-3 rounded shadow text-white ${
+          className={`p-3 rounded shadow text-white z-50 ${
             msg.type === "success"
               ? "bg-green-500"
               : msg.type === "error"
