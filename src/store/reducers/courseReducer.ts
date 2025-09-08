@@ -23,6 +23,7 @@ interface CourseState {
     newCourseError: string | null
     loadingHighestRated: boolean
     highestRatedError: string | null
+    currentPage: number
 }
 const initialState: CourseState = {
     loadingCourse: false,
@@ -41,7 +42,8 @@ const initialState: CourseState = {
     newCourseError: null,
     loadingHighestRated: false,
     loadingNewCourses: false,
-    loadingPopularCourse: false
+    loadingPopularCourse: false,
+    currentPage: 0
 };
 
 
@@ -159,13 +161,12 @@ export const loadCourses = createAsyncThunk(
 );
 export const loadPopularCourses = createAsyncThunk(
     "popularCourses",
-    async (options: Omit<LoadCourseOptions, "sortBy">, { rejectWithValue, dispatch }) => {
+    async ({ options, isLoadMore = false }: { options: Omit<LoadCourseOptions, "sortBy">, isLoadMore?: boolean }, { rejectWithValue, dispatch }) => {
         try {
             const { limit, page, sortOrder, q, filter } = options;
             // Collect params
             const params: Record<string, string> = {};
             if (filter) {
-                // Backend expects JSON string under "filterOptions"
                 params["filterOptions"] = JSON.stringify(filter);
             }
             if (limit) params["limit"] = String(limit);
@@ -177,14 +178,23 @@ export const loadPopularCourses = createAsyncThunk(
             const queryString = new URLSearchParams(params).toString();
             const url = `${SERVER_URL}/course${queryString ? `?${queryString}` : ""}`;
 
-            const res = await apiHelper(url, { method: "GET" }, false, dispatch);
-
-            if (res)
+            const res = await apiHelper(url, { method: "GET" }, false, dispatch)
+            if (res) {
+                console.log(options)
+                console.log("res", res)
                 return {
                     courses: res.courses,
+                    totalPages: res.totalPages,
+                    totalCourses: res.totalCourses,
+                    isLoadMore
                 };
+            }
             return {
                 courses: [],
+                totalPages: null,
+                totalCourses: null,
+                isLoadMore
+
             }
 
 
@@ -195,7 +205,7 @@ export const loadPopularCourses = createAsyncThunk(
 )
 export const loadNewestCourses = createAsyncThunk(
     "newestCourses",
-    async (options: Omit<LoadCourseOptions, "sortBy" | "sortOrder">, { rejectWithValue, dispatch }) => {
+    async ({ options, isLoadMore = false }: { options: Omit<LoadCourseOptions, "sortBy" | "sortOrder">, isLoadMore?: boolean }, { rejectWithValue, dispatch }) => {
         try {
             const { limit, page, q, filter } = options;
             // Collect params
@@ -217,13 +227,22 @@ export const loadNewestCourses = createAsyncThunk(
 
             const res = await apiHelper(url, { method: "GET" }, false, dispatch);
 
-            if (res)
+            if (res) {
+
                 return {
                     courses: res.courses,
+                    totalPages: res.totalPages,
+                    totalCourses: res.totalCourses,
+                    isLoadMore
 
                 };
+            }
             return {
                 courses: [],
+                totalPages: null,
+                totalCourses: null,
+                isLoadMore
+
             }
 
 
@@ -234,7 +253,7 @@ export const loadNewestCourses = createAsyncThunk(
 )
 export const loadHighestRatedCourses = createAsyncThunk(
     "highestedRated",
-    async (options: Omit<LoadCourseOptions, "sortBy">, { rejectWithValue, dispatch }) => {
+    async ({ options, isLoadMore = false }: { options: Omit<LoadCourseOptions, "sortBy">, isLoadMore?: boolean }, { rejectWithValue, dispatch }) => {
         try {
             const { limit, page, sortOrder, q, filter } = options;
             // Collect params
@@ -256,12 +275,20 @@ export const loadHighestRatedCourses = createAsyncThunk(
 
             const res = await apiHelper(url, { method: "GET" }, false, dispatch);
 
-            if (res)
+            if (res) {
+
                 return {
                     courses: res.courses,
+                    totalPages: res.totalPages,
+                    totalCourses: res.totalCourses,
+                    isLoadMore
                 };
+            }
             return {
                 courses: [],
+                totalPages: null,
+                totalCourses: null,
+                isLoadMore
 
             }
 
@@ -329,6 +356,10 @@ const courseReducer = createSlice({
                 );
             }
         },
+        updatePage(state, action: PayloadAction<number | undefined>) {
+            console.log("current page", state.currentPage)
+            state.currentPage = action.payload ?? (state.currentPage ?? 0) + 1
+        }
 
 
     },
@@ -342,7 +373,7 @@ const courseReducer = createSlice({
                 state.error = action.payload as string
             }).addCase(createCourse.fulfilled, (state) => {
                 state.isProcessing = false
-            })
+            });
         //loading courses
         builder.addCase(loadCourses.pending, (state) => {
             state.loadingCourses = true
@@ -357,9 +388,8 @@ const courseReducer = createSlice({
                 state.courses = courses
                 state.totalCourses = totalCourses
                 state.totalpages = totalPages
-                state.totalpages = totalPages
-            })
-        //new courese
+            });
+        // New courses
         builder.addCase(loadNewestCourses.pending, (state) => {
             state.loadingNewCourses = true
         })
@@ -367,12 +397,30 @@ const courseReducer = createSlice({
                 state.loadingNewCourses = false
                 state.newCourseError = action.payload as string
             })
-            .addCase(loadNewestCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
-                const { courses } = action.payload
+            .addCase(loadNewestCourses.fulfilled, (state, action: PayloadAction<{
+                courses: Course[] | [],
+                totalPages: number | null,
+                totalCourses: number | null,
+                isLoadMore?: boolean
+            }>) => {
+                const { courses, totalCourses, totalPages, isLoadMore } = action.payload
                 state.loadingNewCourses = false
-                state.newestCourses = courses
-            })
-        // popular courses
+
+                if (courses.length !== 0) {
+                    // Replace for initial load, append for load more
+                    state.newestCourses = isLoadMore
+                        ? [...state.newestCourses, ...courses]
+                        : courses;
+                } else if (!isLoadMore) {
+                    // Clear on initial load if no courses
+                    state.newestCourses = [];
+                }
+
+                state.totalCourses = totalCourses
+                state.totalpages = totalPages
+            });
+
+        // Popular courses
         builder.addCase(loadPopularCourses.pending, (state) => {
             state.loadingPopularCourse = true
         })
@@ -380,12 +428,28 @@ const courseReducer = createSlice({
                 state.loadingPopularCourse = false
                 state.popularError = action.payload as string
             })
-            .addCase(loadPopularCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
-                const { courses } = action.payload
+            .addCase(loadPopularCourses.fulfilled, (state, action: PayloadAction<{
+                courses: Course[] | [],
+                totalPages: number | null,
+                totalCourses: number | null,
+                isLoadMore?: boolean
+            }>) => {
+                const { courses, totalCourses, totalPages, isLoadMore } = action.payload
+
+                if (courses.length !== 0) {
+                    state.popularCourses = isLoadMore
+                        ? [...state.popularCourses, ...courses]
+                        : courses;
+                } else if (!isLoadMore) {
+                    state.popularCourses = [];
+                }
+
                 state.loadingPopularCourse = false
-                state.popularCourses = courses
-            })
-        //loading highest rated
+                state.totalCourses = totalCourses
+                state.totalpages = totalPages
+            });
+
+        // Highest rated courses
         builder.addCase(loadHighestRatedCourses.pending, (state) => {
             state.loadingHighestRated = true
         })
@@ -393,17 +457,36 @@ const courseReducer = createSlice({
                 state.loadingHighestRated = false
                 state.highestRatedError = action.payload as string
             })
-            .addCase(loadHighestRatedCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
-                const { courses } = action.payload
+            .addCase(loadHighestRatedCourses.fulfilled, (state, action: PayloadAction<{
+                courses: Course[] | [],
+                totalPages: number | null,
+                totalCourses: number | null,
+                isLoadMore?: boolean
+            }>) => {
+                const { courses, totalCourses, totalPages, isLoadMore } = action.payload
                 state.loadingHighestRated = false
-                state.highestRatedCourses = courses
+
+                if (courses.length !== 0) {
+                    state.highestRatedCourses = isLoadMore
+                        ? [...state.highestRatedCourses, ...courses]
+                        : courses;
+                } else if (!isLoadMore) {
+                    state.highestRatedCourses = [];
+                }
+
+                state.totalCourses = totalCourses
+                state.totalpages = totalPages
             })
     },
 });
 
-export const { setCourseFields, resetCourse, setFileFields,
+export const {
+    setCourseFields,
+    resetCourse,
+    setFileFields,
     addDynamicField,
     updateDynamicField,
-    removeDynamicField
+    removeDynamicField,
+    updatePage
 } = courseReducer.actions;
 export default courseReducer.reducer;

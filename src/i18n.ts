@@ -13,7 +13,7 @@ i18n
   .use(initReactI18next) // Bind react-i18next to React
   .init({
     debug: true,
-    fallbackLng: 'en',
+    fallbackLng: 'en_US',
     interpolation: { escapeValue: false },
        resources: {
       en_US: { translation: enTranslation },

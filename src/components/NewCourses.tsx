@@ -41,13 +41,12 @@ const NewCourses = ({ viewMore = true }: Props) => {
         limit: 8
     }
     useEffect(() => {
-        dispatch(loadNewestCourses(options))
+        dispatch(loadNewestCourses({ options }))
     }, [dispatch])
     const { newestCourses, loadingNewCourses, newCourseError } = useSelector((state: RootState) => state.course)
 
-
     return (
- <div className='space-y-4 md:space-y-6 lg:space-y-8'>
+        <div className='space-y-4 md:space-y-6 lg:space-y-8'>
             <div
                 ref={newCourseTitleRef}
                 className={`course-wrapper ${setStick ? '' : 'sticky top-32 bg-black'}`}>

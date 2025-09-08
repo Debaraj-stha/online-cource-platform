@@ -9,7 +9,7 @@ import type { AppDispatch } from './store/store'
 import { useEffect } from 'react'
 import { getCookie } from './utils/manage-cookie'
 import { setToken, setUser } from './store/reducers/authReducer'
-import type { User } from './@types/user'
+import { fetchCurrency, fetchExchangeRate, } from './utils/helper'
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -19,15 +19,26 @@ function App() {
     if (token && user) {
       let parsed
       try {
-        parsed=JSON.parse(user)
+        parsed = JSON.parse(user)
       } catch (error) {
-        return 
+        return
       }
-      console.log("parsed",parsed)
+      console.log("parsed", parsed)
       dispatch(setUser(parsed))
       dispatch(setToken(token))
     }
   }, [dispatch])
+
+  useEffect(() => {
+    fetchExchangeRate()//fetch currency exchange rate
+  }, [])
+
+
+  useEffect(() => {
+    fetchCurrency() //ftech local currency from ip
+  }, [])
+
+
 
   return (
     <main>

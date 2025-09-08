@@ -11,6 +11,7 @@ import { loadPopularCourses, type LoadCourseOptions } from '../store/reducers/co
 import ErrorCard from './ErrorCard';
 import type { CourseType } from '../@types/course';
 
+
 interface Props {
     viewMore?: boolean
 }
@@ -18,11 +19,10 @@ const PopularCourses = ({ viewMore = true }: Props) => {
     const popularCoursesRef = useRef<HTMLDivElement>(null);
     const popularCourseTitleRef = useRef<HTMLDivElement>(null);
     const [shouldStopSticky, setShouldStopSticky] = useState(false);
+
     const dispatch = useDispatch<AppDispatch>()
     const options: LoadCourseOptions = {
-        limit: 10,
-
-
+        limit: 10
     }
 
 
@@ -48,8 +48,11 @@ const PopularCourses = ({ viewMore = true }: Props) => {
     }, []);
 
     useEffect(() => {
-        dispatch(loadPopularCourses(options))
+        dispatch(loadPopularCourses({options}))
     }, [dispatch])
+
+
+    
     const { popularCourses, loadingPopularCourse, popularError } = useSelector((state: RootState) => state.course)
 
     return (
@@ -78,7 +81,7 @@ const PopularCourses = ({ viewMore = true }: Props) => {
                                 <CourseSkeleton />
                             </GridWrapper>
                             :
-                            <PopularCoursescard courses={popularCourses} />
+                            <PopularCoursescard courses={popularCourses}  />
                         }
                     </div>
             }

@@ -39,7 +39,7 @@ const HighestRatedCourses = ({ viewMore = true }: Props) => {
         limit: 8
     }
     useEffect(() => {
-        dispatch(loadHighestRatedCourses(options))
+        dispatch(loadHighestRatedCourses({options}))
     }, [dispatch])
     const { highestRatedCourses, loadingHighestRated, highestRatedError } = useSelector((state: RootState) => state.course)
 

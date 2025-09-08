@@ -2,10 +2,14 @@ import { useState } from 'react'
 import type { Course } from '../@types/course'
 import { flags } from '../constants/flags'
 import capitalize from '../utils/string-func'
-import CertificateCard from './CertificateCard'
 import PaymentMethodModal from './PaymentMethodModal'
-
-const DetailsCourseCard = ({ course }: { course: Course }) => {
+import { convertPriceToLocalPrice } from '../utils/helper'
+import { formatPrice } from '../utils/localeFormatter'
+interface Props {
+    locale?: string
+    course: Course
+}
+const DetailsCourseCard = ({ course, locale = "en_US" }: Props) => {
     const [isModalOpen, setModalOpen] = useState(false)
 
     const handleEnroll = () => {
@@ -14,7 +18,17 @@ const DetailsCourseCard = ({ course }: { course: Course }) => {
     if (isModalOpen) return <PaymentMethodModal
         onClose={() => setModalOpen(false)}
     />
+    const localCurrency = localStorage.getItem("currency") || "USD"
+    const priceWithDiscount = course.price - (course.discount ?? 0)
+    const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.priceUnit, localCurrency)
+    const [language_code,_] = locale.split("_")
+    const SERVER_URL = import.meta.env.VITE_SERVER_BASE_URL
+    const thumbnail = `${SERVER_URL}/uploads/${course.thumbnail.toString()}`
 
+    //if converted ,new price else original price
+    const localPrice = success ? price : priceWithDiscount
+    const { price: localDiscount, success: discountSuccess } = convertPriceToLocalPrice(course.discount ?? 0, course.priceUnit, localCurrency)
+    const discountPrice = (discountSuccess ? localDiscount : course.discount) || 0
     return (
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl overflow-hidden">
             <div className="grid md:grid-cols-2 gap-8 p-6 md:p-12">
@@ -22,7 +36,7 @@ const DetailsCourseCard = ({ course }: { course: Course }) => {
                 {/* Left: Thumbnail + Pricing */}
                 <div className="flex flex-col gap-5">
                     <img
-                        src={course.thumbnail}
+                        src={thumbnail}
                         alt={course.title}
                         className="w-full  object-cover rounded-xl shadow-md"
                     />
@@ -36,11 +50,11 @@ const DetailsCourseCard = ({ course }: { course: Course }) => {
                                 "Free"
                             ) : course.discount ? (
                                 <>
-                                    <span className="line-through mr-2">${course.price}</span>
-                                    <span>${course.price - course.discount}</span>
+                                    <span className="line-through mr-2">${formatPrice(discountPrice, language_code)}</span>
+                                    <span>${formatPrice(localPrice, language_code)}</span>
                                 </>
                             ) : (
-                                <span>${course.price}</span>
+                                <span>${formatPrice(localPrice, language_code)}</span>
                             )}
                         </p>
 
@@ -56,7 +70,10 @@ const DetailsCourseCard = ({ course }: { course: Course }) => {
                     </div>
 
                     {/* certificate card */}
-                    <CertificateCard certificate={course.certificate!} />
+                    {/* {
+                        course.certificate && <CertificateCard certificate={course.certificate?.toString()} />
+                    } */}
+
                 </div>
 
                 {/* Right: Course Details */}

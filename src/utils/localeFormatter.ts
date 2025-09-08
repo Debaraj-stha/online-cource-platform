@@ -11,8 +11,8 @@ const currencyMap: Record<string, string> = {
  * @param languageCode  -languagecode of country like en for english,ne for nepali
  * @returns 
  */
-export const formatPrice = (price: number, languageCode: string) => {
-    const currency = currencyMap[languageCode] || 'USD';
+export const formatPrice = (price: number, languageCode: string , localCurrency?: string) => {
+    const currency = localCurrency || currencyMap[languageCode ?? "us"] || 'USD';
     return new Intl.NumberFormat(languageCode, {
         style: 'currency',
         currency,
@@ -68,7 +68,7 @@ export const formatDateTime = (date: string | Date, countryShortName: string) =>
     }).format(dateObj);
 };
 
-export const formatNumber = (value: number, countryShortName: string,options:Intl.NumberFormatOptions) => {
+export const formatNumber = (value: number, countryShortName: string, options: Intl.NumberFormatOptions) => {
     return new Intl.NumberFormat(countryShortName, {
         maximumFractionDigits: 2,
         ...options

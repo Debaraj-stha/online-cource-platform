@@ -82,6 +82,7 @@ export interface Module {
     title: string;      // e.g., "Introduction to React"
     lessons: Lesson[];
 }
+export type Currency="USD"|"EURO"|"NPR"|"INR"
 export type ResourceType = 
   | "video"       // supplemental videos
   | "pdf"         // lecture notes, slides
@@ -170,6 +171,7 @@ export interface Course {
     preview?:string,
     targetedAudiences?:TargetAudience[]
     certificate?:File|null|string
+    priceUnit:Currency
 }
 
 export type CourseType="popular"|"new"|"highest-rated"|null
