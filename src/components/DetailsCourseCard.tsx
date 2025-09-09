@@ -17,6 +17,7 @@ const DetailsCourseCard = ({ course, locale = "en_US" }: Props) => {
     }
     if (isModalOpen) return <PaymentMethodModal
         onClose={() => setModalOpen(false)}
+        course_id={course.id}
     />
     const localCurrency = localStorage.getItem("currency") || "USD"
     const priceWithDiscount = course.price - (course.discount ?? 0)

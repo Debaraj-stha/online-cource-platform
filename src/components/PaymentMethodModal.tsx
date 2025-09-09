@@ -4,9 +4,11 @@ import banktransfer from "../assets/images/bank-transfer.svg"
 import Modal from './Modal'
 import { useState } from "react"
 import UploadBankReciptModal from "./UploadBankReciptModal"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
     onClose: () => void
+    course_id:string
 }
 
 interface CardProps {
@@ -35,8 +37,9 @@ const Card = ({ image, text, onClick, extraText }: CardProps) => (
     </button>
 )
 
-const PaymentMethodModal = ({ onClose }: Props) => {
+const PaymentMethodModal = ({ onClose,course_id }: Props) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const navigate=useNavigate()
 
     // Pick receipt of bank
     const pickInput = () => {
@@ -56,7 +59,7 @@ const PaymentMethodModal = ({ onClose }: Props) => {
     }
 
     const paymentMethods: CardProps[] = [
-        { image: esewa, text: "E-sewa", onClick: () => console.log("E-sewa clicked") },
+        { image: esewa, text: "E-sewa", onClick: () => navigate("/payment/e-sewa/",{state:{courseId:course_id}}) },
         { image: khalti, text: "Khalti", onClick: () => console.log("Khalti clicked") },
         {
             image: banktransfer,

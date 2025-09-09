@@ -102,6 +102,7 @@ export interface CourseResource {
   size?: string;        // optional size info (e.g., "2MB")
   description?: string; // optional description
   createdAt?: string;   // timestamp
+  thumb?:string
 }
 
 export  interface CourseFAQ {

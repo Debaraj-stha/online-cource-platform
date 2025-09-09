@@ -27,6 +27,10 @@ import EditProfile from '../pages/EditProfile'
 import ChangeEmail from '../pages/ChangeEmail'
 import EmailVerification from '../pages/EmailVerification'
 import MoreCourse from '../pages/MoreCourse'
+import PaymentOutlet from './PaymentOutlet'
+import PayViaEsewa from '../pages/PayViaEsewa'
+import PaymentFail from '../pages/PaymentFail'
+import PaymentSuccess from '../pages/PaymentSuccess'
 
 const AppRoutes = () => {
   return (
@@ -46,6 +50,11 @@ const AppRoutes = () => {
       <Route path='/setting' element={<Setting />} />
       <Route path='/verify-email/' element={<EmailVerification />} />
       <Route path='/verify-email/:token' element={<EmailVerification />} />
+      <Route path='/payment' element={<PaymentOutlet />}>
+        <Route path='e-sewa' element={<PayViaEsewa />} />
+        <Route path='success' element={<PaymentSuccess />} />
+        <Route path='failure' element={<PaymentFail />} />
+      </Route>
       {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />
