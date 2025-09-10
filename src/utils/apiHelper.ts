@@ -48,6 +48,7 @@ const apiHelper = async (
       type:"error"
     };
      console.error("API call failed:", error);
+     if(dispatch)
     (dispatch as AppDispatch)(setMessageWithTimeout(message))
    
     throw error;

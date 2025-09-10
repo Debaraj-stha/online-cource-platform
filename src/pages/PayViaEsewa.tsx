@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import apiHelper from "../utils/apiHelper";
+import React, {  useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import PaymentLoading from "../components/PaymentLoading";
 import PaymentError from "../components/PaymentError";
+import usePayment from "../hooks/usePayment";
 
 const PayViaEsewa = () => {
   const location = useLocation();
@@ -10,69 +10,80 @@ const PayViaEsewa = () => {
 
   const studentId = "68baedad8b94ba9c6c0e93e2";
   const courseId = state.courseId || "68bc2f4349021756ef579edf";
-
-  const [paymentData, setPaymentData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
   const [debugMode, setDebugMode] = useState(false);
 
-  useEffect(() => {
-    const initPayment = async () => {
-      try {
-        setLoading(true);
-        const res = await apiHelper(`${import.meta.env.VITE_SERVER_URL}/payments/init`, {
-          method: "POST",
-          body: { studentId, courseId, amount: 7 },
-        });
+  // Ref for hidden form
+  const formRef = useRef<HTMLFormElement>(null);
 
-        if (res.success && res.paymentData) {
-          setPaymentData(res.paymentData);
-          setError(null);
-        } else {
-          const errorMsg = res.message || "Payment initialization failed";
-          setError(errorMsg);
-          console.log("Payment initialization failed", res);
-        }
-      } catch (error) {
-        const errorMsg = "Error initializing payment. Please try again.";
-        setError(errorMsg);
-        console.error("Error initializing payment:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initPayment();
-  }, [studentId, courseId]);
+  const { loading, error, paymentData } = usePayment({
+    courseId,
+    studentId,
+    amount: "120",
+  })
   if (loading) {
     return <PaymentLoading />;
   }
 
   if (error) {
-    return <PaymentError debugMode={debugMode} error={error} setDebugMode={setDebugMode} />;
+    return (
+      <PaymentError
+        debugMode={debugMode}
+        error={error}
+        setDebugMode={setDebugMode}
+      />
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex md:justify-center md:items-center items-start py-11  px-4">
+      <div className="bg-white rounded-2xl shadow-lg max-w-md w-full p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Pay with eSewa
+        </h2>
 
-      <h2 className="text-gray-900">9806800001</h2>
+        {/* Amount Details */}
+        <div className="space-y-2 border-b border-gray-200 pb-4 mb-4">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Amount:</span>
+            <span className="font-medium text-gray-800">Rs. {paymentData.amount}</span>
+          </div>
+          {paymentData.discount > 0 && (
+            <div className="flex justify-between">
+              <span className="text-gray-600">Discount:</span>
+              <span className="text-green-600">- Rs. {paymentData.discount}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-lg font-semibold text-gray-800">
+            <span>Total:</span>
+            <span className="">Rs. {paymentData.total_amount}</span>
+          </div>
+        </div>
 
-      <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST" className="text-gray-900">
-        <input type="hidden" id="amount" name="amount" value={paymentData.amount} required  readOnly/>
-        <input type="hidden" id="tax_amount" name="tax_amount" value={paymentData.tax_amount} required readOnly />
-        <input type="hidden" id="total_amount" name="total_amount" value={paymentData.total_amount} required readOnly />
-        <input type="hidden" id="transaction_uuid" name="transaction_uuid" value={paymentData.transaction_uuid} required readOnly />
-        <input type="hidden" id="product_code" name="product_code" value={paymentData.product_code} required readOnly />
-        <input type="hidden" id="product_service_charge" name="product_service_charge" value={paymentData.product_service_charge} required readOnly />
-        <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value={paymentData.product_delivery_charge} required  readOnly/>
-        <input type="hidden" id="success_url" name="success_url" value={paymentData.success_url} required readOnly />
-        <input type="hidden" id="failure_url" name="failure_url" value={paymentData.failure_url} required />
-        <input type="hidden" id="signed_field_names" className="bg-red-600" name="signed_field_names" value={paymentData.signed_field_names} required readOnly />
-        <input type="hidden" id="signature" name="signature"  value= {paymentData.signature} required readOnly />
-        <input value="Submit" type="submit"  className="bg-gray-900 text-white"/>
-      </form>
+        {/* Hidden form */}
+        <form
+          ref={formRef}
+          action="https://rc-epay.esewa.com.np/api/epay/main/v2/form"
+          method="POST"
+        >
+          {Object.keys(paymentData).map((key) => (
+            <input
+              key={key}
+              type="hidden"
+              name={key}
+              value={paymentData[key]}
+              readOnly
+            />
+          ))}
+        </form>
 
-
+        {/* Submit Button */}
+        <button
+          onClick={() => formRef.current?.submit()}
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition"
+        >
+          Pay Now with eSewa
+        </button>
+      </div>
     </div>
   );
 };

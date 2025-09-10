@@ -31,6 +31,7 @@ import PaymentOutlet from './PaymentOutlet'
 import PayViaEsewa from '../pages/PayViaEsewa'
 import PaymentFail from '../pages/PaymentFail'
 import PaymentSuccess from '../pages/PaymentSuccess'
+import PayViaKhalti from '../pages/PaymentviaKhalti'
 
 const AppRoutes = () => {
   return (
@@ -54,6 +55,7 @@ const AppRoutes = () => {
         <Route path='e-sewa' element={<PayViaEsewa />} />
         <Route path='success' element={<PaymentSuccess />} />
         <Route path='failure' element={<PaymentFail />} />
+         <Route path='khalti' element={<PayViaKhalti />} />
       </Route>
       {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>

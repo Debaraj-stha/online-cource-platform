@@ -60,7 +60,7 @@ const PaymentMethodModal = ({ onClose,course_id }: Props) => {
 
     const paymentMethods: CardProps[] = [
         { image: esewa, text: "E-sewa", onClick: () => navigate("/payment/e-sewa/",{state:{courseId:course_id}}) },
-        { image: khalti, text: "Khalti", onClick: () => console.log("Khalti clicked") },
+        { image: khalti, text: "Khalti", onClick: () => navigate("/payment/khalti/",{state:{courseId:course_id}}) },
         {
             image: banktransfer,
             text: "Bank Transfer",

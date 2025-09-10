@@ -1,5 +1,6 @@
 import type { Instructor } from "./instructor";
 export type View = "home" | 'courses' | 'details'
+export type PaymentMethod="KHALTI"|"E-SEWA"|"BANK-TRANSFER"
 export type Category =
   // Programming & Tech
   | "web-development"
