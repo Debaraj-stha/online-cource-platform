@@ -2,34 +2,33 @@ import { useState } from 'react'
 import type { Course } from '../@types/course'
 import { flags } from '../constants/flags'
 import capitalize from '../utils/string-func'
-import PaymentMethodModal from './PaymentMethodModal'
 import { convertPriceToLocalPrice } from '../utils/helper'
 import { formatPrice } from '../utils/localeFormatter'
+import { useNavigate } from 'react-router-dom'
 interface Props {
     locale?: string
     course: Course
 }
 const DetailsCourseCard = ({ course, locale = "en_US" }: Props) => {
-    const [isModalOpen, setModalOpen] = useState(false)
 
-    const handleEnroll = () => {
-        setModalOpen(true)
-    }
-    if (isModalOpen) return <PaymentMethodModal
-        onClose={() => setModalOpen(false)}
-        course_id={course.id}
-    />
     const localCurrency = localStorage.getItem("currency") || "USD"
     const priceWithDiscount = course.price - (course.discount ?? 0)
     const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.priceUnit, localCurrency)
-    const [language_code,_] = locale.split("_")
+    const [language_code, _] = locale.split("_")
     const SERVER_URL = import.meta.env.VITE_SERVER_BASE_URL
     const thumbnail = `${SERVER_URL}/uploads/${course.thumbnail.toString()}`
+    const navigate = useNavigate()
 
     //if converted ,new price else original price
     const localPrice = success ? price : priceWithDiscount
     const { price: localDiscount, success: discountSuccess } = convertPriceToLocalPrice(course.discount ?? 0, course.priceUnit, localCurrency)
     const discountPrice = (discountSuccess ? localDiscount : course.discount) || 0
+    const courseDetails = {
+        name: course.title,
+        amount: course.price,
+        discount: course.discount,
+        discountReason:course.discountReason
+    }
     return (
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl overflow-hidden">
             <div className="grid md:grid-cols-2 gap-8 p-6 md:p-12">
@@ -61,7 +60,7 @@ const DetailsCourseCard = ({ course, locale = "en_US" }: Props) => {
 
                         <button
                             title='Enroll To Course'
-                            onClick={handleEnroll}
+                            onClick={() => navigate("/payment/", { state: { courseId: course.id, courseDetails} })}
                             className="mt-4 w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition">
                             🚀 Enroll Now
                         </button>

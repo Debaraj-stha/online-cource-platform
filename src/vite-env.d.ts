@@ -9,6 +9,7 @@ interface ImportMetaEnv {
     VITE_KHALTI_URL: string
     VITE_KHALTI_INITIATE_PAYMENT: string
     VITE_FRONTEND_URL:string
+    VITE_ESEWA_URL:string
 }
 interface ImportMeta {
     readonly env: ImportMetaEnv

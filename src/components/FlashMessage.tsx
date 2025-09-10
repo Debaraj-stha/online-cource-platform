@@ -13,22 +13,24 @@ const FlashMessage: React.FC = () => {
 
   return (
     <div className="fixed top-20 right-4 space-y-2 z-50">
-      {messages.map((msg:Message) => (
+      {messages.map((msg: Message) => (
         <div
           key={msg.id}
-          className={`p-3 rounded shadow text-white z-50 ${
-            msg.type === "success"
+          className={`p-3 rounded shadow text-white z-50 ${msg.type === "success"
               ? "bg-green-500"
               : msg.type === "error"
-              ? "bg-red-500"
-              : msg.type === "warning"
-              ? "bg-yellow-500"
-              : "bg-blue-500"
-          }`}
+                ? "bg-red-500"
+                : msg.type === "warning"
+                  ? "bg-yellow-500"
+                  : "bg-blue-500"
+            }`}
         >
-          {[msg.messages].map((text, i) => (
-            <div key={i}>{text}</div>
-          ))}
+          {msg.messages instanceof Array ? (
+  msg.messages.map((m, idx) => <div key={idx}>{m}</div>)
+) : (
+  <div>{msg.messages}</div>
+)}
+
         </div>
       ))}
     </div>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from '../pages/Home'
-import Sidebar from './Sidebar'
 import Cources from '../pages/Cources'
 import Contact from '../pages/Contact'
 import About from '../pages/About'
@@ -27,11 +26,7 @@ import EditProfile from '../pages/EditProfile'
 import ChangeEmail from '../pages/ChangeEmail'
 import EmailVerification from '../pages/EmailVerification'
 import MoreCourse from '../pages/MoreCourse'
-import PaymentOutlet from './PaymentOutlet'
-import PayViaEsewa from '../pages/PayViaEsewa'
-import PaymentFail from '../pages/PaymentFail'
-import PaymentSuccess from '../pages/PaymentSuccess'
-import PayViaKhalti from '../pages/PaymentviaKhalti'
+import Payment from '../pages/Payment'
 
 const AppRoutes = () => {
   return (
@@ -51,12 +46,7 @@ const AppRoutes = () => {
       <Route path='/setting' element={<Setting />} />
       <Route path='/verify-email/' element={<EmailVerification />} />
       <Route path='/verify-email/:token' element={<EmailVerification />} />
-      <Route path='/payment' element={<PaymentOutlet />}>
-        <Route path='e-sewa' element={<PayViaEsewa />} />
-        <Route path='success' element={<PaymentSuccess />} />
-        <Route path='failure' element={<PaymentFail />} />
-         <Route path='khalti' element={<PayViaKhalti />} />
-      </Route>
+      <Route path='/payment' element={<Payment />}/>
       {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />

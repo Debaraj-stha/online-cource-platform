@@ -81,3 +81,6 @@ export const SOCIAL_LINK:Record<string,string>={
   "x":"https://x.com",
   "linkedin":"https://www.linkedin.com/"
 }
+
+
+export const TAX=10
