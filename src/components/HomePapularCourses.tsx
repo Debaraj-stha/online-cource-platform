@@ -1,12 +1,24 @@
-import React, { useEffect, useRef } from 'react';
-import { popularCourses } from '../constants/courses';
+import  { useEffect, useRef } from 'react';
 import CourseCard from './CourceCard';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import BrowseCourseAButton from './BrowseCourseAButton';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../store/store';
+import { loadPopularCourses } from '../store/reducers/courseReducer';
+import { useNavigate } from 'react-router-dom';
+import ErrorCard from './ErrorCard';
+import CourseSkeleton from './CourseSkeleton';
 
 const HomePopularCourses = () => {
   const sectionRef = useRef(null);
+  const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
+  const { popularCourses, popularError, loadingPopularCourse } = useSelector((state: RootState) => state.course)
+
+  useEffect(() => {
+    dispatch(loadPopularCourses({ options: {} }))
+  }, [dispatch])
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -31,19 +43,26 @@ const HomePopularCourses = () => {
   }, []);
   const locale = localStorage.getItem('i18nextLng') || 'en_US'
 
-
   return (
     <section ref={sectionRef} className="wrapper">
       <div className="container-grid">
         <h2 className="title-h2">Popular Courses</h2>
       </div>
-      <div className="container-grid">
-        {popularCourses.slice(0, 6).map((course, index) => (
-          <div key={index} className="course-card card">
-            <CourseCard course={course} view='home' locale={locale} />
+
+      {
+        !loadingPopularCourse && popularError ? <ErrorCard error={popularError} />
+          :
+          <div className="container-grid">
+            {loadingPopularCourse ?
+              <CourseSkeleton itemLength={6} />
+              :
+              popularCourses.slice(0, 6).map((course, index) => (
+                <div key={index} className="course-card card">
+                  <CourseCard course={course} view='home' locale={locale} onClick={() => navigate(`/courses/${course.id}`)} />
+                </div>
+              ))}
           </div>
-        ))}
-      </div>
+      }
       <div className='container flex justify-center'>
         <BrowseCourseAButton />
       </div>

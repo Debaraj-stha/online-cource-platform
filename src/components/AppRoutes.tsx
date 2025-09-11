@@ -27,6 +27,7 @@ import ChangeEmail from '../pages/ChangeEmail'
 import EmailVerification from '../pages/EmailVerification'
 import MoreCourse from '../pages/MoreCourse'
 import Payment from '../pages/Payment'
+import Test from './Test'
 
 const AppRoutes = () => {
   return (
@@ -47,6 +48,7 @@ const AppRoutes = () => {
       <Route path='/verify-email/' element={<EmailVerification />} />
       <Route path='/verify-email/:token' element={<EmailVerification />} />
       <Route path='/payment' element={<Payment />}/>
+        <Route path='/test' element={<Test />}/>
       {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />

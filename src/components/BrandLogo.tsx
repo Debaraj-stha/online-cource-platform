@@ -4,7 +4,7 @@ import logo from "../assets/images/logo.png"
 
 const BrandLogo = ({ isHeader = false, textClass = "" }: { isHeader?: boolean, textClass?: string }) => {
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 brand">
             <img
                 src={logo}
                 alt="coursely logo"

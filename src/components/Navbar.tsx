@@ -43,15 +43,16 @@ const Navbar = () => {
     const onBack = () => {
         setSearchbarOpen(false)
     }
-    useGSAP(() => {
-        const hero = document.querySelector('.hero-section');
+     const hero = document.querySelector('.hero-section');
+    useEffect(() => {
+       
         const links = document.querySelectorAll('.navbar-link');
         if (!navRef.current || !hero) return;
 
         const isSmallDevice = window.innerWidth < 768; // Tailwind's md = 768px
         const navPadding = isSmallDevice ? "1rem 1rem" : "1.5rem 3rem";
 
-        gsap.to("nav", {
+        gsap.to(navRef.current, {
             backgroundColor: "#0f172a",
             padding: navPadding,
             scrollTrigger: {
@@ -63,7 +64,7 @@ const Navbar = () => {
         });
 
         gsap.to(links, {
-            opacity: 0.5,
+            opacity: 0.9,
             stagger: 0.2,
             duration: 0.4,
             ease: "power2.out",
@@ -75,19 +76,19 @@ const Navbar = () => {
             },
         });
 
-        gsap.to(".brand", {
-            opacity: 0.5,
+        gsap.to(".brand .username", {
+            opacity: 0.9,
             stagger: 0.2,
             duration: 0.4,
             ease: "power2.out",
             scrollTrigger: {
                 trigger: hero,
-                start: "bottom top",
+                start: "top top",
                 end: "+=100",
                 toggleActions: "play none none reverse",
             }
         });
-    }, { scope: navRef });
+    }, [hero]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -150,7 +151,7 @@ const Navbar = () => {
                         {
                             isAuthenticating ? <p className='hidden md:block text-blue-500 animate-pulse '>Authenticating...</p>
                                 :
-                                <p className='hidden md:block '>{user.name}</p>
+                                <p className='hidden md:block username '>{user.name}</p>
                         }
                         <div className='hover:animate-pulse px-2 cursor-pointer' onClick={() => setShowUserCard((prev) => !prev)}>
                             <CgMoreVerticalAlt size={20} />
