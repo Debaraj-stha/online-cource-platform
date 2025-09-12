@@ -4,6 +4,16 @@ import { initialCourse } from "../../constants/initialCourse";
 import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
+import type { Instructor } from "../../@types/instructor";
+import type { Review } from "../../@types/reviews";
+interface DetailCourseState {
+    course: Course,
+    totalModules: number
+    modules: Module[],
+    reviews: Review[],
+    totalReviews: number
+    instructor: Instructor
+}
 
 interface CourseState {
     course: Course
@@ -23,7 +33,9 @@ interface CourseState {
     newCourseError: string | null
     loadingHighestRated: boolean
     highestRatedError: string | null
-    currentPage: number
+    currentPage: number,
+    detailedCourse: DetailCourseState | null
+
 }
 const initialState: CourseState = {
     loadingCourse: false,
@@ -43,7 +55,8 @@ const initialState: CourseState = {
     loadingHighestRated: false,
     loadingNewCourses: false,
     loadingPopularCourse: false,
-    currentPage: 0
+    currentPage: 0,
+    detailedCourse: null
 };
 
 
@@ -119,7 +132,7 @@ export const createCourse = createAsyncThunk(
     }
 )
 export const loadCourses = createAsyncThunk(
-    "loadCourse",
+    "loadCourses",
     async (options: LoadCourseOptions, { rejectWithValue, dispatch }) => {
         try {
             const { limit, page, filter, sortOrder, sortBy, q } = options;
@@ -299,6 +312,27 @@ export const loadHighestRatedCourses = createAsyncThunk(
     }
 )
 
+export const loadCourse = createAsyncThunk(
+    "loadCourse",
+    async ({ courseId }: { courseId: string }, { rejectWithValue, dispatch }) => {
+        try {
+            const url=`${SERVER_URL}/course/${courseId}`
+            console.log(url)
+            const res = await apiHelper(url,{method:"GET"})
+            const courseDetails: DetailCourseState = {
+                course: res.course,
+                totalModules: res.totalModules,
+                totalReviews: res.totalReviews,
+                modules: res.modules,
+                reviews: res.reviews,
+                instructor: res.course.instructor
+            }
+            return courseDetails
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
 
 
 const courseReducer = createSlice({
@@ -364,6 +398,19 @@ const courseReducer = createSlice({
 
     },
     extraReducers: (builder) => {
+        //loading individual course
+        builder.addCase(loadCourse.pending, (state) => {
+            state.loadingCourse = true
+        })
+            .addCase(loadCourse.rejected, (state, action) => {
+                state.loadingCourse = false
+                state.error = action.payload as string
+            })
+            .addCase(loadCourse.fulfilled, (state, action: PayloadAction<DetailCourseState>) => {
+                state.loadingCourse = false
+                state.detailedCourse = action.payload
+
+            });
         //saving course to db
         builder.addCase(createCourse.pending, (state) => {
             state.isProcessing = true

@@ -4,13 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from '../store/store';
 import { login, setFields } from '../store/reducers/authReducer';
 import validator from '../utils/validator';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { user, isProcessing } = useSelector((state: RootState) => state.auth)
   const [errors, setErrors] = useState<string[]>()
   const navigate = useNavigate()
+  const location=useLocation()
+  const state=location.state ??{}
+  const from=state?.from
+  
+  const redirectTo=from && from !="/auth/signup" ? from :"/"
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +31,7 @@ const LoginForm = () => {
     setErrors([])
     const result = await dispatch(login({ email: user.email, password: user.password! }))
     if (login.fulfilled.match(result)) {
-      navigate("/")
+      navigate(redirectTo)
     }
 
   };

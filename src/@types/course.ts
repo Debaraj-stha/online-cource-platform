@@ -72,6 +72,7 @@ export type Level = "beginner" | "intermediate" | "advanced";
 export type Language = "english" | "nepali" | "hindi" | "other";
 export interface Lesson {
     id: string;
+    moduleId?:string
     title: string;
     duration: string;   // "10m", "1h 15m"
     resources?: string[]; // optional file/video links
@@ -82,11 +83,13 @@ export interface Module {
     id: string;
     title: string;      // e.g., "Introduction to React"
     lessons: Lesson[];
+    totalDuration?:string,
+    totalLessons?:number
+
 }
 export type Currency="USD"|"EURO"|"NPR"|"INR"
 export type ResourceType = 
   | "video"       // supplemental videos
-  | "pdf"         // lecture notes, slides
   | "document"    // Word docs, text files
   | "image"       // diagrams, infographics
   | "link"        // external links, references
@@ -129,6 +132,7 @@ export interface Certificate {
 
 export interface Course {
     id: string;
+    _id:string
     title: string;
     description: string;
     instructor?: Instructor | null;

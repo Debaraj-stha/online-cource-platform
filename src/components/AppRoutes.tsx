@@ -48,7 +48,6 @@ const AppRoutes = () => {
       <Route path='/verify-email/' element={<EmailVerification />} />
       <Route path='/verify-email/:token' element={<EmailVerification />} />
       <Route path='/payment' element={<Payment />}/>
-        <Route path='/test' element={<Test />}/>
       {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />

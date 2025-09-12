@@ -6,6 +6,9 @@ import { flags } from '../constants/flags';
 import { formatDateTime, formatPrice } from '../utils/localeFormatter';
 import { convertPriceToLocalPrice } from '../utils/helper';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../store/store';
+
 
 interface Props {
   course: Course
@@ -15,9 +18,10 @@ interface Props {
 
 }
 const CourseCard = ({ course, view = 'home', onClick, locale = "en_US" }: Props) => {
-
+  const dispatch = useDispatch<AppDispatch>()
+  const { user } = useSelector((state: RootState) => state.auth)
   const localCurrency = localStorage.getItem("currency") || "USD"
-  const priceWithDiscount=course.price-(course.discount??0)
+  const priceWithDiscount = course.price - (course.discount ?? 0)
   const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.priceUnit, localCurrency)
   const [language_code, countryShortName] = locale.split("_")
   const SERVER_URL = import.meta.env.VITE_SERVER_BASE_URL
@@ -29,7 +33,8 @@ const CourseCard = ({ course, view = 'home', onClick, locale = "en_US" }: Props)
   const localPrice = success ? price : priceWithDiscount
 
 
-  if (isDetails) return <DetailsCourseCard course={course}  locale={locale}/>
+
+  if (isDetails) return <DetailsCourseCard locale={locale}  />
   return (
     <div onClick={onClick} className="rounded bg-gray-900 cursor-pointer shadow hover:scale-105 hover:shadow-2xl transition-transform duration-150 space-y-4">
       <img src={thumbnail} alt={course.title} className="w-full h-48 object-cover rounded-t" />

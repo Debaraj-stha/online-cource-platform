@@ -10,7 +10,9 @@ type ApiOptions = {
 
 const apiHelper = async (
   url: string,
-  options: ApiOptions = {},
+  options: ApiOptions = {
+    method:"GET"
+  },
   isFormData = false,
   dispatch?:any
 ) => {
