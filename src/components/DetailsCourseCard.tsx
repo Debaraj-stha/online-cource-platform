@@ -10,18 +10,17 @@ import type { AppDispatch, RootState } from '../store/store'
 import { setMessageWithTimeout, type Message } from '../store/reducers/messageReducer'
 import ErrorCard from './ErrorCard'
 import Loader from './Loader'
-import { useEffect } from 'react'
+import { memo } from 'react'
 import { loadCourse } from '../store/reducers/courseReducer'
 interface Props {
     locale?: string
 }
-const DetailsCourseCard = ({ locale = "en_US" }: Props) => {
+const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.auth)
   
 
     const { detailedCourse, loadingCourse, error } = useSelector((state: RootState) => state.course)
-    console.log(detailedCourse)
     const course = detailedCourse?.course!
     const localCurrency = localStorage.getItem("currency") || "USD"
     const priceWithDiscount = course.price - (course.discount ?? 0)
@@ -120,7 +119,7 @@ const DetailsCourseCard = ({ locale = "en_US" }: Props) => {
                                 {/* Quick Stats */}
                                 <div className="flex flex-wrap gap-3 mt-4">
                                     <span className="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700">👨‍🏫 {course.instructor?.name}</span>
-                                    <span className="px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-700">⭐ {course.rating ?? "N/A"}</span>
+                                    <span className="px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-700">⭐ {course.rating?.toFixed(1) ?? "N/A"}</span>
                                     <span className="px-3 py-1 text-sm rounded-full bg-green-100 text-green-700">🕒 {course.duration}</span>
                                     <span className="px-3 py-1 text-sm rounded-full bg-purple-100 text-purple-700">🎯 {capitalize(course.level)}</span>
                                     <span className="px-3 py-1 text-sm rounded-full bg-pink-100 text-pink-700">
@@ -166,6 +165,6 @@ const DetailsCourseCard = ({ locale = "en_US" }: Props) => {
 
         </div>
     )
-}
+})
 
 export default DetailsCourseCard

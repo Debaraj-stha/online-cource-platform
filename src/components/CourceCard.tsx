@@ -63,7 +63,7 @@ const CourseCard = ({ course, view = 'home', onClick, locale = "en_US" }: Props)
 
         <p>{formatDateTime(course.createdAt!, countryShortName)}</p>
         <Link to="/" className="text-sm">Instructor: {course.instructor?.name}</Link>
-        <p className="text-sm">Rating: ⭐ {course.rating ?? 'N/A'}</p>
+        <p className="text-sm">Rating: ⭐ {course.rating?.toFixed(1) ?? 'N/A'}</p>
         <p className="text-sm">Enrolled: {course.totalEnrolled ?? 0}</p>
 
         {isCourses && (

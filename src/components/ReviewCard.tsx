@@ -1,10 +1,12 @@
 import React from 'react'
 import type { Review, ReviewType } from '../@types/reviews';
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import capitalize from '../utils/string-func';
+import Avatar from './Avatar';
 const ReviewBadgeColor: Record<ReviewType, string> = {
-  positive: "bg-green-100 text-green-700",
-  neutral: "bg-yellow-100 text-yellow-700",
-  negative: "bg-red-100 text-red-700",
+    positive: "bg-green-100 text-green-700",
+    neutral: "bg-yellow-100 text-yellow-700",
+    negative: "bg-red-100 text-red-700",
 };
 
 interface Props {
@@ -21,26 +23,24 @@ const ReviewCard = ({ review }: Props) => {
         }
         return stars;
     };
+    const SERVER_URL = import.meta.env.VITE_SERVER_BASE_URL
+    const profileURL = review.user.profilePicture ? `${SERVER_URL}/uploads/${review.user.profilePicture}` : undefined
 
     return (
         <div
             key={review.id}
             className="flex gap-4 p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition"
         >
-            <img
-                src={review.studentAvatar || "https://via.placeholder.com/50"}
-                alt={review.studentName}
-                className="w-12 h-12 rounded-full object-cover"
-            />
+            <Avatar username={review?.user?.name!} url={profileURL} />
             <div className="flex-1">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-800">{review.studentName}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs ${ReviewBadgeColor[review.type ?? "positive"]}`}>
+                    <h3 className="font-semibold text-gray-800">{capitalize(review.user.name)}</h3>
+                    <span title='Review Type' className={`px-2 py-1 rounded-full text-xs ${ReviewBadgeColor[review.type ?? "positive"]}`}>
                         {review.type?.toUpperCase()}
                     </span>
                 </div>
                 <div className="flex gap-1 mt-1">{renderStars(review.rating)}</div>
-                <p className="text-gray-600 text-sm mt-1">{review.comment}</p>
+                <p className="text-gray-600 text-sm mt-1">{review.review}</p>
                 <p className="text-xs text-gray-400 mt-1">
                     {new Date(review.createdAt).toLocaleDateString()}{" "}
                     {review.verifiedPurchase && "• Verified Purchase"}

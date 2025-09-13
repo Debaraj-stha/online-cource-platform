@@ -2,14 +2,16 @@ import React from "react";
 import type { Instructor } from "../@types/instructor";
 
 import InstructorSocialLinks from "./InstructorSocialLinks";
+const SERVER_URL=import.meta.env.VITE_SERVER_BASE_URL
 
 const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
+  const imageURL=`${SERVER_URL}/uploads/${instructor.profilePicture}`
   return (
     <div className="bg-white shadow-md rounded-xl p-6 space-y-4">
       {/* Profile */}
       <div className="flex items-center gap-4">
         <img
-          src={instructor.profile || "https://via.placeholder.com/100"}
+          src={instructor.profilePicture ? imageURL: "https://via.placeholder.com/100"}
           alt={instructor.name}
           className="w-20 h-20 rounded-full object-cover border"
         />
@@ -44,12 +46,7 @@ const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
 
       {/* Contact */}
       <InstructorSocialLinks
-        email={instructor.email}
-        facebook={instructor.facebook}
-        linkedin={instructor.linkedin}
-        website={instructor.website}
-        phone={instructor.phone}
-        twitter={instructor.twitter}
+      social={instructor.socialLinks}
       />
     </div>
   );

@@ -44,7 +44,7 @@ const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
                 <div className="flex flex-col  gap-4">
                     <Input
                         name="name"
-                        placeHolder="Name"
+                        placeholder="Name"
                         value={name}
                         extraClass="flex-1"
                         onChange={(e) => setName(e.target.value)}
@@ -53,7 +53,7 @@ const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
                         name="email"
                         type="email"
                         extraClass="flex-1"
-                        placeHolder="Email (Optional)"
+                        placeholder="Email (Optional)"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -89,15 +89,17 @@ const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
 
                 {/* Comment */}
                 <Input
-                isTextArea={true}
-                name="review"
-                placeHolder="Write your review..."
+                    isTextArea={true}
+                    name="review"
+                    placeholder="Write your review..."
                 />
 
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
+                    className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition
+                    disabled:opacity-50 cursor-not-allowed
+                    "
                 >
                     Submit Review
                 </button>

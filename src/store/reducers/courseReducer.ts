@@ -5,7 +5,7 @@ import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 import type { Instructor } from "../../@types/instructor";
-import type { Review } from "../../@types/reviews";
+import type { Review, ReviewType } from "../../@types/reviews";
 interface DetailCourseState {
     course: Course,
     totalModules: number
@@ -13,6 +13,8 @@ interface DetailCourseState {
     reviews: Review[],
     totalReviews: number
     instructor: Instructor
+    averageRating:number
+
 }
 
 interface CourseState {
@@ -99,6 +101,12 @@ export interface LoadCourseOptions {
     sortBy?: string
     sortOrder?: "asc" | "desc"
     filter?: Record<string, string>
+}
+
+export interface LoadMoreOptions {
+    page?: string,
+    limit?: string,
+    courseId: string
 }
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
@@ -316,18 +324,44 @@ export const loadCourse = createAsyncThunk(
     "loadCourse",
     async ({ courseId }: { courseId: string }, { rejectWithValue, dispatch }) => {
         try {
-            const url=`${SERVER_URL}/course/${courseId}`
+            const url = `${SERVER_URL}/course/${courseId}`
             console.log(url)
-            const res = await apiHelper(url,{method:"GET"})
+            const res = await apiHelper(url, { method: "GET" })
             const courseDetails: DetailCourseState = {
                 course: res.course,
                 totalModules: res.totalModules,
                 totalReviews: res.totalReviews,
                 modules: res.modules,
                 reviews: res.reviews,
-                instructor: res.course.instructor
+                instructor: res.course.instructor,
+                averageRating:res.averageRating
             }
             return courseDetails
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+export const loadMoreReviews = createAsyncThunk(
+    "loadMorereviews",
+    async (options: LoadMoreOptions, { rejectWithValue }) => {
+        try {
+
+            let url = `${SERVER_URL}/course/${options.courseId}/reviews`
+            const params:Record<string,string>={}
+            if (options.limit) params["limit"]= options.limit
+            if (options.page) params["page"]= options.page
+              const query=new URLSearchParams(params).toString()
+              url+=query ?  `?${query}` :""
+            const res = await apiHelper(url, { method: "GET" })
+            console.log(res)
+            if (res.reviews) {
+                return res.reviews
+            }
+
+            return []
+
         } catch (error: any) {
             return rejectWithValue(error.message)
         }
@@ -523,6 +557,16 @@ const courseReducer = createSlice({
 
                 state.totalCourses = totalCourses
                 state.totalpages = totalPages
+            })
+        //loading more reviews
+        builder.addCase(loadMoreReviews.rejected, (state, action) => {
+            state.error = action.payload as string
+        })
+            .addCase(loadMoreReviews.fulfilled, (state, action: PayloadAction<Review[] | []>) => {
+                if (action.payload.length > 0 && state.detailedCourse) {
+                    state.detailedCourse.reviews.push(...action.payload)
+                }
+                { }
             })
     },
 });

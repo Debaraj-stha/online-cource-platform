@@ -1,26 +1,36 @@
-import React from 'react'
-import { FaEnvelope, FaPhone, FaLinkedin, FaTwitter, FaGlobe, FaFacebook } from "react-icons/fa";
-import Skeleton from './Skeleton'
+import React, { type JSX } from "react";
+import {
+  FaEnvelope,
+  FaPhone,
+  FaLinkedin,
+  FaTwitter,
+  FaGlobe,
+  FaFacebook,
+  FaGithub,
+  FaInstagram,
+  FaDiscord,
+} from "react-icons/fa";
+import Skeleton from "./Skeleton";
+import type { SocialLinks } from "../@types/instructor";
 
 interface Props {
-  email?: string | null
-  linkedin?: string | null
-  facebook?: string | null
-  phone?: string | null
-  twitter?: string | null
-  website?: string | null
-  loading?: boolean
+  social: SocialLinks[];
+  loading?: boolean;
 }
 
-const InstructorSocialLinks = ({
-  email,
-  facebook,
-  phone,
-  linkedin,
-  website,
-  twitter,
-  loading = true
-}: Props) => {
+const ICON_MAP: Record<SocialLinks["platform"], { icon: JSX.Element; label: string }> = {
+  email: { icon: <FaEnvelope />, label: "Email" },
+  phone: { icon: <FaPhone />, label: "Call" },
+  website: { icon: <FaGlobe />, label: "Website" },
+  linkedin: { icon: <FaLinkedin />, label: "LinkedIn" },
+  github: { icon: <FaGithub />, label: "GitHub" },
+  facebook: { icon: <FaFacebook />, label: "Facebook" },
+  x: { icon: <FaTwitter />, label: "X" },
+  instagram: { icon: <FaInstagram />, label: "Instagram" },
+  discord: { icon: <FaDiscord />, label: "Discord" },
+};
+
+const InstructorSocialLinks = ({ social, loading = false }: Props) => {
   if (loading) {
     return (
       <div className="flex flex-wrap gap-3 mt-2">
@@ -31,69 +41,36 @@ const InstructorSocialLinks = ({
           />
         ))}
       </div>
-    )
+    );
   }
 
   return (
     <div className="flex flex-wrap gap-3 mt-2 social_links">
-      {email && (
-        <a
-          href={`mailto:${email}`}
-          className="flex items-center gap-1 hover:underline hover:text-blue-400 transition-colors"
-        >
-          <FaEnvelope /> Email
-        </a>
-      )}
-      {phone && (
-        <a
-          href={`tel:${phone}`}
-          className="flex items-center gap-1 hover:underline hover:text-blue-400 transition-colors"
-        >
-          <FaPhone /> Call
-        </a>
-      )}
-      {linkedin && (
-        <a
-          href={linkedin}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-1 hover:underline hover:text-blue-400 transition-colors"
-        >
-          <FaLinkedin /> LinkedIn
-        </a>
-      )}
-      {twitter && (
-        <a
-          href={twitter}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-1 hover:underline hover:text-blue-400 transition-colors"
-        >
-          <FaTwitter /> Twitter
-        </a>
-      )}
-      {facebook && (
-        <a
-          href={facebook}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-1 hover:underline hover:text-blue-400 transition-colors"
-        >
-          <FaFacebook /> Facebook
-        </a>
-      )}
-      {website && (
-        <a
-          href={website}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-1 hover:underline hover:text-blue-400 transition-colors"
-        >
-          <FaGlobe /> Website
-        </a>
-      )}
-    </div>
-  )
-}
+      {social.map(({ platform, url }) => {
+        const item = ICON_MAP[platform];
+        if (!item) return null;
 
-export default InstructorSocialLinks
+        const href =
+          platform === "email"
+            ? `mailto:${url}`
+            : platform === "phone"
+            ? `tel:${url}`
+            : url;
+
+        return (
+          <a
+            key={url}
+            href={href}
+            target={["email", "phone"].includes(platform) ? "_self" : "_blank"}
+            rel="noreferrer"
+            className="flex items-center gap-1 hover:underline text-blue-400 hover:text-blue-500 transition-colors"
+          >
+            {item.icon}
+          </a>
+        );
+      })}
+    </div>
+  );
+};
+
+export default InstructorSocialLinks;

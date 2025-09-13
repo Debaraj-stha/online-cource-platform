@@ -1,3 +1,5 @@
+import type { User } from "./user";
+
 /*
 
 positive: 4-5 stars
@@ -11,11 +13,10 @@ export type ReviewType = "positive" | "neutral" | "negative";
 export interface Review {
     id: string;
     courseId: string;
-    studentName: string;
-    studentAvatar?: string; // optional profile pic
+    user:User,
     rating: number; // 1 to 5
     title?: string;
-    comment: string;
+    review: string;
     createdAt: string; // ISO date
     verifiedPurchase?: boolean; // optional
     type?: ReviewType

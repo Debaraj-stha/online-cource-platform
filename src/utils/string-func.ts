@@ -1,6 +1,6 @@
 const capitalize = (str?: string | null): string | undefined => {
   if (!str || !str.trim()) return undefined;
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
 };
 
 export const truncate = (text: string, len = 100) =>

@@ -53,7 +53,7 @@ const Course = () => {
             </div>
             {/* <CertificateCard certificate={course.certificate!}/> */}
             <div className='space-y-4 md:space-y-8 lg:space-y-12'>
-                <Reviews courseId='web-dev-101' />
+                <Reviews />
                 <ResourcesCard resources={detailedCourse.course.resources!} />
                 {/* <CourseFAQCard faqs={detailedCourse?.course.faq} /> */}
             </div>

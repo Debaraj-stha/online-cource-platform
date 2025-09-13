@@ -5,6 +5,10 @@ export interface InstructorCertificate {
     date: string
     imageUrl: string | null
 }
+export interface SocialLinks{
+    platform: "email"|"phone"|"website"|"linkedin"|"github"|"facebook"|"x"|"instagram"|"discord",
+    url:string 
+}
 
 export interface Instructor {
     name: string;
@@ -18,5 +22,5 @@ export interface Instructor {
     experience?: number; // in years
     rating?: number;
     certificates?: InstructorCertificate,
-    socialLinks: [{ platform: string }]
+    socialLinks: SocialLinks[]
 }
