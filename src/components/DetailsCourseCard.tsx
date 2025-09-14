@@ -89,7 +89,7 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
                                                 <span>${formatPrice(localPrice, language_code)}</span>
                                             </>
                                         ) : (
-                                            <span>${formatPrice(localPrice, language_code)}</span>
+                                            <span>{formatPrice(localPrice, language_code)}</span>
                                         )}
                                     </p>
 

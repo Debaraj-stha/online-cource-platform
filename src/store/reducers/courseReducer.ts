@@ -5,7 +5,7 @@ import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 import type { Instructor } from "../../@types/instructor";
-import type { Review, ReviewType } from "../../@types/reviews";
+import type { Review } from "../../@types/reviews";
 interface DetailCourseState {
     course: Course,
     totalModules: number
@@ -14,6 +14,8 @@ interface DetailCourseState {
     totalReviews: number
     instructor: Instructor
     averageRating:number
+    faqs:CourseFAQ[],
+    similarCourses:Course[]
 
 }
 
@@ -319,13 +321,12 @@ export const loadHighestRatedCourses = createAsyncThunk(
         }
     }
 )
-
+//limit=similar course limit
 export const loadCourse = createAsyncThunk(
     "loadCourse",
-    async ({ courseId }: { courseId: string }, { rejectWithValue, dispatch }) => {
+    async ({ courseId,limit }: { courseId: string,limit?:string }, { rejectWithValue, dispatch }) => {
         try {
-            const url = `${SERVER_URL}/course/${courseId}`
-            console.log(url)
+            const url = `${SERVER_URL}/course/${courseId}?limit=${limit}`
             const res = await apiHelper(url, { method: "GET" })
             const courseDetails: DetailCourseState = {
                 course: res.course,
@@ -334,7 +335,9 @@ export const loadCourse = createAsyncThunk(
                 modules: res.modules,
                 reviews: res.reviews,
                 instructor: res.course.instructor,
-                averageRating:res.averageRating
+                averageRating:res.averageRating,
+                faqs:res.faqs,
+                similarCourses:res.similarCourses
             }
             return courseDetails
         } catch (error: any) {

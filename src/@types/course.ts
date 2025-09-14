@@ -70,12 +70,23 @@ export type Category =
 export type Level = "beginner" | "intermediate" | "advanced";
 
 export type Language = "english" | "nepali" | "hindi" | "other";
+export interface CourseResource {
+  id: string;           // unique id for the resource
+  courseId: string;     // which course it belongs to
+  title: string;        // display name
+  type: ResourceType;   // type of resource
+  url: string;          // link to download/view
+  size?: string;        // optional size info (e.g., "2MB")
+  description?: string; // optional description
+  createdAt?: string;   // timestamp
+  thumb?:string
+}
 export interface Lesson {
     id: string;
     moduleId?:string
     title: string;
     duration: string;   // "10m", "1h 15m"
-    resources?: string[]; // optional file/video links
+    resources?: CourseResource[]; // optional file/video links
 }
 
 // A module (section) of the course
@@ -97,17 +108,7 @@ export type ResourceType =
   | "audio"       // podcasts, recordings
   | "other";      // anything else
 
-export interface CourseResource {
-  id: string;           // unique id for the resource
-  courseId: string;     // which course it belongs to
-  title: string;        // display name
-  type: ResourceType;   // type of resource
-  url: string;          // link to download/view
-  size?: string;        // optional size info (e.g., "2MB")
-  description?: string; // optional description
-  createdAt?: string;   // timestamp
-  thumb?:string
-}
+
 
 export  interface CourseFAQ {
   id: string;

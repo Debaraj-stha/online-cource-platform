@@ -14,7 +14,7 @@ import Skeleton from "./Skeleton";
 import type { SocialLinks } from "../@types/instructor";
 
 interface Props {
-  social: SocialLinks[];
+  social?: SocialLinks[]|[];
   loading?: boolean;
 }
 
@@ -46,7 +46,7 @@ const InstructorSocialLinks = ({ social, loading = false }: Props) => {
 
   return (
     <div className="flex flex-wrap gap-3 mt-2 social_links">
-      {social.map(({ platform, url }) => {
+      {(social??[]).map(({ platform, url }) => {
         const item = ICON_MAP[platform];
         if (!item) return null;
 
