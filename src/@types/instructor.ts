@@ -17,10 +17,11 @@ export interface Instructor {
     profilePicture?: string | null; // profile image
     specialization?: string
     // Teaching stats
-    students?: number;
+    totalStudents?: number;
     courses?: number;
     experience?: number; // in years
     certificates?: InstructorCertificate,
     socialLinks?: SocialLinks[] | [],
     averageRating?: number
+    totalCourses?:number
 }

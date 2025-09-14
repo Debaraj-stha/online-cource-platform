@@ -7,7 +7,7 @@ const SERVER_URL=import.meta.env.VITE_SERVER_BASE_URL
 
 const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
   const imageURL=`${SERVER_URL}/uploads/${instructor.profilePicture}`
-  console.log(instructor)
+  console.log(instructor.totalStudents)
   return (
     <div className="bg-white shadow-md rounded-xl p-6 space-y-4">
       {/* Profile */}
@@ -37,18 +37,16 @@ const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
-        {instructor.students && (
-          <p>👥 Students: <span className="font-semibold">{instructor.students}</span></p>
-        )}
-        {instructor.courses && (
-          <p>📚 Courses: <span className="font-semibold">{instructor.courses}</span></p>
-        )}
-        {instructor.experience && (
-          <p>💼 Experience: <span className="font-semibold">{instructor.experience} yrs</span></p>
-        )}
-        {instructor.averageRating && (
-          <p>⭐ Rating: <span className="font-semibold">{instructor.averageRating}</span></p>
-        )}
+       
+          <p>👥 Students: <span className="font-semibold">{instructor.totalStudents??0}</span></p>
+     
+
+          <p>📚 Courses: <span className="font-semibold">{instructor.totalCourses??0}</span></p>
+    
+          <p>💼 Experience: <span className="font-semibold">{instructor.experience??0} yrs</span></p>
+      
+          <p>⭐ Rating: <span className="font-semibold">{instructor.averageRating??0.0}</span></p>
+      
       </div>
 
       {/* Contact */}
