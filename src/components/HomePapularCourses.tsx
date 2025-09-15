@@ -17,7 +17,7 @@ const HomePopularCourses = () => {
   const { popularCourses, popularError, loadingPopularCourse } = useSelector((state: RootState) => state.course)
 
   useEffect(() => {
-    dispatch(loadPopularCourses({ options: {} }))
+    dispatch(loadPopularCourses({ options: {limit:6} }))
   }, [dispatch])
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const HomePopularCourses = () => {
             {loadingPopularCourse ?
               <CourseSkeleton itemLength={6} />
               :
-              popularCourses.slice(0, 6).map((course, index) => (
+              popularCourses.map((course, index) => (
                 <div key={index} className="course-card card">
                   <CourseCard course={course} view='home' locale={locale} onClick={() => navigate(`/courses/${course.id}`)} />
                 </div>

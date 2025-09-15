@@ -1,4 +1,4 @@
-import type { Course } from "../@types/course";
+import type { Course, CourseResource, Lesson, ResourceType } from "../@types/course";
 
 export const getCourseFormData = (course: Course, instructor_id: string) => {
   try {
@@ -41,9 +41,9 @@ export const getCourseFormData = (course: Course, instructor_id: string) => {
   }
 };
 
-export const getLocalCurrencyFromIP =async()=>{
+export const getLocalCurrencyFromIP = async () => {
   try {
-    const url=import.meta.env.VITE_SERVER_URL
+    const url = import.meta.env.VITE_SERVER_URL
     const res = await fetch(`${url}/locale`);
     const data = await res.json();
     return data.currency; // e.g. "NPR", "INR", "USD"
@@ -81,7 +81,7 @@ export const convertPriceToLocalPrice = (price: number, from: string, to: string
 
     // Get cached exchange rates
     let ratesStr = localStorage.getItem("exchange_rate")
-    if(!ratesStr) return { price, success: false }
+    if (!ratesStr) return { price, success: false }
     const rates = JSON.parse(ratesStr) as Record<string, number>
 
     // Make sure both currencies exist in rates
@@ -100,17 +100,51 @@ export const convertPriceToLocalPrice = (price: number, from: string, to: string
 
 
 export const fetchCurrency = async () => {
-      try {
-        const now = Date.now()
-        let lastSaved = localStorage.getItem("last_saved_currency")
-        const savedCurrency = localStorage.getItem("currency")
-        if (savedCurrency && lastSaved && Date.now() - parseInt(lastSaved) < 30 * 24 * 60 * 60) return
-        const currency = await getLocalCurrencyFromIP()
-        localStorage.setItem("currency", currency)
-        localStorage.setItem("last_saved_currency",now.toString())
-        console.log("Local currency:", currency)
+  try {
+    const now = Date.now()
+    let lastSaved = localStorage.getItem("last_saved_currency")
+    const savedCurrency = localStorage.getItem("currency")
+    if (savedCurrency && lastSaved && Date.now() - parseInt(lastSaved) < 30 * 24 * 60 * 60) return
+    const currency = await getLocalCurrencyFromIP()
+    localStorage.setItem("currency", currency)
+    localStorage.setItem("last_saved_currency", now.toString())
+    console.log("Local currency:", currency)
 
-      } catch (err) {
-        console.error("Failed to get local currency:", err)
-      }
+  } catch (err) {
+    console.error("Failed to get local currency:", err)
+  }
+}
+interface Props {
+  url?: string,
+  previewURL?: string
+  thumbnailURL?: string
+  type?: ResourceType
+}
+export const fetchSignedUrl = async ({ url, previewURL, thumbnailURL, type = "video" }: Props) => {
+  try {
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL
+    const query = new URLSearchParams({
+      type: type,
+      ...(url ? { url: url } : {}),
+      ...(previewURL ? { previewUrl: previewURL } : {}),
+      ...(thumbnailURL ? { thumbUrl: thumbnailURL } : {}),
+    });
+    console.log(previewURL)
+    const response = await fetch(`${SERVER_URL}/course/resource/signed-url?${query.toString()}`);
+    const data = await response.json();
+    if (previewURL) {
+      window.open(data.url, "_blank");
     }
+    else if (data.url) {
+      window.open(data.preview, "_blank");
+    }
+    else if (thumbnailURL) {
+      window.open(data.thumbnail, "_blank");
+    }
+    else {
+      alert("Failed to get file URL");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
