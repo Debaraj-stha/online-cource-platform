@@ -8,6 +8,7 @@ import PaymentLoading from "../components/PaymentLoading"
 import PaymentError from "../components/PaymentError"
 import { TAX } from "../constants/common"
 import BankDetails from "../components/BankDetails"
+import DemoPaymentInfoCard from "../components/DemoPaymentInfoCard"
 
 interface CardProps {
     image: string
@@ -32,7 +33,7 @@ const Card = ({ image, text, onClick, extraText }: CardProps) => (
 
 const Payment = () => {
 
-    const [debugMode, setDebugMode] = useState(false)
+    const [debugMode, setDebugMode] = useState(true)
     const [showBankDetails, setShowBankDetails] = useState(false)
     const location = useLocation()
     const state = location.state ?? {}
@@ -92,6 +93,7 @@ const Payment = () => {
     return (
         <div className="wrapper bg-gray-100 min-h-screen">
             <div className="max-w-3xl mx-auto">
+                <DemoPaymentInfoCard/>
                 <div className="bg-white rounded-2xl px-6 py-8 space-y-6 sm:my-20 shadow flex flex-col md:flex-row gap-6">
                     {/*  Show Course & Payment Details */}
                     {courseDetails && (
