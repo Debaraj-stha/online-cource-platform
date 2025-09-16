@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 
-const CoursePreview = ({ url }: { url: string }) => {
+const CoursePreview = memo(({ url }: { url: string }) => {
   if (!url) return null;
   return (
     <div className="w-full aspect-video rounded-xl overflow-hidden shadow-lg">
@@ -16,6 +16,6 @@ const CoursePreview = ({ url }: { url: string }) => {
       </video>
     </div>
   );
-};
+});
 
 export default CoursePreview;

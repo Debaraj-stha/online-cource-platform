@@ -11,15 +11,18 @@ negative: 1-2 stars
 export type ReviewType = "positive" | "neutral" | "negative";
 
 export interface Review {
-    id: string;
+    id?: string;
     courseId: string;
-    user:User,
+    user?:User,
     rating: number; // 1 to 5
-    title?: string;
     review: string;
-    createdAt: string; // ISO date
+    createdAt?: string; // ISO date
     verifiedPurchase?: boolean; // optional
+    anonymous:boolean
     type?: ReviewType
+    name?:string|null
+    email?:string|null
+    userId?:string
 }
 
 /*

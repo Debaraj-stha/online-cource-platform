@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import type { CourseFAQ } from "../@types/course";
 
 
@@ -6,7 +6,7 @@ interface FAQProps {
   faqs: CourseFAQ[];
 }
 
-const CourseFAQCard = ({ faqs }: FAQProps) => {
+const CourseFAQCard = memo(({ faqs }: FAQProps) => {
   if (!faqs || faqs.length === 0) {
     return <p className="text-gray-500">No FAQs available for this course.</p>;
   }
@@ -27,6 +27,6 @@ const CourseFAQCard = ({ faqs }: FAQProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default CourseFAQCard;

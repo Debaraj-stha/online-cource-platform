@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import type { Instructor } from "../@types/instructor";
 
 import InstructorSocialLinks from "./InstructorSocialLinks";
 import capitalize from "../utils/string-func";
 const SERVER_URL=import.meta.env.VITE_SERVER_BASE_URL
 
-const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
+const InstructorCard = memo(({ instructor }: { instructor: Instructor }) => {
   const imageURL=`${SERVER_URL}/uploads/${instructor.profilePicture}`
   console.log(instructor.totalStudents)
   return (
@@ -55,6 +55,6 @@ const InstructorCard = ({ instructor }: { instructor: Instructor }) => {
       />
     </div>
   );
-};
+});
 
 export default InstructorCard;

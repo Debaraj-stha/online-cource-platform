@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { reviews } from "../constants/reviews";
 import type { Review, ReviewType } from "../@types/reviews";
 import ReviewForm from "./ReviewForm";
@@ -13,7 +13,7 @@ interface ReviewsProps {
   courseId: string;
 }
 
-const Reviews = () => {
+const Reviews = memo(() => {
   const dispatch = useDispatch<AppDispatch>()
   const { detailedCourse } = useSelector((state: RootState) => state.course)
   const courseReviews = detailedCourse?.reviews ?? []
@@ -99,6 +99,6 @@ const Reviews = () => {
 
     </div>
   );
-};
+});
 
 export default Reviews;

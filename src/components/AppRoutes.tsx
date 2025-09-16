@@ -27,7 +27,7 @@ import ChangeEmail from '../pages/ChangeEmail'
 import EmailVerification from '../pages/EmailVerification'
 import MoreCourse from '../pages/MoreCourse'
 import Payment from '../pages/Payment'
-import Test from './Test'
+
 
 const AppRoutes = () => {
   return (

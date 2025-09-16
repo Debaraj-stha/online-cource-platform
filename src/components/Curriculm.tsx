@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import type { Module, } from "../@types/course";
 import {
   FaChevronDown, FaChevronUp,
@@ -13,7 +13,7 @@ interface CurriculumProps {
 
 
 
-const Curriculum = ({ modules }: CurriculumProps) => {
+const Curriculum =memo(({ modules }: CurriculumProps) => {
   if (!modules) return null;
   const [openModule, setOpenModule] = useState<string | null>(null);
   const [openLesson, setOpenLesson] = useState<string | null>(null);
@@ -67,6 +67,6 @@ const Curriculum = ({ modules }: CurriculumProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default Curriculum;

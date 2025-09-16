@@ -4,7 +4,7 @@ import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 import getNavigatorDetails from "../../utils/getNavigatorDetails";
-import { setCookie } from "../../utils/manage-cookie";
+import { removeCookie, setCookie } from "../../utils/manage-cookie";
 interface AuthState {
     isProcessing: boolean
     isAuthenticating: boolean
@@ -51,6 +51,8 @@ export const signup = createAsyncThunk(
                     type: "success",
                 };
                 (dispatch as AppDispatch)(setMessageWithTimeout(message, 4000));
+                removeCookie("user")
+                removeCookie("token")
             }
         } catch (error: any) {
             return rejectWithValue(error.message);
@@ -118,7 +120,10 @@ export const login = createAsyncThunk(
                     email: email,
                     password: password
                 },
-            });
+            }); 
+            //remove old user and token cookie if exists
+            removeCookie("user")
+            removeCookie("token")
             setCookie("token", res.token, expires)
             setCookie("user", res.user, expires)
 
@@ -171,11 +176,11 @@ const authSlice = createSlice(
                 const { field, value } = action.payload;
                 (state.user as any)[field] = value;
             },
-            setUser(state,action:PayloadAction<User>){
-                state.user=action.payload
+            setUser(state, action: PayloadAction<User>) {
+                state.user = action.payload
             },
-             setToken(state,action:PayloadAction<string>){
-                state.token=action.payload
+            setToken(state, action: PayloadAction<string>) {
+                state.token = action.payload
             }
 
         },
@@ -249,5 +254,5 @@ const authSlice = createSlice(
         }
     }
 )
-export const { setFields,setToken,setUser } = authSlice.actions
+export const { setFields, setToken, setUser } = authSlice.actions
 export default authSlice.reducer

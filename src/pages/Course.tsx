@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Navigate } from 'react-router-dom'
 import CourseCard from '../components/CourceCard'
 import SimilarCourses from '../components/SimilarCourses'
 import Curriculum from '../components/Curriculm'
@@ -24,7 +24,9 @@ const Course = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.auth)
-    if (!course_id) return navigate("/courses")
+    //replace overwriter the route history stack and user cannot go back by click on back button
+    if (!course_id) return <Navigate to="/courses" replace />
+
     useEffect(() => {
         const fetchCourse = async () => {
             await dispatch(loadCourse({ courseId: course_id, limit: "10" }))

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import CourseCard from './CourceCard'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +7,7 @@ interface Props {
 
     similarCourses: Course[]
 }
-const SimilarCourses = ({ similarCourses }: Props) => {
+const SimilarCourses = memo(({ similarCourses }: Props) => {
     const navigate = useNavigate()
     return (
         <div className=''>
@@ -19,6 +19,6 @@ const SimilarCourses = ({ similarCourses }: Props) => {
             </div>
         </div>
     )
-}
+})
 
 export default SimilarCourses
