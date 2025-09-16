@@ -2,13 +2,14 @@ import esewa from "../assets/images/esewa_logo.png"
 import khalti from "../assets/images/khalti.png"
 import banktransfer from "../assets/images/bank-transfer.svg"
 import { useState } from "react"
-import { useLocation } from "react-router-dom"
+import { Navigate, useLocation, useParams } from "react-router-dom"
 import usePayment, { type InitProps } from "../hooks/usePayment"
 import PaymentLoading from "../components/PaymentLoading"
 import PaymentError from "../components/PaymentError"
 import { TAX } from "../constants/common"
 import BankDetails from "../components/BankDetails"
 import DemoPaymentInfoCard from "../components/DemoPaymentInfoCard"
+import { getCookie } from "../utils/manage-cookie"
 
 interface CardProps {
     image: string
@@ -32,15 +33,17 @@ const Card = ({ image, text, onClick, extraText }: CardProps) => (
 )
 
 const Payment = () => {
-
-    const [debugMode, setDebugMode] = useState(true)
+    const [debugMode, setDebugMode] = useState(false)
     const [showBankDetails, setShowBankDetails] = useState(false)
+    
     const location = useLocation()
     const state = location.state ?? {}
 
-    const studentId = "68baedad8b94ba9c6c0e93e2"
-    const courseId = "68bc2f4349021756ef579edf"
     const courseDetails = state.courseDetails
+    const studentId=state.studentId;
+    const courseId = state.courseId;
+    if (!courseId || !studentId) return <Navigate to="/courses" replace /> //if not course found,then return to courses page
+
     const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL
 
     //  Hook to handle payments
@@ -93,7 +96,7 @@ const Payment = () => {
     return (
         <div className="wrapper bg-gray-100 min-h-screen">
             <div className="max-w-3xl mx-auto">
-                <DemoPaymentInfoCard/>
+                <DemoPaymentInfoCard />
                 <div className="bg-white rounded-2xl px-6 py-8 space-y-6 sm:my-20 shadow flex flex-col md:flex-row gap-6">
                     {/*  Show Course & Payment Details */}
                     {courseDetails && (

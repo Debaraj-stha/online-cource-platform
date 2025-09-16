@@ -54,7 +54,8 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
                 navigate("/auth/login", { state: { from: `/courses/${course.id}` } })
             }, 2000)
         }
-        navigate("/payment/", { state: { courseId: course.id, courseDetails } })
+        console.log(courseDetails)
+        navigate("/payment/", { state: { courseId: course.id, courseDetails,studentId:user.id } })
     }
 
     return (
@@ -85,8 +86,8 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
                                             "Free"
                                         ) : course.discount ? (
                                             <>
-                                                <span className="line-through mr-2">${formatPrice(discountPrice, language_code)}</span>
-                                                <span>${formatPrice(localPrice, language_code)}</span>
+                                                <span className="line-through mr-2">{formatPrice(discountPrice, language_code)}</span>
+                                                <span>{formatPrice(localPrice, language_code)}</span>
                                             </>
                                         ) : (
                                             <span>{formatPrice(localPrice, language_code)}</span>

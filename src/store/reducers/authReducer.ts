@@ -121,11 +121,12 @@ export const login = createAsyncThunk(
                     password: password
                 },
             }); 
+            console.log(res)
             //remove old user and token cookie if exists
             removeCookie("user")
             removeCookie("token")
             setCookie("token", res.token, expires)
-            setCookie("user", res.user, expires)
+            setCookie("user", JSON.stringify(res.user), expires)
 
             return {
                 token: res.token,

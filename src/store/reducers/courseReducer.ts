@@ -23,7 +23,7 @@ interface DetailCourseState {
 
 }
 
-export type ReviewEditableField = Omit<Review, "id" | "createdAt"|"user"|"verifiedPurchase">
+export type ReviewEditableField = Omit<Review, "id" | "createdAt" | "user" | "verifiedPurchase">
 type ReviewValue<K extends keyof ReviewEditableField> = ReviewEditableField[K]
 
 const initialReview: Review = {
@@ -35,6 +35,10 @@ const initialReview: Review = {
     anonymous: false,
     courseId: "",
     verifiedPurchase: false
+}
+interface MyCourses {
+    totalCourses: number,
+    courses: Course[] | []
 }
 
 interface CourseState {
@@ -58,6 +62,7 @@ interface CourseState {
     currentPage: number,
     detailedCourse: DetailCourseState | null
     review: Review
+    myCourses: MyCourses
 
 }
 const initialState: CourseState = {
@@ -80,7 +85,11 @@ const initialState: CourseState = {
     loadingPopularCourse: false,
     currentPage: 0,
     detailedCourse: null,
-    review: initialReview
+    review: initialReview,
+    myCourses: {
+        courses: [],
+        totalCourses: 0
+    }
 };
 
 
@@ -397,8 +406,8 @@ export const submitReview = createAsyncThunk(
     async (review: Review, { dispatch, rejectWithValue }) => {
         try {
             console.log(review)
-            if(!review.courseId) {
-                console.log("course id is required",review.courseId)
+            if (!review.courseId) {
+                console.log("course id is required", review.courseId)
             }
             console.log(review)
             const res = await apiHelper(`${SERVER_URL}/course/${review.courseId}/review`, {
@@ -423,6 +432,30 @@ export const submitReview = createAsyncThunk(
     }
 )
 
+//fetching students enrolled courses
+export const loadMyCourse = createAsyncThunk(
+    "loadMyCourse",
+    async ({ studentId, limit = "10", page = "1", loadMore = false }: { studentId: string, limit?: string, page?: string, loadMore?: boolean }, { rejectWithValue }) => {
+        try {
+            const params: Record<string, string> = {}
+            params["limit"] = limit
+            params["page"] = page
+            const query = new URLSearchParams(params).toString()
+            const url = `${SERVER_URL}/user/${studentId}/courses?${query}`
+            const res = await apiHelper(url, { method: "GET" })
+            console.log(res)
+            return {
+                loadMore,
+                myCourses: {
+                    courses:res.courses,
+                    totalCourses:res.totalCourses
+                }
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
 
 
 const courseReducer = createSlice({
@@ -639,6 +672,16 @@ const courseReducer = createSlice({
             else {
                 state.detailedCourse.reviews = [action.payload]
             }
+        })
+        builder.addCase(loadMyCourse.fulfilled, (state, action: PayloadAction<{ loadMore: boolean, myCourses: MyCourses }>) => {
+            const { loadMore, myCourses } = action.payload
+            if (myCourses.courses.length != 0) {
+                state.myCourses.courses = loadMore ? [...state.myCourses.courses, ...myCourses.courses] : myCourses.courses
+            }
+            else if (!loadMore) {
+                state.myCourses.courses = []
+            }
+
         })
     },
 });

@@ -1,11 +1,12 @@
-export const setCookie = (key: string, value: string, expires: Date) => {
+export const setCookie = (key: string, value: string, expires: Date,path="/") => {
   const val = typeof value === "string" ? value : JSON.stringify(value)
-  document.cookie = `${key}=${encodeURIComponent(val)}; expires=${expires.toUTCString()};`;
+  console.log(value)
+  document.cookie = `${key}=${encodeURIComponent(val)}; expires=${expires.toUTCString()};path=${path}`;
 };
 
-export const removeCookie = (key: string) => {
+export const removeCookie = (key: string,path="/") => {
   console.log("removing cookie", key)
-  document.cookie = `${key}=; expires=${new Date(0).toUTCString()};`;
+  document.cookie = `${key}=; expires=${new Date(0).toUTCString()};path=${path}`;
 };
 
 export const getCookie = (name: string): string | null => {

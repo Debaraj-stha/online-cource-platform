@@ -27,6 +27,9 @@ import ChangeEmail from '../pages/ChangeEmail'
 import EmailVerification from '../pages/EmailVerification'
 import MoreCourse from '../pages/MoreCourse'
 import Payment from '../pages/Payment'
+import PaymentSuccess from '../pages/PaymentSuccess'
+import PaymentFail from '../pages/PaymentFail'
+import Mylearning from '../pages/Mylearning'
 
 
 const AppRoutes = () => {
@@ -47,7 +50,10 @@ const AppRoutes = () => {
       <Route path='/setting' element={<Setting />} />
       <Route path='/verify-email/' element={<EmailVerification />} />
       <Route path='/verify-email/:token' element={<EmailVerification />} />
-      <Route path='/payment' element={<Payment />}/>
+      <Route path='/payment' element={<Payment />} />
+      <Route path='/payment/success' element={<PaymentSuccess />} />
+      <Route path='/payment/failure' element={<PaymentFail />} />
+      <Route path='/my-learning' element={<Mylearning />} />
       {/* auth routes */}
       <Route path='/auth' element={<AuthOutlet />}>
         <Route path='login' element={<Login />} />
