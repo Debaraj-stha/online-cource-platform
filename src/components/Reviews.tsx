@@ -16,6 +16,8 @@ interface ReviewsProps {
 const Reviews = memo(() => {
   const dispatch = useDispatch<AppDispatch>()
   const { detailedCourse } = useSelector((state: RootState) => state.course)
+
+  
   const courseReviews = detailedCourse?.reviews ?? []
   const avgRating=detailedCourse?.averageRating
   const [filter, setFilter] = useState<ReviewType | "all">("all");
@@ -83,7 +85,7 @@ const Reviews = memo(() => {
         ) : (
           <div className="space-y-4 flex-2/5">
             {filteredReviews.map((review: Review) => (
-              <ReviewCard key={review.id} review={review} />
+              <ReviewCard key={review.id} review={review}  courseId={detailedCourse?.course.id!}/>
             ))}
           </div>
         )}

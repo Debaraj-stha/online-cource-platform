@@ -17,6 +17,7 @@ const HighestRatedCourses = ({ viewMore = true }: Props) => {
     const [stopStick, setShouldStopStick] = useState(false);
     const highestRatedTitleRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch<AppDispatch>()
+    const { user } = useSelector((state: RootState) => state.auth)
     useEffect(() => {
         const handleScroll = () => {
             if (!highestRatedTitleRef.current || !highestRatedCourseRef.current) return;
@@ -36,7 +37,8 @@ const HighestRatedCourses = ({ viewMore = true }: Props) => {
     }, []);
 
     const options: LoadCourseOptions = {
-        limit: 8
+        limit: 8,
+        studentId:user.id
     }
     useEffect(() => {
         dispatch(loadHighestRatedCourses({options}))

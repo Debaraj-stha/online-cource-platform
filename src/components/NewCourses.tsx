@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
-import HighestRatedCoursesCard from './HighestRatedCoursesCard'
+import  { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 import NewCoursesCard from './NewCoursesCard';
 import GridWrapper from './GridWrapper';
@@ -18,7 +17,7 @@ const NewCourses = ({ viewMore = true }: Props) => {
     const [setStick, setStopStick] = useState(false);
     const newCourseTitleRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch<AppDispatch>()
-
+    const { user } = useSelector((state: RootState) => state.auth)
     useEffect(() => {
         const handleScroll = () => {
             if (!newCourseTitleRef.current || !newCoursesref.current) return;
@@ -38,8 +37,10 @@ const NewCourses = ({ viewMore = true }: Props) => {
     }, []);
 
     const options: LoadCourseOptions = {
-        limit: 8
+        limit: 8,
+        studentId: user.id
     }
+
     useEffect(() => {
         dispatch(loadNewestCourses({ options }))
     }, [dispatch])

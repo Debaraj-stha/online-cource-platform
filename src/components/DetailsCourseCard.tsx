@@ -1,5 +1,3 @@
-
-import type { Course } from '../@types/course'
 import { flags } from '../constants/flags'
 import capitalize from '../utils/string-func'
 import { convertPriceToLocalPrice } from '../utils/helper'
@@ -11,14 +9,14 @@ import { setMessageWithTimeout, type Message } from '../store/reducers/messageRe
 import ErrorCard from './ErrorCard'
 import Loader from './Loader'
 import { memo } from 'react'
-import { loadCourse } from '../store/reducers/courseReducer'
 interface Props {
     locale?: string
 }
 const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.auth)
-  
+    const enrolledCourseIds = useSelector((state: RootState) => state.course.enrolledCourseIds as string[])
+
 
     const { detailedCourse, loadingCourse, error } = useSelector((state: RootState) => state.course)
     const course = detailedCourse?.course!
@@ -55,7 +53,7 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
             }, 2000)
         }
         console.log(courseDetails)
-        navigate("/payment/", { state: { courseId: course.id, courseDetails,studentId:user.id } })
+        navigate("/payment/", { state: { courseId: course.id, courseDetails, studentId: user.id } })
     }
 
     return (
@@ -94,12 +92,17 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
                                         )}
                                     </p>
 
-                                    <button
-                                        title='Enroll To Course'
-                                        onClick={handleEnroll}
-                                        className="mt-4 w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition">
-                                        🚀 Enroll Now
-                                    </button>
+                                    {
+                                        //if already has enrolled,do not render enroll button
+                                        !enrolledCourseIds.includes(course.id) &&
+                                        <button
+                                            title='Enroll To Course'
+                                            onClick={handleEnroll}
+                                            className="mt-4 w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition">
+                                            🚀 Enroll Now
+                                        </button>
+                                    }
+
                                     <p className="mt-2 text-xs text-gray-500 text-center">
                                         30-day money-back guarantee
                                     </p>

@@ -21,8 +21,10 @@ const PopularCourses = ({ viewMore = true }: Props) => {
     const [shouldStopSticky, setShouldStopSticky] = useState(false);
 
     const dispatch = useDispatch<AppDispatch>()
+     const { user } = useSelector((state: RootState) => state.auth)
     const options: LoadCourseOptions = {
-        limit: 10
+        limit: 10,
+        studentId:user.id
     }
 
 

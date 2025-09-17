@@ -15,9 +15,10 @@ const HomePopularCourses = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const { popularCourses, popularError, loadingPopularCourse } = useSelector((state: RootState) => state.course)
+    const { user } = useSelector((state: RootState) => state.auth)
 
   useEffect(() => {
-    dispatch(loadPopularCourses({ options: {limit:6} }))
+    dispatch(loadPopularCourses({ options: {limit:6,studentId:user.id} }))
   }, [dispatch])
 
   useEffect(() => {
