@@ -25,7 +25,7 @@ const Searchbar =memo(({ placeholder = "Search here...", onMouseClick, onChange,
         timerRef.current = setTimeout(() => {
             inputRef.current?.blur()
             setShowInput(false)
-            gsap.set(inputRef.current, { display: 'none', opacity: 0, width: 0 })
+            gsap.set(inputRef.current, { display: 'block', opacity: 1, width:"100%" })
             onBack?.()
         }, 5000)
     }
@@ -129,7 +129,7 @@ const Searchbar =memo(({ placeholder = "Search here...", onMouseClick, onChange,
             <div className='relative w-full'>
                 <div
                     title='Search'
-                    className={`absolute  top-1/2 -translate-y-1/2  ${showInput? "right-0 md:left-3" :"-right-3"}    md:left-3  
+                    className={`absolute  top-1/2 -translate-y-1/2  ${showInput? "right-0 md:left-3" :""}    md:left-3  
                          cursor-pointer p-1 rounded`}
                     onClick={handleSearchIconClick}
                 >
@@ -154,7 +154,7 @@ const Searchbar =memo(({ placeholder = "Search here...", onMouseClick, onChange,
                         overflow: "hidden"
                     }}
                     // always shows on large devices but show/hide based on state in small and medium 
-                    className={`input search-box  pl-4  pr-10 md:pr-4  md:pl-10 text-blue-400 ${showInput ? "block" : "hidden"} md:block`}
+                    className={`input search-box  pl-4  pr-10 md:pr-4  md:pl-10 text-blue-400 ${showInput ? "block" : ""} md:block`}
                 />
             </div>
 

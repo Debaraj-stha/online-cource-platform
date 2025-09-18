@@ -49,7 +49,7 @@ interface MyCourses {
 
 interface CourseState {
     course: Course
-    courses: Course[] | []
+    searchResult: Course[] | []
     loadingCourse: boolean
     loadingCourses: boolean
     isProcessing: boolean
@@ -70,13 +70,14 @@ interface CourseState {
     review: Review
     myCourses: MyCourses
     enrolledCourseIds: string[] | []
+    searchQuery: string
 
 }
 const initialState: CourseState = {
     loadingCourse: false,
     isProcessing: false,
     course: initialCourse,
-    courses: [],
+    searchResult: [],
     error: null,
     totalCourses: null,
     totalpages: 0,
@@ -97,7 +98,8 @@ const initialState: CourseState = {
         courses: [],
         totalCourses: 0
     },
-    enrolledCourseIds: []
+    enrolledCourseIds: [],
+    searchQuery: ""
 };
 
 
@@ -187,43 +189,30 @@ export const createCourse = createAsyncThunk(
         }
     }
 )
-export const loadCourses = createAsyncThunk(
-    "loadCourses",
-    async (options: LoadCourseOptions, { rejectWithValue, dispatch }) => {
+export const searchCourses = createAsyncThunk(
+    "searchCourses",
+    async ({ q }: { q: string }, { rejectWithValue, dispatch }) => {
         try {
-            const { limit, page, filter, sortOrder, sortBy, q, studentId } = options;
-
             // Collect params
             const params: Record<string, string> = {};
-
-            if (filter) {
-                params["filterOptions"] = JSON.stringify(filter);
-            }
-            if (limit) params["limit"] = String(limit);
-            if (page) params["page"] = String(page);
-            if (sortBy) params["sortBy"] = sortBy;
-            if (sortOrder) params["sortOrder"] = sortOrder;
             if (q) params["q"] = q
-            if (studentId) params["studentId"] = studentId
-
-
             // Build query string
             const queryString = new URLSearchParams(params).toString();
             const url = `${SERVER_URL}/course${queryString ? `?${queryString}` : ""}`;
 
             const res = await apiHelper(url, { method: "GET" }, false, dispatch);
-
-            if (res)
-                return {
-                    courses: res.courses,
-                    totalPages: res.totalPages,
-                    totalCourses: res.totalCourses,
+            if (res.course.length == 0) {
+                const message:Message={
+                    type:"info",
+                    id:Date.now(),
+                    messages:`No result found for query:${q}`
                 };
-            return {
-                courses: [],
-                totalCourses: null,
-                totalPages: null
+                (dispatch as AppDispatch)(setMessageWithTimeout(message))
             }
+            return {
+                courses: res.courses,
+            };
+
 
         } catch (error: any) {
             return rejectWithValue(error?.message || "Something went wrong");
@@ -613,7 +602,12 @@ const courseReducer = createSlice({
             state.review[field] = value
         },
 
-
+        resetSearchResult(state) {
+            state.searchResult = []
+        },
+        setSearchQuery(state, action: PayloadAction<string>) {
+            state.searchQuery = action.payload
+        }
 
     },
     extraReducers: (builder) => {
@@ -642,19 +636,18 @@ const courseReducer = createSlice({
             state.isProcessing = false
         });
         //loading courses
-        builder.addCase(loadCourses.pending, (state) => {
+        builder.addCase(searchCourses.pending, (state) => {
             state.loadingCourses = true
         })
-        builder.addCase(loadCourses.rejected, (state, action) => {
+        builder.addCase(searchCourses.rejected, (state, action) => {
             state.loadingCourses = false
             state.error = action.payload as string
         })
-        builder.addCase(loadCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [], totalPages: number | null, totalCourses: number | null }>) => {
-            const { totalCourses, totalPages, courses } = action.payload
+        builder.addCase(searchCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
+            const { courses } = action.payload
             state.loadingCourses = false
-            state.courses = courses
-            state.totalCourses = totalCourses
-            state.totalpages = totalPages
+            state.searchResult = courses
+
         });
         // New courses
         builder.addCase(loadNewestCourses.pending, (state) => {
@@ -784,5 +777,7 @@ export const {
     removeDynamicField,
     updatePage,
     setReview,
+    setSearchQuery,
+    resetSearchResult
 } = courseReducer.actions;
 export default courseReducer.reducer;

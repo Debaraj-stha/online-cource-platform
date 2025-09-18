@@ -12,11 +12,6 @@ const FilterByCategory = memo(() => {
     const [loading, setLoading] = useState(true)
     const { scrollRef, handleMouseDown, handleMouseMove, handleMouseUp, handleMouseLeave } = useDragScroll()
 
-
-
-
-
-
     useGSAP(() => {
         gsap.registerPlugin(ScrollTrigger);
         if (!scrollRef.current) return;

@@ -1,5 +1,4 @@
 import React from 'react'
-import { popularCourses } from '../constants/courses'
 import CourcesGrid from './CourcesGrid'
 import type { Course } from '../@types/course'
 

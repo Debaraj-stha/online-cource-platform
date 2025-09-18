@@ -1,5 +1,4 @@
 import React, { useRef } from 'react'
-import { popularCourses } from '../constants/courses'
 import CourseCard from './CourceCard'
 import CourseSkeleton from './CourseSkeleton'
 import { useGSAP } from '@gsap/react'
@@ -30,12 +29,12 @@ const EnrolledCourses = () => {
   return (
     <section ref={ref}>
       <h2 className="title font-semibold mb-3">Enrolled Courses</h2>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4 md:gap-8 lg:gap-12'>
+      {/* <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4 md:gap-8 lg:gap-12'>
         {
           loading ?
             <CourseSkeleton />
             :
-            popularCourses.slice(0, 3).map((course) =>
+            .slice(0, 3).map((course) =>
               <div key={course.id} className='space-y-4 enrolled-courses'>
                 <CourseCard course={course} view='courses' />
                 <div className="w-full bg-gray-300 h-2 rounded-full mt-2">
@@ -45,7 +44,7 @@ const EnrolledCourses = () => {
               </div>
             )
         }
-      </div>
+      </div> */}
 
     </section>
   )

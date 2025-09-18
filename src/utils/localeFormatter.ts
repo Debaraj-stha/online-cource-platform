@@ -13,9 +13,10 @@ const currencyMap: Record<string, string> = {
  */
 export const formatPrice = (price: number, languageCode: string , localCurrency?: string) => {
     const currency = localCurrency || currencyMap[languageCode ?? "us"] || 'USD';
+
     return new Intl.NumberFormat(languageCode, {
         style: 'currency',
-        currency,
+        currency:"USD",
     }).format(price);
 };
 

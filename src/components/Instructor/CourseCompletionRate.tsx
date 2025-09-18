@@ -39,9 +39,9 @@ const CourseCompletionRate = () => {
                         color: "#fff",
                     },
                     tooltip: {
-                        callbacks: {
-                            label: (context) => `${context.raw}% completed`,
-                        },
+                       callbacks:{
+                        label: (context) => `${context.raw}% completed`,
+                       }
                     },
                 },
                 scales: {

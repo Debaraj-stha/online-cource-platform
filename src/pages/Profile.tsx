@@ -1,7 +1,7 @@
 import type { Roles } from '../@types/user'
 import Avatar from '../components/Avatar'
 import StudentProfileCard from '../components/StudentProfileCard'
-import { popularCourses } from '../constants/courses'
+// import { popularCourses } from '../constants/courses'
 import InstructorProfileCard from '../components/InstructorProfileCard'
 import InstructorSocialLinks from '../components/InstructorSocialLinks'
 import { MdVerified } from 'react-icons/md'
@@ -10,6 +10,8 @@ import { useEffect, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../store/store'
 
 const Profile = () => {
     //scroll to top at first
@@ -26,6 +28,8 @@ const Profile = () => {
         role: "instructor" as Roles,
         isVerified: true
     }
+
+    const {popularCourses}=useSelector((state:RootState)=>state.course)
 
 
     const role: Roles = user.role
@@ -152,12 +156,7 @@ const Profile = () => {
                             }
                             <InstructorSocialLinks
                                 loading={false}
-                                email={instructor.email}
-                                facebook={instructor.facebook}
-                                linkedin={instructor.linkedin}
-                                website={instructor.website}
-                                phone={instructor.phone}
-                                twitter={instructor.twitter}
+                               social={instructor.socialLinks}
 
                             />
 

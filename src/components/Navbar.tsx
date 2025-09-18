@@ -7,11 +7,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CgMoreVerticalAlt } from 'react-icons/cg';
 import UserOptionsCard from './UserOptionsCard';
 import Searchbar from './Searchbar';
-import { useGSAP } from '@gsap/react';
 import ThemeToggler from './ThemeToggler';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../store/store';
+import { resetSearchResult, searchCourses, setSearchQuery } from '../store/reducers/courseReducer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,11 +19,12 @@ const Navbar = () => {
     const navRef = useRef<HTMLElement | null>(null);
     const [showUserCard, setShowUserCard] = useState(false)
     const [isSearchbarOpen, setSearchbarOpen] = useState(false)
-    const [searchQuery, setSearchQuery] = useState<string>()
     const SMALL_DEVICE_WIDTH = 768
     const location = useLocation()
-    const role = "student"
+    const dispatch = useDispatch<AppDispatch>()
     const { isAuthenticating, user } = useSelector((state: RootState) => state.auth)
+    const role = user?.role || "guest"
+      const { searchQuery } = useSelector((state: RootState) => state.course)
 
 
     const handleSearchbarClick = () => {
@@ -33,19 +34,29 @@ const Navbar = () => {
     };
 
     const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value)
+        dispatch(setSearchQuery(e.target.value))
     }
 
-    const onSearch = () => {
-        setSearchbarOpen(false)
-        setSearchQuery("")
+    const onSearch = async () => {
+        try {
+            if (searchQuery === "") {
+                dispatch(resetSearchResult())
+                return
+            }
+          await dispatch(searchCourses({ q: searchQuery }))
+        } catch (error) {
+
+        } finally {
+            // setSearchbarOpen(false)
+            // setSearchQuery("")
+        }
     }
     const onBack = () => {
         setSearchbarOpen(false)
     }
-     const hero = document.querySelector('.hero-section');
+    const hero = document.querySelector('.hero-section');
     useEffect(() => {
-       
+
         const links = document.querySelectorAll('.navbar-link');
         if (!navRef.current || !hero) return;
 

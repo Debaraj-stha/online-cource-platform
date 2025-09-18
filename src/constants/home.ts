@@ -1,9 +1,7 @@
 import type { Course } from "../@types/course";
 import type { Feature } from "../@types/Feature";
 import type { Testimonial } from "../@types/Testimonial";
-import { instructors } from "./instructors";
-import { webDevModules } from "./lessions";
-import { resources } from "./resources";
+
 
 
 

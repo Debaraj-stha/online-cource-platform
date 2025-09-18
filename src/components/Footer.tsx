@@ -6,10 +6,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 
 const Footer = () => {
     const footerRef = useRef<HTMLDivElement | null>(null);
-    const currentUserRole = "student"; // Replace with real auth role
+    const{user}=useSelector((state:RootState)=>state.auth)
+    const currentUserRole = user?.role||"guest"; // Replace with real auth role
 
    useGSAP(() => {
     gsap.registerPlugin(ScrollTrigger);

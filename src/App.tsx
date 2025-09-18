@@ -6,10 +6,11 @@ import FlashMessage from './components/FlashMessage'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 import type { AppDispatch } from './store/store'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getCookie } from './utils/manage-cookie'
 import { setToken, setUser } from './store/reducers/authReducer'
 import { fetchCurrency, fetchExchangeRate, } from './utils/helper'
+import type { Roles } from './@types/user'
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -45,7 +46,7 @@ function App() {
       <Navbar />
       <FlashMessage />
       <section className='body min-h-screen'>
-        <AppRoutes />
+        <AppRoutes  />
       </section>
       <Footer />
     </main>
