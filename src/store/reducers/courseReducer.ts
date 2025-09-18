@@ -5,14 +5,15 @@ import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 import type { Instructor } from "../../@types/instructor";
-import type { Review } from "../../@types/reviews";
+import type { Review, ReactionType } from "../../@types/reviews";
 import { getCookie } from "../../utils/manage-cookie";
 
-export type ReactionType = "like" | "dislike"
+
 export interface ReviewReactionState {
     "like": number,
     "dislike": number
 }
+type ReactionStatusTypes = "created" | "updated" | "removed"
 const token = getCookie("token")
 interface DetailCourseState {
     course: Course,
@@ -38,7 +39,8 @@ const initialReview: Review = {
     rating: 1,
     anonymous: false,
     courseId: "",
-    verifiedPurchase: false
+    verifiedPurchase: false,
+    hasUserReact: null
 }
 interface MyCourses {
     totalCourses: number,
@@ -379,7 +381,9 @@ export const loadCourse = createAsyncThunk(
     "loadCourse",
     async ({ courseId, limit }: { courseId: string, limit?: string }, { rejectWithValue, dispatch }) => {
         try {
-            const url = `${SERVER_URL}/course/${courseId}?limit=${limit}`
+            const user = getCookie("user")
+            const parsedData = user ? JSON.parse(user) : {}
+            const url = `${SERVER_URL}/course/${courseId}?limit=${limit}&studentId=${parsedData.id}`
             const res = await apiHelper(url, { method: "GET" })
             const courseDetails: DetailCourseState = {
                 course: res.course,
@@ -502,6 +506,7 @@ export const reactToReview = createAsyncThunk(
             return {
                 reviewId,
                 type,
+                status: res.status,
                 stats: res.stats
             }
 
@@ -757,11 +762,13 @@ const courseReducer = createSlice({
 
         })
         //isremoved is true if user removed the reaction
-        builder.addCase(reactToReview.fulfilled, (state, action: PayloadAction<{ reviewId: string, stats: ReviewReactionState, type: ReactionType }>) => {
-            const { reviewId, stats, type } = action.payload
+        builder.addCase(reactToReview.fulfilled, (state, action: PayloadAction<{ reviewId: string, status: ReactionStatusTypes, stats: ReviewReactionState, type: ReactionType }>) => {
+            const { reviewId, stats, type, status } = action.payload
             const review = state.detailedCourse?.reviews.find((review) => review.id === reviewId)
             if (review && review.reviewReactionCount) {
                 review.reviewReactionCount = stats
+                if (status === "removed") review.hasUserReact = null
+                else review.hasUserReact = type //update reaction type like/unlike on ui on react
             }
 
         })

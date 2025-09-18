@@ -1,12 +1,12 @@
 import { memo, useState } from 'react'
-import type { Review, ReviewType } from '../@types/reviews';
+import type { ReactionType, Review, ReviewType } from '../@types/reviews';
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import capitalize from '../utils/string-func';
 import Avatar from './Avatar';
 import { MdFlag, MdThumbDown, MdThumbUp } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../store/store';
-import { reactToReview, type ReactionType } from '../store/reducers/courseReducer';
+import { reactToReview } from '../store/reducers/courseReducer';
 import ErrorCard from './ErrorCard';
 import ReviewReportModal from './ReviewReportModal';
 
@@ -25,7 +25,7 @@ interface Props {
 const ReviewCard = memo(({ review, courseId }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const [error, setError] = useState("")
-  
+
     const [modalOpen, setModalOpen] = useState(false)
 
 
@@ -52,9 +52,7 @@ const ReviewCard = memo(({ review, courseId }: Props) => {
         }
     }
 
-   
-
-
+    const hasUserReactedToReview = review.hasUserReact !== null
 
     return (
         <div className="space-y-3 p-4 rounded-xl bg-white shadow-sm border border-gray-200 hover:shadow-md transition">
@@ -103,16 +101,15 @@ const ReviewCard = memo(({ review, courseId }: Props) => {
                     title="Like"
                     className="flex items-center gap-1 hover:text-green-600 transition"
                 >
-                    <MdThumbUp size={18} />
+                    <MdThumbUp size={18} className={`${hasUserReactedToReview && review.hasUserReact === "like" ? "text-blue-500" : ""}`} />
                     <span className="text-sm">{review.reviewReactionCount?.like}</span>
                 </button>
-
                 <button
                     onClick={() => react("dislike")}
                     title="Dislike"
                     className="flex items-center gap-1 hover:text-red-600 transition"
                 >
-                    <MdThumbDown size={18} />
+                    <MdThumbDown size={18} className={`${hasUserReactedToReview && review.hasUserReact === "dislike" ? "text-blue-500" : ""}`} />
                     <span className="text-sm">{review.reviewReactionCount?.dislike}</span>
                 </button>
 
@@ -128,7 +125,7 @@ const ReviewCard = memo(({ review, courseId }: Props) => {
                 error && <ErrorCard error={error} />
             }
             {
-                modalOpen && <ReviewReportModal onClose={()=>setModalOpen(false)} reviewId={review.id!} courseId={courseId} />
+                modalOpen && <ReviewReportModal onClose={() => setModalOpen(false)} reviewId={review.id!} courseId={courseId} />
             }
         </div>
     )

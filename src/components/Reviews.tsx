@@ -1,5 +1,4 @@
-import React, { memo, useState } from "react";
-import { reviews } from "../constants/reviews";
+import  { memo, useState } from "react";
 import type { Review, ReviewType } from "../@types/reviews";
 import ReviewForm from "./ReviewForm";
 import ReviewCard from "./ReviewCard";
@@ -9,9 +8,7 @@ import LoadMoreButton from "./LoadMoreButton";
 import { loadMoreReviews, type LoadMoreOptions } from "../store/reducers/courseReducer";
 
 
-interface ReviewsProps {
-  courseId: string;
-}
+
 
 const Reviews = memo(() => {
   const dispatch = useDispatch<AppDispatch>()
@@ -85,7 +82,7 @@ const Reviews = memo(() => {
         ) : (
           <div className="space-y-4 flex-2/5">
             {filteredReviews.map((review: Review) => (
-              <ReviewCard key={review.id} review={review}  courseId={detailedCourse?.course.id!}/>
+              <ReviewCard key={review.id} review={review}  courseId={detailedCourse?.course.id!} />
             ))}
           </div>
         )}

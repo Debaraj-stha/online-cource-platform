@@ -10,7 +10,7 @@ neutral: 3 stars
 negative: 1-2 stars
 */
 export type ReviewType = "positive" | "neutral" | "negative";
-
+export type ReactionType = "like" | "dislike"
 export interface Review {
     id?: string;
     courseId: string;
@@ -24,6 +24,7 @@ export interface Review {
     name?:string|null
     email?:string|null
     userId?:string,
+    hasUserReact:ReactionType|null
     reviewReactionCount?:ReviewReactionState
 }
 

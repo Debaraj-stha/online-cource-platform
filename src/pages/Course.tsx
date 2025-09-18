@@ -29,11 +29,10 @@ const Course = () => {
 
     useEffect(() => {
         const fetchCourse = async () => {
-            await dispatch(loadCourse({ courseId: course_id, limit: "10" }))
-
+            await dispatch(loadCourse({ courseId: course_id, limit: "10",  }))
         }
         fetchCourse()
-    }, [])
+    }, [user,dispatch])
 
 
 
