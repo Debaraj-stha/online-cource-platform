@@ -3,10 +3,10 @@ const InstructorRecentCourses = lazy(() => import("./InstructorRecentCourses"))
 const InstructorCourses = lazy(() => import("./InstructorCourses"))
 const InstructorPopularCourses = lazy(() => import("./InstructorPopularCourses"))
 
-interface Props{
-    includeStudent?:boolean
+interface Props {
+    includeStudent?: boolean
 }
-const InstructorAllCoursesCards = ({includeStudent=true}:Props) => {
+const InstructorAllCoursesCards = ({ includeStudent = true }: Props) => {
     return (
         <div className='space-y-5'>
             <div className='space-y-5 recent-courses'>
@@ -15,18 +15,19 @@ const InstructorAllCoursesCards = ({includeStudent=true}:Props) => {
                     <InstructorRecentCourses includeStudent={includeStudent} />
                 </Suspense>
             </div>
-            <div className='space-y-5 courses'>
-                <h2 className="text-2xl font-bold text-gray-200">Courses</h2>
-                <Suspense fallback={<p>Loading courses...</p>}>
-                    <InstructorCourses  includeStudent={includeStudent}/>
-                </Suspense>
-            </div>
             <div className='space-y-5 popular-courses'>
                 <h2 className="text-2xl font-bold text-gray-200">Popular Courses</h2>
                 <Suspense fallback={<p>Loading popular courses...</p>}>
-                    <InstructorPopularCourses  includeStudent={includeStudent}/>
+                    <InstructorPopularCourses includeStudent={includeStudent} />
                 </Suspense>
             </div>
+            <div className='space-y-5 courses'>
+                <h2 className="text-2xl font-bold text-gray-200">Courses</h2>
+                <Suspense fallback={<p>Loading courses...</p>}>
+                    <InstructorCourses includeStudent={includeStudent} />
+                </Suspense>
+            </div>
+
         </div>
     )
 }

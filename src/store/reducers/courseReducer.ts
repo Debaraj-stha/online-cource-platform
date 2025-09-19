@@ -149,7 +149,7 @@ export const loadNewestCourses = createAsyncThunk(
             if (page) params["page"] = String(page);
             //sort by created date in descending sortOrder
             params["sortBy"] = "createdAt"
-            params["ordre"] = "desc"
+            params["order"] = "desc"
             if (studentId) params["studentId"] = studentId
 
             // Build query string
