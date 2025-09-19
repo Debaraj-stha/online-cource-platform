@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react'
+import  { memo, useState } from 'react'
 import { categories } from '../constants/courses'
 import capitalize from '../utils/string-func'
 import { useGSAP } from '@gsap/react'
@@ -6,9 +6,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
 import Skeleton from './Skeleton'
 import { useDragScroll } from '../hooks/useDragScroll'
+import { useDispatch, useSelector } from 'react-redux'
+import type { AppDispatch, RootState } from '../store/store'
+import { setSelectedcategory } from '../store/reducers/courseReducer'
+import type { Category } from '../@types/course'
 
 const FilterByCategory = memo(() => {
-    const [selected, setSelected] = useState("all")
+    const dispatch = useDispatch<AppDispatch>()
+    const { selectedCategory } = useSelector((state: RootState) => state.course)
     const [loading, setLoading] = useState(true)
     const { scrollRef, handleMouseDown, handleMouseMove, handleMouseUp, handleMouseLeave } = useDragScroll()
 
@@ -47,10 +52,10 @@ const FilterByCategory = memo(() => {
                     :
                     ["all", ...categories].map((category) => (
                         <div
-                            onClick={() => setSelected(category)}
+                            onClick={() => dispatch(setSelectedcategory((category as Category | "all")))}
                             key={category}
                             style={{ opacity: ".8" }}
-                            className={`category-item ${category === selected ? "bg-blue-600 font-bold hover:bg-blue-500" : " bg-gray-200 text-black hover:bg-gray-100"} shadow 
+                            className={`category-item ${category === selectedCategory ? "bg-blue-600 font-bold hover:bg-blue-500" : " bg-gray-200 text-black hover:bg-gray-100"} shadow 
                         hover:shadow-gray-400`}
                         >
                             {/* Capitalize and display category name */}

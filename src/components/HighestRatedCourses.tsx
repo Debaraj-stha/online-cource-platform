@@ -18,6 +18,7 @@ const HighestRatedCourses = ({ viewMore = true }: Props) => {
     const highestRatedTitleRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.auth)
+    const { selectedCategory } = useSelector((state: RootState) => state.course)
     useEffect(() => {
         const handleScroll = () => {
             if (!highestRatedTitleRef.current || !highestRatedCourseRef.current) return;
@@ -38,11 +39,15 @@ const HighestRatedCourses = ({ viewMore = true }: Props) => {
 
     const options: LoadCourseOptions = {
         limit: 8,
-        studentId:user.id
+        studentId: user.id,
+        filter: {
+            //include category filed only if category is not equal to all
+            ...(selectedCategory!=="all" ? { category: selectedCategory } : {})
+        }
     }
     useEffect(() => {
-        dispatch(loadHighestRatedCourses({options}))
-    }, [dispatch])
+        dispatch(loadHighestRatedCourses({ options }))
+    }, [dispatch, selectedCategory])
     const { highestRatedCourses, loadingHighestRated, highestRatedError } = useSelector((state: RootState) => state.course)
 
     return (

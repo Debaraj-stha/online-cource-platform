@@ -1,14 +1,9 @@
-import { memo, useState } from 'react'
-import type { ReactionType, Review, ReviewType } from '../@types/reviews';
+import { memo,  } from 'react'
+import type {  Review, ReviewType } from '../@types/reviews';
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import capitalize from '../utils/string-func';
 import Avatar from './Avatar';
-import { MdFlag, MdThumbDown, MdThumbUp } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '../store/store';
-import { reactToReview } from '../store/reducers/courseReducer';
-import ErrorCard from './ErrorCard';
-import ReviewReportModal from './ReviewReportModal';
+import ReviewActionButtons from './ReviewActionButtons';
 
 const ReviewBadgeColor: Record<ReviewType, string> = {
     positive: "bg-green-100 text-green-700",
@@ -18,16 +13,12 @@ const ReviewBadgeColor: Record<ReviewType, string> = {
 
 interface Props {
     review: Review,
-    courseId: string
+    courseId: string,
+    userId?: string | null
 }
 
 
-const ReviewCard = memo(({ review, courseId }: Props) => {
-    const dispatch = useDispatch<AppDispatch>()
-    const [error, setError] = useState("")
-
-    const [modalOpen, setModalOpen] = useState(false)
-
+const ReviewCard = memo(({ review, courseId, userId }: Props) => {
 
     const renderStars = (rating: number) => {
         const stars = [];
@@ -44,15 +35,6 @@ const ReviewCard = memo(({ review, courseId }: Props) => {
         review.user && review.user?.profilePicture && !review.anonymous
             ? `${SERVER_URL}/uploads/${review.user.profilePicture}`
             : undefined;
-
-    const react = async (type: ReactionType) => {
-        const res = await dispatch(reactToReview({ reviewId: review.id!, type: type, courseId }))
-        if (reactToReview.rejected.match(res)) {
-            setError("Something went wrong")
-        }
-    }
-
-    const hasUserReactedToReview = review.hasUserReact !== null
 
     return (
         <div className="space-y-3 p-4 rounded-xl bg-white shadow-sm border border-gray-200 hover:shadow-md transition">
@@ -95,38 +77,12 @@ const ReviewCard = memo(({ review, courseId }: Props) => {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-6 px-4 pb-3 text-gray-500 border-t border-gray-100">
-                <button
-                    onClick={() => react("like")}
-                    title="Like"
-                    className="flex items-center gap-1 hover:text-green-600 transition"
-                >
-                    <MdThumbUp size={18} className={`${hasUserReactedToReview && review.hasUserReact === "like" ? "text-blue-500" : ""}`} />
-                    <span className="text-sm">{review.reviewReactionCount?.like}</span>
-                </button>
-                <button
-                    onClick={() => react("dislike")}
-                    title="Dislike"
-                    className="flex items-center gap-1 hover:text-red-600 transition"
-                >
-                    <MdThumbDown size={18} className={`${hasUserReactedToReview && review.hasUserReact === "dislike" ? "text-blue-500" : ""}`} />
-                    <span className="text-sm">{review.reviewReactionCount?.dislike}</span>
-                </button>
+            <ReviewActionButtons
+                userId={userId}
+                review={review}
+                courseId={courseId}
+            />
 
-                <button
-                    title="Report"
-                    onClick={() => setModalOpen(true)}
-                    className="flex items-center gap-1 hover:text-orange-600 transition"
-                >
-                    <MdFlag size={18} />
-                </button>
-            </div>
-            {
-                error && <ErrorCard error={error} />
-            }
-            {
-                modalOpen && <ReviewReportModal onClose={() => setModalOpen(false)} reviewId={review.id!} courseId={courseId} />
-            }
         </div>
     )
 })

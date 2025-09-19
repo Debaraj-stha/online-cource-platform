@@ -20,6 +20,7 @@ const Reviews = memo(() => {
   const [filter, setFilter] = useState<ReviewType | "all">("all");
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(2)
+  const{user}=useSelector((state:RootState)=>state.auth)
 
   const filteredReviews =
     filter === "all"
@@ -82,7 +83,7 @@ const Reviews = memo(() => {
         ) : (
           <div className="space-y-4 flex-2/5">
             {filteredReviews.map((review: Review) => (
-              <ReviewCard key={review.id} review={review}  courseId={detailedCourse?.course.id!} />
+              <ReviewCard key={review.id} review={review}  courseId={detailedCourse?.course.id!} userId={user?.id} />
             ))}
           </div>
         )}

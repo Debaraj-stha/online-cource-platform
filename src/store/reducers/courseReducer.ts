@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Course, CourseFAQ, CourseResource, Module, TargetAudience } from "../../@types/course";
+import type { Category, Course, CourseFAQ, CourseResource, Module, TargetAudience } from "../../@types/course";
 import { initialCourse } from "../../constants/initialCourse";
 import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
@@ -14,6 +14,7 @@ export interface ReviewReactionState {
     "dislike": number
 }
 type ReactionStatusTypes = "created" | "updated" | "removed"
+
 const token = getCookie("token")
 interface DetailCourseState {
     course: Course,
@@ -71,6 +72,7 @@ interface CourseState {
     myCourses: MyCourses
     enrolledCourseIds: string[] | []
     searchQuery: string
+    selectedCategory: "all" | Category
 
 }
 const initialState: CourseState = {
@@ -99,7 +101,8 @@ const initialState: CourseState = {
         totalCourses: 0
     },
     enrolledCourseIds: [],
-    searchQuery: ""
+    searchQuery: "",
+    selectedCategory: "all"
 };
 
 
@@ -202,10 +205,10 @@ export const searchCourses = createAsyncThunk(
 
             const res = await apiHelper(url, { method: "GET" }, false, dispatch);
             if (res.course.length == 0) {
-                const message:Message={
-                    type:"info",
-                    id:Date.now(),
-                    messages:`No result found for query:${q}`
+                const message: Message = {
+                    type: "info",
+                    id: Date.now(),
+                    messages: `No result found for query:${q}`
                 };
                 (dispatch as AppDispatch)(setMessageWithTimeout(message))
             }
@@ -238,7 +241,7 @@ export const loadPopularCourses = createAsyncThunk(
             // Build query string
             const queryString = new URLSearchParams(params).toString();
             const url = `${SERVER_URL}/course${queryString ? `?${queryString}` : ""}`;
-
+            console.log(options)
             const res = await apiHelper(url, { method: "GET" }, false, dispatch)
             if (res) {
                 return {
@@ -537,6 +540,33 @@ export const reportToReview = createAsyncThunk(
     }
 )
 
+export const updateReview = createAsyncThunk(
+    "updateReview",
+    async ({ courseId, reviewId, review }: { courseId: string, reviewId: string, review: Review }, { rejectWithValue, dispatch }) => {
+        try {
+            const url = `${SERVER_URL}/course/${courseId}/review/${reviewId}`
+            const res = await apiHelper(url,
+                {
+                    method: "PATCH", body: review, headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                },
+                false,
+                dispatch
+            )
+            const message: Message = {
+                messages: "Review submitted successfully",
+                id: Date.now(),
+                type: "info"
+            };
+            (dispatch as AppDispatch)(setMessageWithTimeout(message))
+            return res.review
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
 const courseReducer = createSlice({
     name: "course",
     initialState,
@@ -597,16 +627,21 @@ const courseReducer = createSlice({
             state.currentPage = action.payload ?? (state.currentPage ?? 0) + 1
         },
         //set value to review input fields
-        setReview<K extends keyof ReviewEditableField>(state: CourseState, action: PayloadAction<{ field: K, value: ReviewValue<K> }>) {
+        setReviewFieldValue<K extends keyof ReviewEditableField>(state: CourseState, action: PayloadAction<{ field: K, value: ReviewValue<K> }>) {
             const { field, value } = action.payload
             state.review[field] = value
         },
-
+        setReview(state, action: PayloadAction<Review>) {
+            state.review = action.payload
+        },
         resetSearchResult(state) {
             state.searchResult = []
         },
         setSearchQuery(state, action: PayloadAction<string>) {
             state.searchQuery = action.payload
+        },
+        setSelectedcategory(state, action: PayloadAction<Category | "all">) {
+            state.selectedCategory = action.payload
         }
 
     },
@@ -765,6 +800,17 @@ const courseReducer = createSlice({
             }
 
         })
+
+        //updating review
+        builder.addCase(updateReview.fulfilled, (state, action: PayloadAction<Review>) => {
+            const review = action.payload
+            if (state.detailedCourse?.reviews) {
+                state.detailedCourse.reviews = state.detailedCourse.reviews
+                    .filter((r) => r.id !== review.id) // remove old one
+                state.detailedCourse.reviews.push(review) // add updated one
+            }
+        })
+
     },
 });
 
@@ -776,8 +822,10 @@ export const {
     updateDynamicField,
     removeDynamicField,
     updatePage,
-    setReview,
+    setReviewFieldValue,
     setSearchQuery,
-    resetSearchResult
+    resetSearchResult,
+    setReview,
+    setSelectedcategory
 } = courseReducer.actions;
 export default courseReducer.reducer;

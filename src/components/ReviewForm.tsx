@@ -3,7 +3,7 @@ import { FaStar } from "react-icons/fa";
 import Input from "./Input";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
-import { setReview, submitReview, type ReviewEditableField } from "../store/reducers/courseReducer";
+import { setReviewFieldValue, submitReview, type ReviewEditableField } from "../store/reducers/courseReducer";
 import ErrorCard from "./ErrorCard";
 import { useParams } from "react-router-dom";
 import type { Review } from "../@types/reviews";
@@ -37,7 +37,7 @@ const ReviewForm = () => {
     };
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { value, name } = e.target
-        dispatch(setReview({ field: name as keyof ReviewEditableField, value }))
+        dispatch(setReviewFieldValue({ field: name as keyof ReviewEditableField, value }))
     }
 
 
@@ -86,9 +86,9 @@ const ReviewForm = () => {
                             size={24}
                             className={`cursor-pointer ${star <= (review.rating) ? "text-yellow-400" : "text-gray-300"
                                 }`}
-                            onClick={() => dispatch(setReview({ field: "rating", value: star }))}
-                            onMouseEnter={() => dispatch(setReview({ field: "rating", value: star }))}
-                            onMouseLeave={() => dispatch(setReview({ field: "rating", value: star }))}
+                            onClick={() => dispatch(setReviewFieldValue({ field: "rating", value: star }))}
+                            onMouseEnter={() => dispatch(setReviewFieldValue({ field: "rating", value: star }))}
+                            onMouseLeave={() => dispatch(setReviewFieldValue({ field: "rating", value: star }))}
                         />
                     ))}
                 </div>
@@ -98,7 +98,7 @@ const ReviewForm = () => {
                         type="checkbox"
                         id="anonymous"
                         checked={review.anonymous}
-                        onChange={(e) => dispatch(setReview({ field: "anonymous", value: e.target.checked }))}
+                        onChange={(e) => dispatch(setReviewFieldValue({ field: "anonymous", value: e.target.checked }))}
                     />
                     <label htmlFor="anonymous" className="text-gray-700">
                         Anonymous

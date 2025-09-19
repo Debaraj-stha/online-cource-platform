@@ -21,10 +21,14 @@ const PopularCourses = ({ viewMore = true }: Props) => {
     const [shouldStopSticky, setShouldStopSticky] = useState(false);
 
     const dispatch = useDispatch<AppDispatch>()
-     const { user } = useSelector((state: RootState) => state.auth)
+    const { user } = useSelector((state: RootState) => state.auth)
+    const { selectedCategory } = useSelector((state: RootState) => state.course)
     const options: LoadCourseOptions = {
         limit: 10,
-        studentId:user.id
+        studentId: user.id,
+        filter: {
+            ...(selectedCategory!=="all" ? { category: selectedCategory } : {})
+        }
     }
 
 
@@ -40,7 +44,7 @@ const PopularCourses = ({ viewMore = true }: Props) => {
 
             } else {
                 setShouldStopSticky(false);
-                
+
 
             }
         };
@@ -50,11 +54,11 @@ const PopularCourses = ({ viewMore = true }: Props) => {
     }, []);
 
     useEffect(() => {
-        dispatch(loadPopularCourses({options}))
-    }, [dispatch])
+        dispatch(loadPopularCourses({ options }))
+    }, [dispatch, selectedCategory])
 
 
-    
+
     const { popularCourses, loadingPopularCourse, popularError } = useSelector((state: RootState) => state.course)
 
     return (
@@ -83,7 +87,7 @@ const PopularCourses = ({ viewMore = true }: Props) => {
                                 <CourseSkeleton />
                             </GridWrapper>
                             :
-                            <PopularCoursescard courses={popularCourses}  />
+                            <PopularCoursescard courses={popularCourses} />
                         }
                     </div>
             }
