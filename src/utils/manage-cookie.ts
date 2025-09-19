@@ -5,9 +5,12 @@ export const setCookie = (key: string, value: string, expires: Date,path="/") =>
 };
 
 export const removeCookie = (key: string,path="/") => {
-  console.log("removing cookie", key)
-  document.cookie = `${key}=; expires=${new Date(0).toUTCString()};path=${path}`;
+  console.log("removing cookie", key);
+
+  // Clear with explicit domain + path
+  document.cookie = `${key}=; expires=${new Date(0).toUTCString()}; path=${path}; domain=localhost`;
 };
+
 
 export const getCookie = (name: string): string | null => {
   const cookies = document.cookie.split(";").map(c => c.trim());

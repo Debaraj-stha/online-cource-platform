@@ -29,11 +29,11 @@ const Profile = () => {
         isVerified: true
     }
 
-    const {popularCourses}=useSelector((state:RootState)=>state.course)
+    const {popularCourses,newestCourses,highestRatedCourses}=useSelector((state:RootState)=>state.course)
 
 
     const role: Roles = user.role
-    const instructor = popularCourses[0].instructor!
+    const instructor = popularCourses[0].instructor! ||newestCourses[0].instructor || highestRatedCourses[0].instructor
 
     const loading = false
     const isUser = true //flag to user himself/herself has visited the page

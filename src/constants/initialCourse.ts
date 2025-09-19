@@ -6,6 +6,8 @@ export const initialCourse: Course = {
     description: "",
     thumbnail: "",
     price: 0,
+    _id:"",
+    priceUnit:"USD",
 
     // optional values with defaults
     instructor: null,

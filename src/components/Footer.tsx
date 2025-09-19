@@ -13,6 +13,7 @@ const Footer = () => {
     const footerRef = useRef<HTMLDivElement | null>(null);
     const{user}=useSelector((state:RootState)=>state.auth)
     const currentUserRole = user?.role||"guest"; // Replace with real auth role
+    console.log("curre",currentUserRole)
 
    useGSAP(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -54,7 +55,8 @@ const Footer = () => {
                     <h4 className="footer-heading mb-3">Quick Links</h4>
                     <ul className="footer-links space-y-2">
                         {navLinksFooter
-                            .filter(link => link.roles.includes(currentUserRole))
+                            .filter(link => link.roles.includes(currentUserRole)) //includes only link that current role supports
+                            
                             .map((link, index) => (
                                 <li key={index}>
                                     <Link to={link.path} className="footer-link hover:underline">

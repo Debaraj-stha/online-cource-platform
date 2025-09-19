@@ -126,7 +126,8 @@ const Navbar = () => {
             {
                 !isSearchbarOpen &&
                 <ul className="navbar-links">
-                    {navLinksNavbar.map((link, index) => {
+                    {navLinksNavbar.filter(link=>link.roles.includes(role)). //filter links which current role doesnot support
+                    map((link, index) => {
                         const isActive = (link.path === "/" && location.pathname === "/") ||
                             (link.path !== "/" && location.pathname.startsWith(link.path));
                         return (

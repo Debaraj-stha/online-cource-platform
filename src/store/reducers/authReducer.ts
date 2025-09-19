@@ -18,7 +18,7 @@ const initialUser: User = {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "student"
+    role: "guest"
 }
 
 const initialState: AuthState = {
