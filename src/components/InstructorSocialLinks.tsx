@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import  { type JSX } from "react";
 import {
   FaEnvelope,
   FaPhone,
@@ -12,9 +12,11 @@ import {
 } from "react-icons/fa";
 import Skeleton from "./Skeleton";
 import type { SocialLinks } from "../@types/instructor";
+import Tooltip from "./Tooltip";
+
 
 interface Props {
-  social?: SocialLinks[]|[];
+  social?: SocialLinks[] | [];
   loading?: boolean;
 }
 
@@ -46,7 +48,7 @@ const InstructorSocialLinks = ({ social, loading = false }: Props) => {
 
   return (
     <div className="flex flex-wrap gap-3 mt-2 social_links">
-      {(social??[]).map(({ platform, url }) => {
+      {(social ?? []).map(({ platform, url }) => {
         const item = ICON_MAP[platform];
         if (!item) return null;
 
@@ -54,19 +56,21 @@ const InstructorSocialLinks = ({ social, loading = false }: Props) => {
           platform === "email"
             ? `mailto:${url}`
             : platform === "phone"
-            ? `tel:${url}`
-            : url;
+              ? `tel:${url}`
+              : url;
 
         return (
-          <a
-            key={url}
-            href={href}
-            target={["email", "phone"].includes(platform) ? "_self" : "_blank"}
-            rel="noreferrer"
-            className="flex items-center gap-1 hover:underline text-blue-400 hover:text-blue-500 transition-colors"
-          >
-            {item.icon}
-          </a>
+          <Tooltip key={url} content={item.label} position="top">
+            <a
+              key={url}
+              href={href}
+              target={["email", "phone"].includes(platform) ? "_self" : "_blank"}
+              rel="noreferrer"
+              className="flex items-center gap-1 hover:underline text-blue-400 hover:text-blue-500 transition-colors"
+            >
+              {item.icon}
+            </a>
+          </Tooltip>
         );
       })}
     </div>
