@@ -20,6 +20,7 @@ const Logout = () => {
             "Authorization":`Bearer ${token}`
           }
         });
+        console.log(res)
 
         if (res) {
           // Delay navigation by 2.5s

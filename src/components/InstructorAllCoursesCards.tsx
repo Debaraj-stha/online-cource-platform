@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'
+import  { lazy, Suspense } from 'react'
 const InstructorRecentCourses = lazy(() => import("./InstructorRecentCourses"))
 const InstructorCourses = lazy(() => import("./InstructorCourses"))
 const InstructorPopularCourses = lazy(() => import("./InstructorPopularCourses"))
@@ -8,7 +8,7 @@ interface Props {
 }
 const InstructorAllCoursesCards = ({ includeStudent = true }: Props) => {
     return (
-        <div className='space-y-5'>
+        <div className='space-y-5 md:spacey-10 lg:space-y-16'>
             <div className='space-y-5 recent-courses'>
                 <h2 className="text-2xl font-bold text-gray-200">Recent Courses</h2>
                 <Suspense fallback={<p className='text-white'>Loading recent courses...</p>}>

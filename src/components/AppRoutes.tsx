@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import  { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 // Common pages
@@ -23,7 +23,6 @@ import ChangeEmail from "../pages/ChangeEmail";
 import EmailVerification from "../pages/EmailVerification";
 import MoreCourse from "../pages/MoreCourse";
 import StudentRoute from "./StudentRoute";
-import type { Roles } from "../@types/user";
 import { getCookie } from "../utils/manage-cookie";
 
 
@@ -44,9 +43,7 @@ const PaymentFail = lazy(() => import("../pages/PaymentFail"));
 const Mylearning = lazy(() => import("../pages/Mylearning"));
 
 
-interface Props {
-  role: Roles
-}
+
 
 const AppRoutes = () => {
   const user = getCookie("user")

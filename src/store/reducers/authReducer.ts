@@ -114,14 +114,15 @@ export const login = createAsyncThunk(
     "login",
     async ({ email, password }: { email: string, password: string }, { rejectWithValue }) => {
         try {
+            const deviceDetails=getNavigatorDetails()
             const res = await apiHelper(`${SERVER_URL}/auth/login`, {
                 method: "POST",
                 body: {
                     email: email,
-                    password: password
+                    password: password,
+                    deviceDetails:JSON.stringify(deviceDetails)
                 },
             }); 
-            console.log(res)
             //remove old user and token cookie if exists
             removeCookie("user")
             removeCookie("token")

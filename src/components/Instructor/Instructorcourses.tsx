@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux'
+
 import InstructorAllCoursesCards from '../InstructorAllCoursesCards'
-import type { AppDispatch, RootState } from '../../store/store'
+
 
 const Instructorcourses = () => {
 

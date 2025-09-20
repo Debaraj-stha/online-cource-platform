@@ -60,45 +60,17 @@ export const loadInstructorRecentCourse = createAsyncThunk(
     }
 )
 
-export const loadInstructorCourses = createAsyncThunk(
-    "loadInstructorCourses",
-    async ({ options, instructorId }: { options: Omit<LoadCourseOptions, "studentId" | "filter" | "q">, instructorId: string }, { rejectWithValue, dispatch }) => {
-        try {
-            const { limit, page, sortBy, sortOrder } = options
-            const params: Record<string, string> = {}
-            if (limit) params["limit"] = String(limit)
-            if (page) params["page"] = String(page)
-            if (sortBy) params["sortBy"] = sortBy
-            if (sortOrder) params["order"] = sortOrder
-            const query = new URLSearchParams(params).toString()
 
-            const res = await apiHelper(`${SERVER_URL}/course/instructor/${instructorId}?${query}`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${TOKEN}`
-                }
-            },
-                false,
-                dispatch)
-            return {
-                courses: res.courses ?? [],
-                totalCourses: res.totalCourses ?? 0,
-                totalPages: res.totalPages ?? 0
-            }
-        } catch (error: any) {
-            return rejectWithValue(error.message)
-        }
-    }
-)
+
 export const loadInstructorPopularCourse = createAsyncThunk(
     "loadInstructorPopularCourse",
-    async ({ options, instructorId }: { options: Omit<LoadCourseOptions, "studentId" | "filter" | "q" | "sortBy">, instructorId: string }, { rejectWithValue, dispatch }) => {
+    async ({ options, instructorId }: { options: Omit<LoadCourseOptions, "studentId" | "filter" | "q" | "sortBy" | "sortOrder">, instructorId: string }, { rejectWithValue, dispatch }) => {
         try {
-            const { limit, page, sortOrder } = options
+            const { limit, page, } = options
             const params: Record<string, string> = {}
             if (limit) params["limit"] = String(limit);
             if (page) params["page"] = String(page);
-            if (sortOrder) params["sortOrder"] = sortOrder;
+            params["order"] = "desc"
             params["sortBy"] = "enrollment"
             const query = new URLSearchParams(params).toString()
 
@@ -110,6 +82,7 @@ export const loadInstructorPopularCourse = createAsyncThunk(
             },
                 false,
                 dispatch)
+            console.log("popular course",res)
             return {
                 courses: res.courses ?? []
             }
@@ -119,6 +92,59 @@ export const loadInstructorPopularCourse = createAsyncThunk(
     }
 )
 
+export const loadInstructorCourses = createAsyncThunk(
+    "loadInstructorCourses",
+    async (
+        {
+            options,
+            instructorId,
+            isLoadMore,
+
+        }: {
+            options: Omit<LoadCourseOptions, "studentId" | "filter" | "q">
+            instructorId: string
+            isLoadMore?: boolean
+        },
+        { rejectWithValue, dispatch }
+    ) => {
+        try {
+            const { limit, sortBy, sortOrder, page } = options
+            const params: Record<string, string> = {}
+
+            if (limit) params["limit"] = String(limit)
+            if (page) params["page"] = String(page)
+
+
+            if (sortBy) params["sortBy"] = sortBy
+            if (sortOrder) params["order"] = sortOrder
+
+            const query = new URLSearchParams(params).toString()
+
+
+            const res = await apiHelper(
+                `${SERVER_URL}/course/instructor/${instructorId}?${query}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${TOKEN}`,
+                    },
+                },
+                false,
+                dispatch
+            )
+            console.log(page, limit, res)
+
+            return {
+                courses: res.courses ?? [],
+                totalCourses: res.totalCourses ?? 0,
+                totalPages: res.totalPages ?? 0,
+                isLoadMore,
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
 
 const instructorSlice = createSlice(
     {
@@ -136,9 +162,21 @@ const instructorSlice = createSlice(
                 const { courses } = action.payload
                 state.popularCourses = courses
             })
-            builder.addCase(loadInstructorCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [], totalCourses: number, totalPages: number }>) => {
-                const { courses, totalCourses, totalPages } = action.payload
-                state.courses = courses
+            builder.addCase(loadInstructorCourses.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [], totalCourses: number, totalPages: number, isLoadMore?: boolean }>) => {
+                const { courses, totalCourses, totalPages, isLoadMore } = action.payload
+                if (courses.length != 0) {
+                    if (isLoadMore) {
+                        const existingIds = new Set(state.courses.map(c => c.id))
+                        const newCourses = courses.filter(e => !existingIds.has(e.id))
+                        state.courses = [...state.courses, ...newCourses]
+                    }
+                    else {
+                        state.courses = courses
+                    }
+                }
+                else if (!isLoadMore) {
+                    state.courses = []
+                }
                 state.totalCourses = totalCourses
                 state.totalPages = totalPages
                 state.loading = false
