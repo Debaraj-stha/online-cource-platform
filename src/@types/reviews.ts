@@ -25,6 +25,7 @@ export interface Review {
     name?:string|null
     email?:string|null
     edited?:boolean,
+    reported?:boolean,
     userId?:string,
     hasUserReact:ReactionType|null
     reviewReactionCount?:ReviewReactionState

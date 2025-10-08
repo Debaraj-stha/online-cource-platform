@@ -1,11 +1,12 @@
-import  { memo, useState } from "react";
+import { memo, useState } from "react";
 import type { Review, ReviewType } from "../@types/reviews";
 import ReviewForm from "./ReviewForm";
 import ReviewCard from "./ReviewCard";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
 import LoadMoreButton from "./LoadMoreButton";
-import { loadMoreReviews, type LoadMoreOptions } from "../store/reducers/courseReducer";
+import { loadMoreReviews } from "../store/reducers/courseReducer";
+import type { LoadMoreOptions } from "../store/reducer-types/course";
 
 
 
@@ -14,13 +15,14 @@ const Reviews = memo(() => {
   const dispatch = useDispatch<AppDispatch>()
   const { detailedCourse } = useSelector((state: RootState) => state.course)
 
-  
+
+
   const courseReviews = detailedCourse?.reviews ?? []
-  const avgRating=detailedCourse?.averageRating
+  const avgRating = detailedCourse?.averageRating
   const [filter, setFilter] = useState<ReviewType | "all">("all");
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(2)
-  const{user}=useSelector((state:RootState)=>state.auth)
+  const { user } = useSelector((state: RootState) => state.auth)
 
   const filteredReviews =
     filter === "all"
@@ -45,6 +47,7 @@ const Reviews = memo(() => {
       setLoading(false)
     }
   }
+  const isInstructor = user.role==="instructor"
 
   return (
     <div className="bg-white shadow-md rounded-xl p-6 space-y-4">
@@ -83,7 +86,7 @@ const Reviews = memo(() => {
         ) : (
           <div className="space-y-4 flex-2/5">
             {filteredReviews.map((review: Review) => (
-              <ReviewCard key={review.id} review={review}  courseId={detailedCourse?.course.id!} userId={user?.id} />
+              <ReviewCard key={review.id} review={review} courseId={detailedCourse?.course.id!} userId={user?.id} isInstructor={isInstructor} />
             ))}
           </div>
         )}

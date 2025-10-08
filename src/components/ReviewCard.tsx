@@ -14,12 +14,12 @@ const ReviewBadgeColor: Record<ReviewType, string> = {
 interface Props {
     review: Review,
     courseId: string,
-    userId?: string | null
+    userId?: string | null,
+    isInstructor: boolean
 }
 
 
-const ReviewCard = memo(({ review, courseId, userId }: Props) => {
-
+const ReviewCard = memo(({ review, courseId, userId ,isInstructor}: Props) => {
     const renderStars = (rating: number) => {
         const stars = [];
         for (let i = 1; i <= 5; i++) {
@@ -35,6 +35,7 @@ const ReviewCard = memo(({ review, courseId, userId }: Props) => {
         review.user && review.user?.profilePicture && !review.anonymous
             ? `${SERVER_URL}/uploads/${review.user.profilePicture}`
             : undefined;
+
 
     return (
         <div className="space-y-3 p-4 rounded-xl bg-white shadow-sm border border-gray-200 hover:shadow-md transition">
@@ -72,6 +73,12 @@ const ReviewCard = memo(({ review, courseId, userId }: Props) => {
                         }
                         {review.review}
                     </p>
+                    {isInstructor && review.reported && (
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-600">
+                            ⚠️ Reported
+                        </span>
+                    )}
+
 
                     {/* Meta Info */}
                     <p className="text-xs text-gray-400 mt-2">
