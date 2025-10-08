@@ -22,7 +22,7 @@ import type {
     ReviewReactionState,
     ReviewValue
 } from "../reducer-types/course";
-import { courseInitialState } from "../initialStates"
+import { courseInitialState, initialReview } from "../initialStates"
 
 
 const token = getCookie("token")
@@ -435,7 +435,7 @@ export const updateReview = createAsyncThunk(
 
 const courseReducer = createSlice({
     name: "course",
-    initialState:courseInitialState,
+    initialState: courseInitialState,
     reducers: {
         // generic safe setter
         setCourseFields<K extends keyof EditableFields>(
@@ -508,6 +508,9 @@ const courseReducer = createSlice({
         },
         setSelectedcategory(state, action: PayloadAction<Category | "all">) {
             state.selectedCategory = action.payload
+        },
+        resetReview(state) {
+            state.review = initialReview
         }
 
     },
@@ -692,6 +695,7 @@ export const {
     setSearchQuery,
     resetSearchResult,
     setReview,
-    setSelectedcategory
+    setSelectedcategory,
+    resetReview
 } = courseReducer.actions;
 export default courseReducer.reducer;

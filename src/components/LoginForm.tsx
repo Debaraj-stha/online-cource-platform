@@ -5,10 +5,13 @@ import { type AppDispatch, type RootState } from '../store/store';
 import { login, setFields } from '../store/reducers/authReducer';
 import validator from '../utils/validator';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { replayPendingActions } from '../utils/replayPendingActions';
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { user, isProcessing } = useSelector((state: RootState) => state.auth)
+  const {actions}=useSelector((state:RootState)=>state.pendingAction)
+
   const [errors, setErrors] = useState<string[]>()
   const navigate = useNavigate()
   const location=useLocation()
@@ -31,6 +34,7 @@ const LoginForm = () => {
     setErrors([])
     const result = await dispatch(login({ email: user.email, password: user.password! }))
     if (login.fulfilled.match(result)) {
+      replayPendingActions()
       navigate(redirectTo)
     }
 

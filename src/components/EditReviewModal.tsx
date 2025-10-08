@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react"
 import { FaStar } from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../store/store"
-import { setReview, updateReview, setReviewFieldValue, type ReviewEditableField } from "../store/reducers/courseReducer"
+import { setReview, updateReview, setReviewFieldValue } from "../store/reducers/courseReducer"
 import Input from "./Input"
 import Modal from "./Modal"
 import { setMessageWithTimeout, type Message } from "../store/reducers/messageReducer"
+import type { ReviewEditableField } from "../store/reducer-types/course"
+import { useNavigate } from "react-router-dom"
+import { removeCookie } from "../utils/manage-cookie"
+import { setPendingAction, type PendingAction } from "../store/reducers/pendingActionReducer"
 
 interface Props {
   review: any
@@ -15,9 +19,11 @@ interface Props {
 
 const EditReviewModal = ({ review: oldReview, onClose, courseId }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
+  const  navigate=useNavigate()
   const [processing, setProcessing] = useState(false)
   //fetching updated review from state
   const review = useSelector((state: RootState) => state.course.review)
+  // const {actions}=useSelector((state:RootState)=>state.pendingAction)
 
 
 
@@ -45,7 +51,18 @@ const EditReviewModal = ({ review: oldReview, onClose, courseId }: Props) => {
         };
         (dispatch as AppDispatch)(setMessageWithTimeout(message))
       }
-      console.log(result)
+      console.log(result.payload)
+      if(result.payload==="Token is not valid"){
+        const action:PendingAction={
+          args:{courseId, reviewId: review.id!, review: review},
+          method: updateReview,
+          type:"redux"
+        }
+        dispatch(setPendingAction(action))
+        const from =`/courses/${courseId}`
+        navigate("/auth/login/",{state:{from}})
+      }
+     
     } catch (error) {
 
     } finally {

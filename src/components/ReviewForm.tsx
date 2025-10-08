@@ -3,10 +3,11 @@ import { FaStar } from "react-icons/fa";
 import Input from "./Input";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
-import { setReviewFieldValue, submitReview, type ReviewEditableField } from "../store/reducers/courseReducer";
+import { resetReview, setReviewFieldValue, submitReview } from "../store/reducers/courseReducer";
 import ErrorCard from "./ErrorCard";
 import { useParams } from "react-router-dom";
 import type { Review } from "../@types/reviews";
+import type { ReviewEditableField } from "../store/reducer-types/course";
 
 
 
@@ -33,6 +34,7 @@ const ReviewForm = () => {
         }
         setProcessing(false)
         setError("")
+        dispatch(resetReview())
 
     };
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

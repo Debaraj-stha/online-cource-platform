@@ -148,3 +148,4 @@ export const fetchSignedUrl = async ({ url, previewURL, thumbnailURL, type = "vi
     console.error(err);
   }
 };
+

@@ -1,4 +1,5 @@
-import type { ReviewReactionState } from "../store/reducers/courseReducer";
+
+import type { ReviewReactionState } from "../store/reducer-types/course";
 import type { User } from "./user";
 
 /*
@@ -23,6 +24,7 @@ export interface Review {
     type?: ReviewType
     name?:string|null
     email?:string|null
+    edited?:boolean,
     userId?:string,
     hasUserReact:ReactionType|null
     reviewReactionCount?:ReviewReactionState

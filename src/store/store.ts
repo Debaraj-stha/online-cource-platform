@@ -3,13 +3,15 @@ import authReducer from "./reducers/authReducer";
 import messageReducer from "./reducers/messageReducer";
 import courseReducer from "./reducers/courseReducer";
 import instructorReducer from "./reducers/instructorReducer";
+import pendingActionReducer from "./reducers/pendingActionReducer";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     message: messageReducer,
     course: courseReducer,
-    instructor:instructorReducer
+    instructor:instructorReducer,
+    pendingAction: pendingActionReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,5 +1,5 @@
-import { memo,  } from 'react'
-import type {  Review, ReviewType } from '../@types/reviews';
+import { memo, } from 'react'
+import type { Review, ReviewType } from '../@types/reviews';
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import capitalize from '../utils/string-func';
 import Avatar from './Avatar';
@@ -46,6 +46,7 @@ const ReviewCard = memo(({ review, courseId, userId }: Props) => {
                     url={profileURL}
                 />
 
+
                 {/* Review Body */}
                 <div className="flex-1">
                     <div className="flex items-center justify-between">
@@ -58,6 +59,7 @@ const ReviewCard = memo(({ review, courseId, userId }: Props) => {
                         >
                             {review.type?.toUpperCase()}
                         </span>
+
                     </div>
 
                     {/* Stars */}
@@ -65,6 +67,9 @@ const ReviewCard = memo(({ review, courseId, userId }: Props) => {
 
                     {/* Review Text */}
                     <p className="text-gray-700 text-sm mt-2 leading-relaxed">
+                        {
+                            review.edited && <span className='mr-3'>(Edited)</span>
+                        }
                         {review.review}
                     </p>
 

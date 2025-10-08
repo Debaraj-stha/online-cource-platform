@@ -60,7 +60,6 @@ export const signup = createAsyncThunk(
     }
 );
 
-
 export const verifyEmail = createAsyncThunk(
     "verifyEmail",
     async (token: string, { rejectWithValue, dispatch }) => {
