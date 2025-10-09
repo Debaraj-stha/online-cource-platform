@@ -14,9 +14,6 @@ import type { LoadMoreOptions } from "../store/reducer-types/course";
 const Reviews = memo(() => {
   const dispatch = useDispatch<AppDispatch>()
   const { detailedCourse } = useSelector((state: RootState) => state.course)
-
-
-
   const courseReviews = detailedCourse?.reviews ?? []
   const avgRating = detailedCourse?.averageRating
   const [filter, setFilter] = useState<ReviewType | "all">("all");
@@ -32,7 +29,6 @@ const Reviews = memo(() => {
   const handleLoadMoreReviews = async () => {
     try {
       setLoading(true)
-      console.log(detailedCourse?.course._id, detailedCourse?.course.id)
       const options: LoadMoreOptions = {
         page: `${page}`,
         limit: "2",
@@ -47,7 +43,7 @@ const Reviews = memo(() => {
       setLoading(false)
     }
   }
-  const isInstructor = user.role==="instructor"
+  const isInstructor = user.role==="instructor" || user.role==="admin"
 
   return (
     <div className="bg-white shadow-md rounded-xl p-6 space-y-4">

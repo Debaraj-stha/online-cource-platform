@@ -1,4 +1,4 @@
-import  { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 // Common pages
@@ -24,6 +24,7 @@ import EmailVerification from "../pages/EmailVerification";
 import MoreCourse from "../pages/MoreCourse";
 import StudentRoute from "./StudentRoute";
 import { getCookie } from "../utils/manage-cookie";
+import DeleteCourse from "./Instructor/DeleteCourse";
 
 
 // Lazy-load instructor-only routes
@@ -47,7 +48,7 @@ const Mylearning = lazy(() => import("../pages/Mylearning"));
 
 const AppRoutes = () => {
   const user = getCookie("user")
-  const parsed = user ? JSON.parse(user): {}
+  const parsed = user ? JSON.parse(user) : {}
   const role = parsed?.role ?? "guest"
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -96,6 +97,7 @@ const AppRoutes = () => {
             <Route path="dashboard" element={<InstructorDashboard />} />
             <Route path="reports" element={<Reports />} />
             <Route path="courses" element={<Instructorcourses />} />
+            <Route path="course/:courseId/delete" element={<DeleteCourse />} />
             <Route path="create-course" element={<CreateCourse />} />
             <Route path="edit-course" element={<EditCourse />} />
             <Route path="settings" element={<Setting />} />

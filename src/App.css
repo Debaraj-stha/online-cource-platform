@@ -126,7 +126,7 @@
   }
 
   .category-item {
-    @apply shrink-0 whitespace-nowrap rounded-3xl shadow hover:shadow-2xl px-3 py-1 hover:-translate-x-3 transition-all  cursor-pointer
+    @apply shrink-0 whitespace-nowrap rounded-3xl shadow hover:shadow-2xl px-3 py-1 hover:-translate-x-3 transition-all cursor-pointer
   }
 
   select {
@@ -152,21 +152,27 @@
   .word_placeholder {
     @apply inline-block h-6 bg-gray-600 rounded-sm mr-1 align-middle animate-pulse transition-colors duration-200;
   }
-  .secondary-button{
-    @apply text-gray-800 bg-gray-400 rounded-lg hover:bg-gray-300 transition-colors  
+
+  .secondary-button {
+    @apply text-gray-800 bg-gray-400 rounded-lg hover:bg-gray-300 transition-colors
   }
-  .danger-button{
+
+  .danger-button {
     @apply bg-red-600 hover:bg-red-500 transition-colors text-white rounded-lg
   }
-  .chart_bg{
+
+  .chart_bg {
     @apply bg-gray-800 text-white p-6 rounded-xl shadow-md
   }
-  .input_section{
-    @apply space-y-6  rounded border-2 border-gray-500 p-4 
+
+  .input_section {
+    @apply space-y-6 rounded border-2 border-gray-500 p-4
   }
-  .course-wrapper{
-    @apply  space-y-4 transition-all z-50 flex items-center justify-between
+
+  .course-wrapper {
+    @apply space-y-4 transition-all z-50 flex items-center justify-between
   }
+
   .course-card {
     @apply hover:scale-105
   }
@@ -182,6 +188,18 @@
 
   .animate-slide-up {
     animation: slide-up 0.3s ease-in 1 forwards;
+  }
+
+  .animate-scale-up {
+    animation: scale-up 0.3s ease-in 1 forwards;
+  }
+
+  .animate-scale-up-down {
+    animation: scale-up-down 0.3s ease-in 1 forwards;
+  }
+
+  .animate-scale-down {
+    animation: animate-scale-down 0.3s ease-in 1 forwards;
   }
 
   .animation-delay-200 {
@@ -209,6 +227,48 @@
 
     to {
       transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-up {
+    from {
+      transform: scale(0.8);
+    }
+
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes scale-up-down {
+    0% {
+      transform: scale(0.8);
+    }
+
+    25% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    75% {
+      transform: scale(0.8);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes animate-scale-down {
+    from {
+      transform: scale(1.2);
+    }
+
+    to {
+      transform: scale(1);
     }
   }
 

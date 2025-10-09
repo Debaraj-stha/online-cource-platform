@@ -5,16 +5,20 @@ import DetailsCourseCard from './DetailsCourseCard';
 import { flags } from '../constants/flags';
 import { formatDateTime, formatPrice } from '../utils/localeFormatter';
 import { convertPriceToLocalPrice } from '../utils/helper';
+import InstructorCourseManageOptions from './InstructorCourseManageOptions';
+
+
 
 
 interface Props {
   course: Course
   view?: View
   onClick?: () => void
-  locale?: string
+  locale?: string,
+  isInstructorMode?: boolean
 
 }
-const CourseCard = ({ course, view = 'home', onClick, locale = "en_US" }: Props) => {
+const CourseCard = ({ course, view = 'home', onClick, locale = "en_US", isInstructorMode = false }: Props) => {
   const localCurrency = localStorage.getItem("currency") || "USD"
   const priceWithDiscount = course.price - (course.discount ?? 0)
   const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.priceUnit, localCurrency)
@@ -27,11 +31,12 @@ const CourseCard = ({ course, view = 'home', onClick, locale = "en_US" }: Props)
   //if converted ,new price else original price
   const localPrice = success ? price : priceWithDiscount
 
-
-
   if (isDetails) return <DetailsCourseCard locale={locale} />
+
+
+
   return (
-    <div onClick={onClick} className="rounded bg-gray-900 cursor-pointer shadow hover:scale-105 hover:shadow-2xl transition-transform duration-150 space-y-4">
+    <div onClick={onClick} className="h-full rounded bg-gray-900 cursor-pointer shadow hover:scale-105 hover:shadow-2xl transition-transform duration-150 space-y-4">
       <img src={thumbnail} alt={course.title} className="w-full h-48 object-cover rounded-t" />
       <div className="p-4">
         <h2 className="title">{course.title}</h2>
@@ -62,15 +67,22 @@ const CourseCard = ({ course, view = 'home', onClick, locale = "en_US" }: Props)
         <p className="text-sm">Enrolled: {course.totalEnrolled ?? 0}</p>
 
         {isCourses && (
-          <div className="flex justify-between mt-2 text-xs">
+          <div className="flex justify-between mt-2 text-xs items-center">
             <span>🕒 {course.duration}</span>
             <span>🎯 {capitalize(course.level)}</span>
             <span>
               {flags[course.language!] ?? '🏳️'} {capitalize(course.language)}
             </span>
+            {
+              isInstructorMode &&
+              <InstructorCourseManageOptions courseId={course.id!}  />
+            }
           </div>
         )}
+
+
       </div>
+
     </div>
   )
 }

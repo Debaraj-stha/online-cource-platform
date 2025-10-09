@@ -10,11 +10,13 @@ import ErrorCard from './ErrorCard'
 import type { LoadCourseOptions } from '../store/reducer-types/course'
 import useLoadInstructorCourses from '../hooks/useLoadInstructorCourses'
 import NoCourseMessageCard from './NoCourseMessageCard'
+
 interface Props {
   includeStudent?: boolean
 }
 const InstructorRecentCourses = ({ includeStudent = true }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
+
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const { recentCourses } = useSelector((state: RootState) => state.instructor)
@@ -59,7 +61,6 @@ const InstructorRecentCourses = ({ includeStudent = true }: Props) => {
 
 
 
-
   return (
     <div
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10"
@@ -80,7 +81,7 @@ const InstructorRecentCourses = ({ includeStudent = true }: Props) => {
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-200 course-card"
                 style={{}}
               >
-                <CourseCard course={course} view="courses" />
+                <CourseCard course={course} view="courses"  isInstructorMode={true} />
                 {
                   includeStudent && <div className="bg-gray-100 px-4 py-2 text-center text-sm text-gray-700 font-medium">
                     👥 {course.totalEnrolled ?? 0} students

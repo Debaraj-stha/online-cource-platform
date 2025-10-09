@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import type { Course, View } from '../@types/course';
 import CourseCard from './CourceCard';
 import { useCourseGridAnimation } from '../hooks/useCourseGridAnimation';
-import { getLocalCurrencyFromIP } from '../utils/helper';
+import { useNavigate } from 'react-router-dom';
 
 const CourcesGrid = ({
   courses,
@@ -13,7 +13,7 @@ const CourcesGrid = ({
   view?: View,
   id: string
 }) => {
-
+  const navigate = useNavigate();
   const gridRef = useCourseGridAnimation(id, [courses]); //custom hook to manage animation
 
   return (
@@ -23,7 +23,7 @@ const CourcesGrid = ({
     >
       {courses.map((course, index) => (
         <div key={`${index}-${course.id}`} className="course-card card " style={{ opacity: 0 }}>
-          <CourseCard course={course} view={view} />
+          <CourseCard course={course} view={view} onClick={() => navigate(`/courses/${course.id}`)} />
         </div>
       ))}
     </div>

@@ -3,10 +3,10 @@ import StepControlButton from "./StepControlButton";
 import StepIndecitor from "./StepIndecitor";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
-import { createCourse, setCourseFields, setFileFields, type EditableFields } from "../../store/reducers/courseReducer";
+import { createCourse, setCourseFields, setFileFields } from "../../store/reducers/courseReducer";
 import { getCourseFormData } from "../../utils/helper";
 import { useNavigate } from "react-router-dom";
-import type { CourseFAQ, CourseResource, Module, TargetAudience } from "../../@types/course";
+import type { EditableFields } from "../../store/reducer-types/course";
 
 const CreateCourseFAQ = lazy(() => import("./CreateCourseFAQ"));
 const CreateCouseResources = lazy(() => import("./CreateCouseResources"));
@@ -26,23 +26,6 @@ const CreateCourse = () => {
   const previewRef = useRef<HTMLDivElement>(null)
   const thumbnailRef = useRef<HTMLDivElement>(null)
 
-  const [modules, setModules] = useState<Module[]>([
-    {
-      id: Date.now().toString(), title: "", lessons: [
-        { id: Date.now().toString(), title: "", duration: "", resources: [] }
-      ],
-    },
-  ]);
-  const [faqs, setFaqs] = useState<CourseFAQ[]>([
-    { answer: "", question: "", id: new Date().getTime().toString(), courseId: `demo-${new Date().getTime()}` }
-  ])
-   const [targetAudiences, setTargetAudiences] = useState<TargetAudience[]>([{ description: "", role: "", id: `${new Date().getTime()}` }])
-
-  const [resources, setResources] = useState<CourseResource[]>([{
-            title: "", url: "", id: `${new Date().getTime()}`, courseId: "demo",
-            type: "code", size: undefined,
-            createdAt: `${new Date().toISOString()}`
-        }])
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     if (type === "checkbox") {
@@ -118,7 +101,7 @@ const CreateCourse = () => {
       {
         step == 3 && <div className="space-y-4">
           <Suspense>
-            <CreateCourseModule modules={modules} setModules={setModules} />
+            <CreateCourseModule/>
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -126,7 +109,7 @@ const CreateCourse = () => {
       {
         step == 4 && <div className="space-y-4">
           <Suspense>
-            <CreateCourseFAQ faqs={faqs} setFaqs={setFaqs} />
+            <CreateCourseFAQ  />
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -134,7 +117,7 @@ const CreateCourse = () => {
       {
         step == 5 && <div className="space-y-4">
           <Suspense>
-            <CreateCouseResources resources={resources}  setResources={setResources}/>
+            <CreateCouseResources/>
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>

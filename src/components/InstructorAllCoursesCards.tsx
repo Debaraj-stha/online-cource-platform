@@ -1,4 +1,4 @@
-import  { lazy, Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 const InstructorRecentCourses = lazy(() => import("./InstructorRecentCourses"))
 const InstructorCourses = lazy(() => import("./InstructorCourses"))
 const InstructorPopularCourses = lazy(() => import("./InstructorPopularCourses"))

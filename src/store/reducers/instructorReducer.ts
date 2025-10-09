@@ -12,6 +12,7 @@ interface InstructorStata {
     courses: Course[] | []
     totalPages: number | null
     totalCourses: number | null
+    openedInstructorCourseManageOptionsId: string | null
 
 
 }
@@ -24,7 +25,8 @@ const initialState: InstructorStata = {
     courses: [],
     popularCourses: [],
     totalCourses: null,
-    totalPages: null
+    totalPages: null,
+    openedInstructorCourseManageOptionsId: null,
 
 }
 
@@ -82,7 +84,7 @@ export const loadInstructorPopularCourse = createAsyncThunk(
             },
                 false,
                 dispatch)
-            console.log("popular course",res)
+            console.log("popular course", res)
             return {
                 courses: res.courses ?? []
             }
@@ -151,7 +153,14 @@ const instructorSlice = createSlice(
         name: "instructor",
         initialState,
         reducers: {
-
+            toggleCourseManageOptions: (state, action: PayloadAction<{ courseId: string | null }>) => {
+                const { courseId } = action.payload
+                if (state.openedInstructorCourseManageOptionsId === courseId) {
+                    state.openedInstructorCourseManageOptionsId = null
+                } else {
+                    state.openedInstructorCourseManageOptionsId = courseId
+                }
+            }
         },
         extraReducers: (builder) => {
             builder.addCase(loadInstructorRecentCourse.fulfilled, (state, action: PayloadAction<{ courses: Course[] | [] }>) => {
@@ -191,5 +200,5 @@ const instructorSlice = createSlice(
         }
     }
 )
-export const { } = instructorSlice.actions
+export const { toggleCourseManageOptions} = instructorSlice.actions
 export default instructorSlice.reducer
