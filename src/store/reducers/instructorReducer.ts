@@ -3,8 +3,27 @@ import type { Course } from "../../@types/course";
 import type { LoadCourseOptions } from "../reducer-types/course";
 import apiHelper from "../../utils/apiHelper";
 import { getCookie } from "../../utils/manage-cookie";
+import type { Instructor, SocialLinks } from "../../@types/instructor";
+import { setMessageWithTimeout, type Message } from "./messageReducer";
+import type { AppDispatch } from "../store";
+export interface InstructorPayload {
+    title?: string;
+    bio?: string;
+    specialization?: string;
+    experience?: number;
+    socialLinks?: SocialLinks[];
+}
 
-interface InstructorStata {
+export interface ProfileEditPayload extends InstructorPayload {
+    name?: string;
+    profilePicture?: File | null; // profile image
+}
+
+
+type ProfileEditFieldValue<K extends keyof ProfileEditPayload> = ProfileEditPayload[K];
+
+
+interface InstructorState {
     error: string | null
     loading: boolean
     recentCourses: Course[] | []
@@ -13,12 +32,14 @@ interface InstructorStata {
     totalPages: number | null
     totalCourses: number | null
     openedInstructorCourseManageOptionsId: string | null
-
-
+    instructor: Instructor | null,
+    loadingInstructorDetails?: boolean
+    profileEditPayload?: ProfileEditPayload
+    isProfileUpdating?: boolean
 }
 
 
-const initialState: InstructorStata = {
+const initialState: InstructorState = {
     error: null,
     loading: false,
     recentCourses: [],
@@ -26,7 +47,9 @@ const initialState: InstructorStata = {
     popularCourses: [],
     totalCourses: null,
     totalPages: null,
+    instructor: null,
     openedInstructorCourseManageOptionsId: null,
+    isProfileUpdating: false
 
 }
 
@@ -61,8 +84,6 @@ export const loadInstructorRecentCourse = createAsyncThunk(
         }
     }
 )
-
-
 
 export const loadInstructorPopularCourse = createAsyncThunk(
     "loadInstructorPopularCourse",
@@ -148,6 +169,68 @@ export const loadInstructorCourses = createAsyncThunk(
     }
 )
 
+export const loadInstructorDetails = createAsyncThunk(
+    "loadInstructorDetails",
+    async (_, { rejectWithValue, dispatch }) => {
+        try {
+            const res = await apiHelper(`${SERVER_URL}/instructor/details`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                }
+            },
+                false,
+                dispatch)
+            return {
+                instructor: res.instructor
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+export const updateProfile = createAsyncThunk(
+    "updateProfile",
+    async (profile: ProfileEditPayload, { rejectWithValue, dispatch }) => {
+        try {
+
+            const formData = new FormData()
+           
+            Object.entries(profile).forEach(([key, value]) => {
+                console.log("key",key,"value",value)
+                if(key==="socialLinks"){
+                    formData.append("socialLinks",JSON.stringify(value))
+                    return
+                }
+                    formData.append(key, value)
+    
+            })
+ 
+            const res = await apiHelper(`${SERVER_URL}/instructor/update-profile`, {
+                body: formData,
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+                method: "PATCH"
+            },
+                true,
+                dispatch
+            )
+            if (res) {
+                const message: Message = {
+                    messages: "Profile updated successfully",
+                    type: "info",
+                    id: Date.now()
+                };
+                (dispatch as AppDispatch)(setMessageWithTimeout(message))
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
 const instructorSlice = createSlice(
     {
         name: "instructor",
@@ -160,6 +243,24 @@ const instructorSlice = createSlice(
                 } else {
                     state.openedInstructorCourseManageOptionsId = courseId
                 }
+            },
+            setProfileEditPayloadField<K extends keyof ProfileEditPayload>(state: InstructorState, action: PayloadAction<{ field: K; value: ProfileEditFieldValue<K> }>) {
+                const { field, value } = action.payload;
+                if (!state.profileEditPayload) {
+                    state.profileEditPayload = {};
+                }
+                state.profileEditPayload[field] = value;
+            },
+            setInstructorProfilePayload(state: InstructorState, action: PayloadAction<{ payload: InstructorPayload }>) {
+                const { payload } = action.payload;
+                state.profileEditPayload = {
+                    ...state.profileEditPayload,
+                    ...payload
+                };
+
+            },
+            clearProfileEditPayload(state) {
+                state.profileEditPayload = undefined;
             }
         },
         extraReducers: (builder) => {
@@ -197,8 +298,33 @@ const instructorSlice = createSlice(
                 state.error = action.payload as string
                 state.loading = false
             })
+            builder.addCase(loadInstructorDetails.pending, (state) => {
+                state.loadingInstructorDetails = true
+            })
+            builder.addCase(loadInstructorDetails.fulfilled, (state, action: PayloadAction<{ instructor: Instructor }>) => {
+                state.instructor = action.payload.instructor
+                state.loadingInstructorDetails = false
+            })
+            builder.addCase(loadInstructorDetails.rejected, (state, action) => {
+                state.error = action.payload as string
+                state.loadingInstructorDetails = false
+            })
+            builder.addCase(updateProfile.pending, (state) => {
+                state.isProfileUpdating = true
+            })
+            builder.addCase(updateProfile.rejected, (state, action) => {
+                state.isProfileUpdating = false
+                state.error = action.payload as string
+            })
+            builder.addCase(updateProfile.fulfilled, (state) => {
+                state.isProfileUpdating = false
+
+            })
         }
     }
 )
-export const { toggleCourseManageOptions} = instructorSlice.actions
+export const {
+    toggleCourseManageOptions,
+    setInstructorProfilePayload,
+    setProfileEditPayloadField } = instructorSlice.actions
 export default instructorSlice.reducer

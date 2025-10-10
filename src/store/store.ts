@@ -16,13 +16,14 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["course/setFileFields"], 
-        ignoredPaths: ["course.course.thumbnail", "course.course.certificate"],
+        ignoredActions: ["course/setFileFields","instructor/setProfileEditPayloadField"], 
+        ignoredPaths: ["course.course.thumbnail", "course.course.certificate","instructor.profileEditPayload.profilePicture"],
 
       }
     })
 
 });
+
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

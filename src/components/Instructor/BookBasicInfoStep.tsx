@@ -9,6 +9,7 @@ const BookBasicInfoStep = ({ course, handleChange, handleNext, ref }: {
     ref: React.Ref<HTMLDivElement>
 }) => {
 
+    console.log("course in basic info step", course);
     return (
         <div className="space-y-6">
             {/* Basic Info */}

@@ -5,8 +5,9 @@ export interface InstructorCertificate {
     date: string
     imageUrl: string | null
 }
+export type SocialLinkPlatform="email" | "phone" | "website" | "linkedin" | "github" | "facebook" | "x" | "instagram" | "discord"
 export interface SocialLinks {
-    platform: "email" | "phone" | "website" | "linkedin" | "github" | "facebook" | "x" | "instagram" | "discord",
+    platform: SocialLinkPlatform
     url: string
 }
 

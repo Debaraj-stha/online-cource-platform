@@ -99,7 +99,7 @@ const AppRoutes = () => {
             <Route path="courses" element={<Instructorcourses />} />
             <Route path="course/:courseId/delete" element={<DeleteCourse />} />
             <Route path="create-course" element={<CreateCourse />} />
-            <Route path="edit-course" element={<EditCourse />} />
+            <Route path="edit-course/:courseId" element={<EditCourse />} />
             <Route path="settings" element={<Setting />} />
             <Route path="settings/change-email" element={<ChangeEmail />} />
             <Route path="profile" element={<Profile />} />

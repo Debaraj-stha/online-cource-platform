@@ -6,34 +6,20 @@ import InstructorProfileCard from '../components/InstructorProfileCard'
 import InstructorSocialLinks from '../components/InstructorSocialLinks'
 import { MdVerified } from 'react-icons/md'
 import Skeleton from '../components/Skeleton'
-import { useEffect, useRef } from 'react'
+import { use, useEffect, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import type { RootState } from '../store/store'
+import { useDispatch, useSelector } from 'react-redux'
+import type { AppDispatch, RootState } from '../store/store'
+
+import { loadInstructorDetails, setInstructorProfilePayload, setProfileEditPayloadField } from '../store/reducers/instructorReducer'
+import InstructorProfileCardDetails from '../components/InstructorProfileCardDetails'
 
 const Profile = () => {
-    //scroll to top at first
-    useEffect(() => {
-        const body = document.documentElement
-        body.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        })
-    }, [])
-    // Example user object
-    const user = {
-        name: "John Doe",
-        role: "instructor" as Roles,
-        isVerified: true
-    }
+    const { user } = useSelector((state: RootState) => state.auth)
 
-    const {popularCourses,newestCourses,highestRatedCourses}=useSelector((state:RootState)=>state.course)
-
-
-    const role: Roles = user.role
-    const instructor = popularCourses[0].instructor! ||newestCourses[0].instructor || highestRatedCourses[0].instructor
+    // const instructor = popularCourses[0].instructor! ||newestCourses[0].instructor || highestRatedCourses[0].instructor
 
     const loading = false
     const isUser = true //flag to user himself/herself has visited the page
@@ -42,6 +28,9 @@ const Profile = () => {
     const navigate = useNavigate()
     const state = location.state
     const from = state?.from
+    console.log("from", from, user.role)
+    const dispatch = useDispatch<AppDispatch>()
+
     //animating profile header
     useGSAP(() => {
         if (!ref) return
@@ -103,6 +92,41 @@ const Profile = () => {
 
     }, [ref])
 
+    useEffect(() => {
+        if (from === "instructor" && user.role === "instructor") {
+            dispatch(loadInstructorDetails())
+        }
+    }, [from])
+
+    //scroll to top at first
+    useEffect(() => {
+        const body = document.documentElement
+        body.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }, [])
+    const { instructor } = useSelector((state: RootState) => state.instructor)
+
+    const handleClick = () => {
+        dispatch(setProfileEditPayloadField({ field: "name", value: user?.name ?? "" }))
+        if (from === "instructor") {
+            dispatch(setInstructorProfilePayload({ payload: {
+                bio:instructor?.bio,
+                title:instructor?.title,
+                specialization:instructor?.specialization,
+                experience:instructor?.experience,
+                socialLinks:instructor?.socialLinks
+            } }))
+            navigate("/instructor/profile/edit", { state: { from: from } })
+        }
+        else {
+            navigate("/profile/edit")
+        }
+
+    }
+
+
     return (
         <div className="mx-auto p-6" >
             {/* profile header */}
@@ -126,12 +150,12 @@ const Profile = () => {
                         }
 
                         {
-                            role === "instructor" && user.isVerified && !loading && <MdVerified size={20} className='text-blue-500' />
+                            user.role === "instructor" && user.isVerified && !loading && <MdVerified size={20} className='text-blue-500' />
                         }
 
                     </div>
 
-                    <p className="text-gray-300 capitalize">{role}</p>
+                    <p className="text-gray-300 capitalize">{user.role}</p>
                     {loading &&
                         <>
                             <Skeleton extraClass='w-6xl h-6' />
@@ -141,34 +165,11 @@ const Profile = () => {
                     }
 
                     {/* if instructor and has title of job  */}
-                    {role === "instructor" && !loading && (
-                        <>
-                            {
-
-                                instructor.bio && (
-                                    <p className="text-sm text-gray-300  bio">{instructor.bio}</p>
-                                )
-                            }Profile
-                            {
-                                instructor.title && (
-                                    <p className="text-sm text-gray-300 instructor-title">{instructor.title}</p>
-                                )
-                            }
-                            <InstructorSocialLinks
-                                loading={false}
-                               social={instructor.socialLinks}
-
-                            />
-
-                        </>
-                    )
+                    {user.role === "instructor" && !loading && <InstructorProfileCardDetails instructor={instructor!} />
                     }
                     {
                         isUser && !loading && <button
-                            onClick={() => {
-                                from === "instructor" ? navigate("/instructor/profile/edit",{state:{from:from}}) :
-                                    navigate("/profile/edit")
-                            }}
+                            onClick={handleClick}
                             className="mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors">
                             Edit Profile
                         </button>
@@ -176,14 +177,14 @@ const Profile = () => {
 
                 </div>
             </div>
-            {role === "student" && (
+            {user.role === "student" && (
                 <>
                     <StudentProfileCard />
                 </>
             )}
             {/* only include instructor details if it was visited from instructor page */}
             {
-                from !== "instructor" && (
+                from === "instructor" && (
                     <InstructorProfileCard />
                 )}
 

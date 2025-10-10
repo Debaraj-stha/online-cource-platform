@@ -5,6 +5,7 @@ export interface User{
     id?:string|null
     confirmPassword:string|null
     role:Roles|null
-    profilePicture?:string|null
+    profilePicture?:string|null,
+    isVerified?:boolean
 }
 export type Roles="student"|"guest"|"admin"|"instructor"
