@@ -1,3 +1,5 @@
+import type { Review } from "./reviews"
+
 export interface InstructorCertificate {
     id: string
     title: string
@@ -21,8 +23,11 @@ export interface Instructor {
     totalStudents?: number;
     courses?: number;
     experience?: number; // in years
-    certificates?: InstructorCertificate,
+    certificates?: InstructorCertificate[],
     socialLinks?: SocialLinks[] | [],
     averageRating?: number
     totalCourses?:number
+    totalReviews?:number
+    targetAudience?:string[]
+    topReviews?: Review[]
 }

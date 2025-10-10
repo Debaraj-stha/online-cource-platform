@@ -9,6 +9,8 @@ interface Props {
   reviews: Review[]
 }
 const InstructorTopReviews = memo(({ reviews }: Props) => {
+
+
   const loading = true
   const ref = useRef<HTMLDivElement>(null)
   useGSAP(() => {
@@ -28,13 +30,17 @@ const InstructorTopReviews = memo(({ reviews }: Props) => {
     })
   }, { scope: ref })
 
+  if (!reviews.length) {
+    return <p className='text-gray-300'>No reviews available</p>
+  }
+
   return (
-    <div className={`${!loading ? "" : "bg-white"} rounded-2xl`} ref={ref}>
+    <div className={`${!loading && reviews.length ? "" : "bg-white"} rounded-2xl`} ref={ref}>
       {
         !loading ?
           <ReviewSkeleton />
           :
-          reviews.map((review) => <div className='instructor-review-card' style={{ opacity: "0", transform: "translateY(40px)" }}> <ReviewCard key={review.id} review={review} /></div>)
+          reviews.map((review) => <div className='instructor-review-card' style={{ opacity: "0", transform: "translateY(40px)" }}> <ReviewCard key={review.id} review={review} courseId={review.courseId} isInstructor={false} /></div>)
       }
     </div>
   )

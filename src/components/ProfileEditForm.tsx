@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import Input from './Input'
 import { FaUser } from 'react-icons/fa6'
 import { setProfileEditPayloadField, updateProfile, type InstructorPayload, type ProfileEditPayload } from '../store/reducers/instructorReducer'
@@ -6,6 +6,7 @@ import type { Instructor } from '../@types/instructor'
 import type { AppDispatch, RootState } from '../store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { socialPlatforms } from '../constants/instructors'
+import {  useNavigate } from 'react-router-dom'
 interface Props {
     from: string
 }
@@ -15,7 +16,7 @@ const ProfileEditForm = ({ from }: Props) => {
     const [filePreview, setFilePreview] = useState<string | null>(null)
     const dispatch = useDispatch<AppDispatch>()
     const { profileEditPayload } = useSelector((state: RootState) => state.instructor)
-
+    const  navigate=useNavigate()
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,7 +29,6 @@ const ProfileEditForm = ({ from }: Props) => {
                 const numValue = parseInt(value);
                 if (!isNaN(numValue)) {
                     // dispatch only if it's a valid number
-
                     dispatch(setProfileEditPayloadField({ field: name, value: numValue }));
                 }
             }
@@ -55,8 +55,8 @@ const ProfileEditForm = ({ from }: Props) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(updateProfile(profileEditPayload!))
-       
     };
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -70,6 +70,14 @@ const ProfileEditForm = ({ from }: Props) => {
             dispatch(setProfileEditPayloadField({ field: "profilePicture", value: file }));
         }
     };
+
+
+    useEffect(()=>{
+        //redirect on reload
+        if(from==="instructor" && !profileEditPayload?.name){
+             navigate("/instructor/profile",{state:{from:"instructor"}})
+        }
+    },[from,navigate,profileEditPayload?.name])
 
     return (
         <form

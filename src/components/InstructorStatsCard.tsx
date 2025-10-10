@@ -83,7 +83,7 @@ const InstructorStatsCard = ({
                     </>
                 ) : (
                     <>
-                        <span className="text-2xl text-blue-500">{averageRating}</span>
+                        <span className="text-2xl text-blue-500">{averageRating.toFixed(1)}</span>
                         <span className="text-gray-600 mt-1 flex items-center gap-1">
                             ⭐ Average Rating
                         </span>

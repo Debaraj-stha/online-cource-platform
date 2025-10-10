@@ -6,7 +6,6 @@ interface Props {
     instructor: Partial<Instructor>
 }
 const InstructorProfileCardDetails = ({ instructor }: Props) => {
-    console.log("instructor details in card", instructor)
     return (
         <>
             {
@@ -21,21 +20,11 @@ const InstructorProfileCardDetails = ({ instructor }: Props) => {
                 )
             }
             {
-                instructor?.specialization && (
-                    <p className="text-sm text-gray-300 instructor-title">{instructor.specialization}</p>
-                )
-            }
-            {
                 instructor?.experience && (
                     <p className="text-sm text-gray-300 instructor-title">Experience:{instructor.experience.toFixed(1)}</p>
                 )
             }
-            {
-                instructor?.totalCourses && (
-                    <p className="text-sm text-gray-300 instructor-title">Total Courses:{instructor.totalCourses}</p>
-                )
-            }
-            
+
             <InstructorSocialLinks
                 loading={false}
                 social={instructor?.socialLinks}

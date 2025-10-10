@@ -3,9 +3,12 @@ import RoundedSkeleton from './RoundedSkeleton'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+interface Props {
+    targetAudiences:string[]
+}
 
-const InstructorTargetAudience = memo(() => {
-    const targetAudiences = ["Beginners", "Intermediate learners", "Business professionals"]
+const InstructorTargetAudience = memo(({targetAudiences}:Props)=> {
+    // const targetAudiences = ["Beginners", "Intermediate learners", "Business professionals"]
     const loading = false
     const ref = useRef<HTMLDivElement>(null)
     useGSAP(() => {
