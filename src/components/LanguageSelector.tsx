@@ -5,17 +5,18 @@ const LanguageSelector = () => {
   const [selectedLocale, setSelectedLocale] = useState('en_Us');
 
   const locales = [
-    { code: 'en_US', label: 'USA', flag: '🇺🇸' },
-    { code: 'es_ES', label: 'Spain', flag: '🇪🇸' },
-    { code: 'fr_FR', label: 'France', flag: '🇫🇷' },
-    { code: 'np_Nep', label: 'Nepal', flag: '🇳🇵' },
-    { code: 'hi_IN', label: 'India', flag: '🇮🇳' },
+    { code: 'en_US', label: 'USA', flag: '🇺🇸', currency: "USD" },
+    { code: 'es_ES', label: 'Spain', flag: '🇪🇸', currency: "EUR" },
+    { code: 'fr_FR', label: 'France', flag: '🇫🇷', currency: "EUR" },
+    { code: 'np_Nep', label: 'Nepal', flag: '🇳🇵', currency: "NPR" },
+    { code: 'hi_IN', label: 'India', flag: '🇮🇳', currency: "INR" },
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLang = e.target.value;
     setSelectedLocale(newLang);
     i18n.changeLanguage(newLang);
+    localStorage.setItem("currency", locales.find((l) => l.code === newLang)?.currency!)
     localStorage.setItem('i18nextLng', newLang);
   };
 

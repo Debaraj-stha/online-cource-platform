@@ -15,7 +15,7 @@ i18n
     debug: true,
     fallbackLng: 'en_US',
     interpolation: { escapeValue: false },
-       resources: {
+    resources: {
       en_US: { translation: enTranslation },
       np_Nep: { translation: npTranslation },
       fr_FR: { translation: frTranslation },
