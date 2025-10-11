@@ -1,10 +1,31 @@
 import React from 'react'
 import PopupWindow from '../PopupWindow'
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../store/store';
+import { deleteCourse } from '../../store/reducers/instructorReducer';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const DeleteCourse = () => {
+    const [isProcessing, setIsProcessing] = React.useState(false);
     const [isDeleted, setIsDeleted] = React.useState(false);
-   
+    const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate();
+    const {courseId} =  useParams()
+
+    const handleDelete = async () => {
+        try {
+            setIsProcessing(true);
+            const res = await dispatch(deleteCourse({ courseId: courseId! }));
+            if (res.meta.requestStatus === "fulfilled") {
+                setIsDeleted(true);
+            }
+        }
+        finally {
+            setIsProcessing(false);
+        }
+
+    };
 
     return (
         <div>
@@ -17,7 +38,9 @@ const DeleteCourse = () => {
                         <p className='text-gray-600'>The course has been successfully deleted.</p>
                         <div className='flex justify-end'>
                             <button
-                                onClick={() => setIsDeleted(false)}
+                                onClick={() => {
+                                    navigate(-1);
+                                }}
                                 className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors'
                             >
                                 Close
@@ -36,13 +59,17 @@ const DeleteCourse = () => {
                         </p>
                         <div className='flex justify-end space-x-2'>
                             <button
-                                onClick={() => setIsDeleted(false)}
+                                onClick={() => {
+                                    navigate(-1);
+                                }}
+                                disabled={isProcessing}
                                 className='px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition-colors disabled:opacity-50'
                             >
                                 Cancel
                             </button>
                             <button
-                                onClick={() => setIsDeleted(true)}
+                                onClick={handleDelete}
+                                disabled={isProcessing}
                                 className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors disabled:opacity-50'
                             >
                                 Delete

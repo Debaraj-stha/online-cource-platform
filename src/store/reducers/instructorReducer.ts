@@ -196,17 +196,17 @@ export const updateProfile = createAsyncThunk(
         try {
 
             const formData = new FormData()
-           
+
             Object.entries(profile).forEach(([key, value]) => {
-                console.log("key",key,"value",value)
-                if(key==="socialLinks"){
-                    formData.append("socialLinks",JSON.stringify(value))
+                console.log("key", key, "value", value)
+                if (key === "socialLinks") {
+                    formData.append("socialLinks", JSON.stringify(value))
                     return
                 }
-                    formData.append(key, value)
-    
+                formData.append(key, value)
+
             })
- 
+
             const res = await apiHelper(`${SERVER_URL}/instructor/update-profile`, {
                 body: formData,
                 headers: {
@@ -220,6 +220,32 @@ export const updateProfile = createAsyncThunk(
             if (res) {
                 const message: Message = {
                     messages: "Profile updated successfully",
+                    type: "info",
+                    id: Date.now()
+                };
+                (dispatch as AppDispatch)(setMessageWithTimeout(message))
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+export const deleteCourse = createAsyncThunk(
+    "deleteCourse",
+    async ({ courseId }: { courseId: string }, { rejectWithValue, dispatch }) => {
+        try {
+            const res = await apiHelper(`${SERVER_URL}/course/${courseId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                }
+            },
+                false,
+                dispatch)
+            if (res) {
+                const message: Message = {
+                    messages: "Course deleted successfully",
                     type: "info",
                     id: Date.now()
                 };
