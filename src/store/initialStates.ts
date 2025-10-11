@@ -42,5 +42,7 @@ export const courseInitialState: CourseState = {
     },
     enrolledCourseIds: [],
     searchQuery: "",
-    selectedCategory: "all"
+    selectedCategory: "all",
+    courseUpdateError: null,
+    courseUpdating: false
 };

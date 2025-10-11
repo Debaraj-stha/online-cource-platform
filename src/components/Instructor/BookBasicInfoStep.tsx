@@ -2,14 +2,14 @@ import React from 'react'
 import Input from '../Input'
 import type { Course } from '../../@types/course'
 
-const BookBasicInfoStep = ({ course, handleChange, handleNext, ref }: {
+const BookBasicInfoStep = ({ course, handleChange, handleNext, ref, isEditMode }: {
     course: Partial<Course>,
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
     handleNext: () => void,
-    ref: React.Ref<HTMLDivElement>
+    ref: React.Ref<HTMLDivElement>,
+    isEditMode?: boolean
 }) => {
 
-    console.log("course in basic info step", course);
     return (
         <div className="space-y-6">
             {/* Basic Info */}
@@ -69,45 +69,54 @@ const BookBasicInfoStep = ({ course, handleChange, handleNext, ref }: {
                 />
             </div>
 
-            <div className="flex items-center gap-2 cursor-pointer">
-                <input
-                    type="checkbox"
-                    name="isFree"
-                    id='isFree'
-                    className='cursor-pointer accent-blue-500'
-                    checked={course.isFree || false}
-                    onChange={handleChange}
-                />
-                <label htmlFor='isFree' className='cursor-pointer accent-blue-500'>Mark as Free</label>
 
-            </div>
-            <div className="flex items-center gap-2">
-                <input
-                    type="checkbox"
-                    name="isPublished"
-                    id='isPublished'
-                    className='cursor-pointer accent-blue-500'
-                    checked={course.isPublished || false}
-                    onChange={handleChange}
-                />
-                <label htmlFor='isPublished' className='cursor-pointer accent-blue-500'>Publish</label>
+            {/* donot render on edit mode */}
+            {
+                !isEditMode && (
+                    <>
+                        <div className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="isFree"
+                                id='isFree'
+                                className='cursor-pointer accent-blue-500'
+                                checked={course.isFree || false}
+                                onChange={handleChange}
+                            />
+                            <label htmlFor='isFree' className='cursor-pointer accent-blue-500'>Mark as Free</label>
 
-            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                name="isPublished"
+                                id='isPublished'
+                                className='cursor-pointer accent-blue-500'
+                                checked={course.isPublished || false}
+                                onChange={handleChange}
+                            />
+                            <label htmlFor='isPublished' className='cursor-pointer accent-blue-500'>Publish</label>
 
+                        </div>
+                    </>
+                )
+            }
 
-            <div>
-                <label className="block text-sm">Thumbnail</label>
-                <input
-                    type="file"
-                    name="thumbnail"
-                    accept="image/*"
-                    onChange={handleChange}
-                    className="w-full p-2 rounded border border-gray-700"
-                />
-                <div ref={ref} className="w-96">
+            {
+                !isEditMode &&
+                <div>
+                    <label className="block text-sm">Thumbnail</label>
+                    <input
+                        type="file"
+                        name="thumbnail"
+                        accept="image/*"
+                        onChange={handleChange}
+                        className="w-full p-2 rounded border border-gray-700"
+                    />
+                    <div ref={ref} className="w-96">
+                    </div>
                 </div>
-            </div>
-
+            }
 
 
             <button

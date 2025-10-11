@@ -202,6 +202,12 @@
     animation: animate-scale-down 0.3s ease-in 1 forwards;
   }
 
+  .animate-fadeIn {
+    animation: fadeIn 0.25s ease-in-out;
+  }
+
+ 
+
   .animation-delay-200 {
     animation-delay: 200ms;
   }
@@ -271,5 +277,17 @@
       transform: scale(1);
     }
   }
+   @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
 
 }

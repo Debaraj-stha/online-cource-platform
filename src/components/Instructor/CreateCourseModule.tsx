@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../Input";
 import { CgAdd, CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,15 +9,42 @@ import {
     updateDynamicField,
 } from "../../store/reducers/courseReducer";
 import type { Module, Lesson } from "../../@types/course";
+import CourseLessonResource from "./CourseLessonResource";
+import { BsChevronUp, BsChevronExpand } from "react-icons/bs";
 
-const CreateCourseModule = () => {
+
+interface Props {
+    isEditMode?: boolean
+}
+
+const CreateCourseModule = ({ isEditMode = false }: Props) => {
+    const [isCollapsed, setCollapsed] = useState<{ [key: number]: boolean }>({})
+
     const dispatch = useDispatch<AppDispatch>();
     const module = useSelector(
         (state: RootState) => state.course.course.module
     );
-    useEffect(()=>{
+
+
+    useEffect(() => {
         addModule()
-    },[])
+    }, [])
+
+    //collapsed modules by default in editmode
+    useEffect(() => {
+        if (isEditMode && module?.length) {
+            const moduleIndex: { [key: number]: boolean } = {};
+            module.forEach((_, index) => (moduleIndex[index] = true));
+            setCollapsed(moduleIndex);
+        }
+    }, [isEditMode, module]);
+
+    const toggleCollapse = (index: number) => {
+        setCollapsed((prev) => ({
+            ...prev,
+            [index]: !prev[index],
+        }));
+    };
 
     const addModule = () => {
         console.log("module added")
@@ -109,112 +136,114 @@ const CreateCourseModule = () => {
     };
 
 
-    const updateLessonResources = (
-        moduleId: string,
-        lessonId: string,
-        value: string
-    ) => {
-        const currentModule = module?.find(m => m.id === moduleId)
-        const currentLessons = currentModule?.lessons ?? []
-        const updatedLessons = currentLessons.map((l) => l.id === lessonId ? { ...l, resources: value.split(",").map((r) => r.trim()) } : l)
-        dispatch(updateDynamicField({
-            field: "module",
-            id: moduleId,
-            value: {
-                lessons: updatedLessons
-            }
-        }))
 
-    };
 
     return (
         <div className="input_section">
             <h2 className="title">Course Modules</h2>
 
-            {(module || []).map((module) => (
-                <div
-                    key={module.id}
-                    className="border border-gray-700 p-4 rounded space-y-4 group"
-                >
-                    {/* Module Name */}
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-                        <Input
-                            type="text"
-                            name={`module-${module.id}`}
-                            label="Module Name"
-                            placeholder="Module name"
-                            value={module.title}
-                            outerExtraClass="flex-1 w-full"
-                            textColorClass="text-gray-100"
-                            onChange={(e) => updateModuleName(module.id, e.target.value)}
-                        />
+            {(module || []).map((module, index) => {
+                const collapsed = isCollapsed[index];
+                return (
+                    <div
+                        key={module.id}
+                        className="border border-gray-700 p-4 rounded space-y-4 group transition-all duration-300"
+                    >
+                        {/* Module Header */}
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div className="flex items-center gap-2 w-full">
 
-                        <div className="hidden group-hover:flex gap-2">
-                            <button
-                                type="button"
-                                title="Add Lesson"
-                                className="primary-button inline-block"
-                                onClick={() => addLesson(module.id)}
-                            >
-                                <CgAdd />
-                            </button>
-                            <button
-                                type="button"
-                                title="Remove Module"
-                                className="danger-button"
-                                onClick={() => removeModule(module.id)}
-                            >
-                                <CgClose />
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Lessons */}
-                    <div className="space-y-2 pl-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {module.lessons.map((lesson) => (
-                            <div key={lesson.id} className="flex gap-2 items-center">
                                 <Input
                                     type="text"
-                                    name="title"
-                                    placeholder="Lesson title"
-                                    value={lesson.title}
-                                    extraClass="flex-1 w-full"
+                                    name={`module-${module.id}`}
+                                    label="Module Name"
+                                    placeholder="Module name"
+                                    value={module.title}
+                                    outerExtraClass="flex-1 w-full"
                                     textColorClass="text-gray-100"
-                                    onChange={(e) => updateLesson(e, module.id, lesson.id)}
-                                />
-                                <Input
-                                    type="text"
-                                    name="duration"
-                                    placeholder="Lesson duration"
-                                    value={lesson.duration}
-                                    extraClass="flex-1 w-full"
-                                    textColorClass="text-gray-100"
-                                    onChange={(e) => updateLesson(e, module.id, lesson.id)}
-                                />
-                                <Input
-                                    type="text"
-                                    name="resources"
-                                    placeholder="Lesson resources"
-                                    value={lesson.resources ? lesson.resources.join(",") : ""}
-                                    extraClass="flex-1 w-full"
-                                    textColorClass="text-gray-100"
-                                    onChange={(e) =>
-                                        updateLessonResources(module.id, lesson.id, e.target.value)
-                                    }
+                                    onChange={(e) => updateModuleName(module.id, e.target.value)}
                                 />
                                 <button
                                     type="button"
-                                    title="Remove lesson"
+                                    title={collapsed ? "Expand" : "Collapse"}
+                                    onClick={() => toggleCollapse(index)}
+                                    className="text-gray-300 hover:text-white transition"
+                                >
+                                    {collapsed ? <BsChevronExpand /> : <BsChevronUp />}
+                                </button>
+                            </div>
+
+                            <div className="hidden group-hover:flex gap-2">
+                                <button
+                                    type="button"
+                                    title="Add Lesson"
+                                    className="primary-button"
+                                    onClick={() => addLesson(module.id)}
+                                >
+                                    <CgAdd />
+                                </button>
+                                <button
+                                    type="button"
+                                    title="Remove Module"
                                     className="danger-button"
-                                    onClick={() => removeLesson(module.id, lesson.id)}
+                                    onClick={() => removeModule(module.id)}
                                 >
                                     <CgClose />
                                 </button>
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Collapsible Section */}
+                        {!collapsed && (
+                            <div className="space-y-2 pl-6 grid grid-cols-1 gap-4">
+                                {module.lessons.map((lesson) => (
+                                    <div
+                                        key={lesson.id}
+                                        className="flex flex-wrap gap-2 items-center border border-gray-700 p-3 rounded-md"
+                                    >
+                                        <Input
+                                            type="text"
+                                            name="title"
+                                            placeholder="Lesson title"
+                                            value={lesson.title}
+                                            extraClass="flex-1 w-full"
+                                            textColorClass="text-gray-100"
+                                            onChange={(e) => updateLesson(e, module.id, lesson.id)}
+                                        />
+                                        <Input
+                                            type="text"
+                                            name="duration"
+                                            placeholder="Lesson duration"
+                                            value={lesson.duration}
+                                            extraClass="flex-1 w-full"
+                                            textColorClass="text-gray-100"
+                                            onChange={(e) => updateLesson(e, module.id, lesson.id)}
+                                        />
+
+                                        <div className="w-full space-y-3">
+                                            <h3>Course Resources</h3>
+                                            <CourseLessonResource
+                                                resources={lesson.resources ?? []}
+                                                lessonId={lesson.id}
+                                                moduleId={module.id}
+                                            />
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            title="Remove lesson"
+                                            className="danger-button"
+                                            onClick={() => removeLesson(module.id, lesson.id)}
+                                        >
+                                            <CgClose />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
-                </div>
-            ))}
+                );
+            })}
 
             <button
                 type="button"
@@ -226,6 +255,7 @@ const CreateCourseModule = () => {
             </button>
         </div>
     );
+
 };
 
 export default CreateCourseModule;

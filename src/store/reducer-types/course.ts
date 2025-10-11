@@ -57,6 +57,8 @@ export interface CourseState {
     enrolledCourseIds: string[] | []
     searchQuery: string
     selectedCategory: "all" | Category
+    courseUpdating: boolean
+    courseUpdateError: string | null
 
 }
 

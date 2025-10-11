@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Category, Course } from "../../@types/course";
+import type { Category, Course, CourseFAQ, CourseResource, Module, ResourceType } from "../../@types/course";
 import { initialCourse } from "../../constants/initialCourse";
 import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
@@ -37,8 +37,7 @@ export const createCourse = createAsyncThunk(
             const res = await apiHelper(url,
                 {
                     method: "POST",
-                    body:
-                        courseData,
+                    body: courseData,
                     headers: {
                         "Authorization": `Bearer ${token}`
                     },
@@ -243,6 +242,7 @@ export const loadCourse = createAsyncThunk(
             const parsedData = user ? JSON.parse(user) : {}
             const url = `${SERVER_URL}/course/${courseId}?limit=${limit}&studentId=${parsedData.id}`
             const res = await apiHelper(url, { method: "GET" })
+            console.log("res", res)
             const courseDetails: DetailCourseState = {
                 course: res.course,
                 totalModules: res.totalModules,
@@ -433,10 +433,58 @@ export const updateReview = createAsyncThunk(
     }
 )
 
+export const updateCourse = createAsyncThunk(
+    "updateCourse",
+    async ({ courseId, courseData }: { courseId: string, courseData: any }, { rejectWithValue, dispatch }) => {
+        try {
+            console.log("courseData", courseData)
+            const url = `${SERVER_URL}/course/${courseId}`
+            const res = await apiHelper(url,
+                {
+                    method: "PATCH",
+                    body: courseData,
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                }, false, dispatch
+            )
+            if (res) {
+                const message: Message = {
+                    messages: "Course updated successfully",
+                    id: Date.now(),
+                    type: "info"
+                };
+                (dispatch as AppDispatch)(setMessageWithTimeout(message))
+            }
+            return res.course
+        }
+        catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+
 const courseReducer = createSlice({
     name: "course",
     initialState: courseInitialState,
     reducers: {
+        // set entire course object
+        setCourse(state, action: PayloadAction<Course>) {
+            state.course = action.payload
+        },
+        setModules(state, action: PayloadAction<Module[]>) {
+            if (state.course)
+                state.course.module = action.payload
+        },
+        setFAQs(state, action: PayloadAction<CourseFAQ[]>) {
+            if (state.course)
+                state.course.faq = action.payload
+        },
+        setResources(state, action: PayloadAction<CourseResource[]>) {
+            if (state.course)
+                state.course.resources = action.payload
+        },
         // generic safe setter
         setCourseFields<K extends keyof EditableFields>(
             state: CourseState,
@@ -679,11 +727,35 @@ const courseReducer = createSlice({
                 state.detailedCourse.reviews.push(review) // add updated one
             }
         })
+        //updating course
+        builder.addCase(updateCourse.pending, (state) => {
+            state.courseUpdating = true
+            state.courseUpdateError = null
+        })
+        builder.addCase(updateCourse.rejected, (state, action) => {
+            state.courseUpdating = false
+            state.courseUpdateError = action.payload as string
+        })
+        builder.addCase(updateCourse.fulfilled, (state, action: PayloadAction<Course>) => {
+            state.courseUpdating = false
+            if (action.payload) {
+                state.course = action.payload
+                if (state.detailedCourse) {
+                    state.detailedCourse.course = action.payload
+                }
+            }
+
+        })
 
     },
 });
 
 export const {
+
+    setCourse,
+    setModules,
+    setFAQs,
+    setResources,
     setCourseFields,
     resetCourse,
     setFileFields,

@@ -3,14 +3,14 @@ import StepControlButton from "./StepControlButton";
 import StepIndecitor from "./StepIndecitor";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
-import { createCourse, setCourseFields, setFileFields } from "../../store/reducers/courseReducer";
+import { createCourse, setCourseFields, setFileFields, updateCourse } from "../../store/reducers/courseReducer";
 import { getCourseFormData } from "../../utils/helper";
 import { useNavigate } from "react-router-dom";
 import type { EditableFields } from "../../store/reducer-types/course";
 import type { Course } from "../../@types/course";
 
 const CreateCourseFAQ = lazy(() => import("./CreateCourseFAQ"));
-const CreateCouseResources = lazy(() => import("./CreateCouseResources"));
+// const CreateCouseResources = lazy(() => import("./CreateCouseResources"));
 const CreateCourseTargetAudience = lazy(() => import("./CreateCourseTargetAudience"));
 const BookBasicInfoStep = lazy(() => import("./BookBasicInfoStep"));
 const BookClassificationStep = lazy(() => import("./BookClassificationStep"));
@@ -18,14 +18,14 @@ const CreateCourseModule = lazy(() => import("./CreateCourseModule"));
 const CreateCourseTags = lazy(() => import("./CreateCourseTags"));
 const CreateCoursePrerequisites = lazy(() => import("./CreateCoursePrerequisites"));
 const CreateWhatWillLearn = lazy(() => import("./CreateWhatWillLearn"));
-interface Props{
-    isEditMode?:boolean,
-    course:Course
+interface Props {
+  isEditMode?: boolean, //flag to indicate if it's edit mode
+  course: Course //course data to edit
 }
 
-const CreateEditCourse = ({isEditMode,course}:Props) => {
+const CreateEditCourse = ({ isEditMode, course }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
-  const { isProcessing } = useSelector((state: RootState) => state.course)
+  const { isProcessing, courseUpdating } = useSelector((state: RootState) => state.course)
   const { token, user } = useSelector((state: RootState) => state.auth)
   const navigate = useNavigate()
   const previewRef = useRef<HTMLDivElement>(null)
@@ -78,19 +78,56 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
 
   };
 
-  const [step, setStep] = useState(1)
-  const handleNext = () => setStep((prev) => prev + 1)
-  const handlePrev = () => setStep(prev => prev - 1)
-  const goToStep = (step: number) => setStep(step)
+  const [step, setStep] = useState(1);
+
+  const handleNext = () => setStep((prev) => prev + 1);
+  const handlePrev = () => setStep((prev) => prev - 1);
+  const goToStep = (step: number) => setStep(step);
+
+  const handleUpdate = async () => {
+    if (!course || !token) return;
+
+    // Stringify nested arrays properly
+    const tags = JSON.stringify(course.tags || []);
+    const prerequisites = JSON.stringify(course.prerequisites || []);
+    const whatYouWillLearn = JSON.stringify(course.whatYouWillLearn || []);
+    const modules = JSON.stringify(course.module || []);
+
+    try {
+      const result = await dispatch(
+        updateCourse({
+          courseId: course.id,
+          courseData: {
+            ...course,
+            tags,
+            prerequisites,
+            whatYouWillLearn,
+            module: modules,
+          },
+        })
+      );
+
+      if (updateCourse.fulfilled.match(result)) {
+        navigate("/instructor/courses/");
+      } else {
+        console.error("Update failed:", result);
+      }
+    } catch (error) {
+      console.error("Error updating course:", error);
+    }
+  };
+
+
+
 
   return (
     <div className="container mt-6 md:mt-14 lg:mt-20 xl:mt-32 bg-gray-900 rounded-xl space-y-6 p-6 text-white">
 
-      <h1 className="text-2xl font-bold">{ isEditMode ?`Edit Course: ${course.title}` :"Create Course"}</h1>
+      <h1 className="text-2xl font-bold">{isEditMode ? `Edit Course: ${course.title}` : "Create Course"}</h1>
       <StepIndecitor steps={10} currentStep={step} onClick={goToStep} />
       {
         step === 1 && <Suspense>
-          <BookBasicInfoStep course={course} handleChange={handleChange} handleNext={handleNext} ref={thumbnailRef} />
+          <BookBasicInfoStep course={course} handleChange={handleChange} handleNext={handleNext} ref={thumbnailRef} isEditMode={isEditMode} />
         </Suspense>
 
       }
@@ -106,7 +143,7 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
       {
         step == 3 && <div className="space-y-4">
           <Suspense>
-            <CreateCourseModule/>
+            <CreateCourseModule isEditMode={isEditMode} />
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -114,7 +151,7 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
       {
         step == 4 && <div className="space-y-4">
           <Suspense>
-            <CreateCourseFAQ  />
+            <CreateCourseFAQ />
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
@@ -122,21 +159,13 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
       {
         step == 5 && <div className="space-y-4">
           <Suspense>
-            <CreateCouseResources/>
-          </Suspense>
-          <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
-        </div>
-      }
-      {
-        step == 6 && <div className="space-y-4">
-          <Suspense>
             <CreateCourseTargetAudience />
           </Suspense>
           <StepControlButton onNext={handleNext} onPrevious={handlePrev} />
         </div>
       }
       {
-        step == 7 &&
+        step == 6 &&
         <div className="space-y-4">
           <Suspense>
             <CreateCourseTags tags={course.tags} handleChange={handleChange} />
@@ -146,7 +175,7 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
         </div>
       }
       {
-        step === 8 && <div className="space-y-4">
+        step === 7 && <div className="space-y-4">
           <Suspense>
             <CreateCoursePrerequisites handleChange={handleChange} prerequisites={course.prerequisites} />
           </Suspense>
@@ -154,7 +183,7 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
         </div>
       }
       {
-        step === 9 && <div className="space-y-4">
+        step === 8 && <div className="space-y-4">
           <Suspense>
             <CreateWhatWillLearn handleChange={handleChange} whatYouWillLearn={course.whatYouWillLearn} selectedCategory="ai-ml" />
           </Suspense>
@@ -164,7 +193,7 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
       }
 
       {
-        step === 10 && <div className="space-y-6">
+        step === 9 && <div className="space-y-6">
           <h2 className="text-xl font-semibold text-gray-200">Certificate</h2>
 
           <div className="flex flex-col items-start">
@@ -188,7 +217,7 @@ const CreateEditCourse = ({isEditMode,course}:Props) => {
           <div ref={previewRef} className="w-96">
           </div>
 
-          <StepControlButton onNext={handleSubmit} disabled={isProcessing} onPrevious={handlePrev} />
+          <StepControlButton onNext={isEditMode ? handleUpdate : handleSubmit} disabled={isEditMode ? courseUpdating : isProcessing} onPrevious={handlePrev} />
         </div>
 
       }
