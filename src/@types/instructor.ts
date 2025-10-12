@@ -7,10 +7,20 @@ export interface InstructorCertificate {
     date: string
     imageUrl: string | null
 }
-export type SocialLinkPlatform="email" | "phone" | "website" | "linkedin" | "github" | "facebook" | "x" | "instagram" | "discord"
+export type SocialLinkPlatform = "email" | "phone" | "website" | "linkedin" | "github" | "facebook" | "x" | "instagram" | "discord"
 export interface SocialLinks {
     platform: SocialLinkPlatform
     url: string
+}
+
+export interface InstructorStats {
+    publishedCourses?: number
+    unpublishedCourses?: number
+    totalEarnings?: number,
+    averageRating?: number
+    totalCourses?: number
+    totalReviews?: number
+    totalStudents?: number
 }
 
 export interface Instructor {
@@ -20,14 +30,10 @@ export interface Instructor {
     profilePicture?: string | null; // profile image
     specialization?: string
     // Teaching stats
-    totalStudents?: number;
-    courses?: number;
     experience?: number; // in years
     certificates?: InstructorCertificate[],
     socialLinks?: SocialLinks[] | [],
-    averageRating?: number
-    totalCourses?:number
-    totalReviews?:number
-    targetAudience?:string[]
+    targetAudience?: string[]
     topReviews?: Review[]
+    stats: InstructorStats
 }

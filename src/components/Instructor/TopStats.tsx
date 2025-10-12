@@ -9,18 +9,22 @@ import { FaBookOpen } from 'react-icons/fa6';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Skeleton from '../Skeleton';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 
 const TopStats = () => {
+    const { instructor } = useSelector((state: RootState) => state.instructor)
     const stats = [
-        { label: "Total Students", value: 1240, icon: FaUsers, color: "bg-blue-500" },
-        { label: "Courses Published", value: 8, icon: FaBookOpen, color: "bg-green-500" },
-        { label: "Total Earnings", value: "$12,340", icon: FaDollarSign, color: "bg-yellow-500" },
-        { label: "Avg. Rating", value: "4.6", icon: FaStar, color: "bg-purple-500" },
-        { label: "Unpublished Courses", value: "3", icon: FaBook, color: "bg-orange-500" },
+        { label: "Total Students", value: instructor?.stats?.totalStudents ?? 0, icon: FaUsers, color: "bg-blue-500" },
+        { label: "Courses Published", value: instructor?.stats?.publishedCourses ?? 0, icon: FaBookOpen, color: "bg-green-500" },
+        { label: "Total Earnings", value: `$ ${(instructor?.stats?.totalEarnings ?? 0).toFixed(1)}`, icon: FaDollarSign, color: "bg-yellow-500" },
+        { label: "Avg. Rating", value: `${(instructor?.stats?.averageRating ?? 0).toFixed(1)}`, icon: FaStar, color: "bg-purple-500" },
+        { label: "Unpublished Courses", value: instructor?.stats?.unpublishedCourses ?? 0, icon: FaBook, color: "bg-orange-500" },
     ];
+
     const ref = useRef<HTMLDivElement>(null)
-    const loading = true
+    const loading = false
     useGSAP(() => {
         if (!ref.current) return
         gsap.from(".stats-card", {

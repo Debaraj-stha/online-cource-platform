@@ -34,7 +34,7 @@ const Notifications = () => {
     })
   }, { scope: ref })
 
-  const loading = true
+  const loading = false
 
   return (
     <div className="bg-gray-800 text-white p-6 rounded-xl shadow-md">

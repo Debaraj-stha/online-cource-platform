@@ -29,10 +29,10 @@ const InstructorProfileCard = () => {
 
       <Suspense fallback={<p className='text-white'>Loading instructor stats</p>}>
         <InstructorStatsCard
-          averageRating={instructor?.averageRating}
-          totalCourses={instructor?.totalCourses}
-          totalReviews={instructor?.totalReviews}
-          totalStudents={instructor?.totalStudents}
+          averageRating={instructor?.stats?.averageRating}
+          totalCourses={instructor?.stats?.totalCourses}
+          totalReviews={instructor?.stats?.totalReviews}
+          totalStudents={instructor?.stats?.totalStudents}
         />
       </Suspense>
       <InstructorAllCoursesCards />
@@ -54,7 +54,7 @@ const InstructorProfileCard = () => {
         <h2 className="text-2xl font-bold text-gray-200">Certificates</h2>
         <Suspense fallback={<p>Loading certificates...</p>}>
           <InstructorCertificates
-            certificates={instructor?.certificates??[]}
+            certificates={instructor?.certificates ?? []}
           />
         </Suspense>
       </div>

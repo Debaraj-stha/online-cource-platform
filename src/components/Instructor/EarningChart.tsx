@@ -14,7 +14,7 @@ const EarningChart = () => {
   const maxIndex = earnings.indexOf(maxEarning); // Index of highest month
   const minIndex = earnings.indexOf(minEarning); // Index of highest month
 
-  const loading = true
+  const loading = false
 
   const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
