@@ -3,7 +3,7 @@ import type { Course } from "../../@types/course";
 import type { LoadCourseOptions } from "../reducer-types/course";
 import apiHelper from "../../utils/apiHelper";
 import { getCookie } from "../../utils/manage-cookie";
-import type { Instructor, SocialLinks } from "../../@types/instructor";
+import type { Activity, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 export interface InstructorPayload {
@@ -36,6 +36,10 @@ interface InstructorState {
     loadingInstructorDetails?: boolean
     profileEditPayload?: ProfileEditPayload
     isProfileUpdating?: boolean
+    stats?: InstructorStats,
+    activities?: Activity[]
+    todos: Todo[]
+    todo: Todo
 }
 
 
@@ -49,7 +53,13 @@ const initialState: InstructorState = {
     totalPages: null,
     instructor: null,
     openedInstructorCourseManageOptionsId: null,
-    isProfileUpdating: false
+    isProfileUpdating: false,
+    activities: [],
+    todos: [],
+    todo: {
+        title: "",
+        _id: ""
+    }
 
 }
 
@@ -257,6 +267,146 @@ export const deleteCourse = createAsyncThunk(
     }
 )
 
+export const instructorStats = createAsyncThunk(
+    "instructorStats",
+    async (_, { rejectWithValue, dispatch }) => {
+        try {
+            const url = `${SERVER_URL}/instructor/stats`
+            const res = await apiHelper(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+            },
+                false,
+                dispatch
+            )
+            console.log("res", res)
+            return res.stats
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+
+export const addTodo = createAsyncThunk(
+    "addTodo",
+    async (title: string, { rejectWithValue, dispatch }) => {
+        try {
+
+            const url = `${SERVER_URL}/todo/create`;
+            const res = await apiHelper(url, {
+                method: "POST",
+                body: { title },
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+            },
+                false,
+                dispatch
+            );
+            if (res) {
+                const message: Message = {
+                    id: Date.now(),
+                    type: "info",
+                    messages: "Todo added successfully"
+                };
+                (dispatch as AppDispatch)(setMessageWithTimeout(message));
+                return res.todo
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+
+export const deleteTodo = createAsyncThunk(
+    "deleteTodo",
+    async (id: string, { rejectWithValue, dispatch }) => {
+        try {
+
+            const url = `${SERVER_URL}/todo/delete/${id}`;
+            const res = await apiHelper(url, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+            },
+                false,
+                dispatch
+            );
+            if (res) {
+                const message: Message = {
+                    id: Date.now(),
+                    type: "info",
+                    messages: "Todo deleted successfully"
+                };
+                (dispatch as AppDispatch)(setMessageWithTimeout(message));
+                return res.todo
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+export const getTodos = createAsyncThunk(
+    "getTodos",
+    async (_, { rejectWithValue, dispatch }) => {
+        try {
+
+            const url = `${SERVER_URL}/todo/todos`;
+            const res = await apiHelper(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+            },
+                false,
+                dispatch
+            );
+            if (res) {
+                return res.todos
+            }
+            return []
+
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+
+export const instructorActivities = createAsyncThunk(
+    "instructorActivities",
+    async (_, { rejectWithValue, dispatch }) => {
+        try {
+            const url = `${SERVER_URL}/user/activities`
+            console.log(url)
+            const res = await apiHelper(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                }
+            },
+                false, dispatch
+            )
+            if (res) {
+                return res.activities
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+
+
+
 const instructorSlice = createSlice(
     {
         name: "instructor",
@@ -287,6 +437,9 @@ const instructorSlice = createSlice(
             },
             clearProfileEditPayload(state) {
                 state.profileEditPayload = undefined;
+            },
+            setTodo(state, action: PayloadAction<string>) {
+                state.todo.title = action.payload
             }
         },
         extraReducers: (builder) => {
@@ -346,11 +499,34 @@ const instructorSlice = createSlice(
                 state.isProfileUpdating = false
 
             })
+            //stats of instructor
+            builder.addCase(instructorStats.fulfilled, (state, action: PayloadAction<InstructorState>) => {
+                state.stats = action.payload
+
+            })
+            //activity
+            builder.addCase(instructorActivities.fulfilled, (state, action: PayloadAction<Activity[]>) => {
+                state.activities = action.payload
+            })
+            //creating  todo
+            builder.addCase(addTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+                state.todos.push(action.payload)
+            })
+            //deleting  todo
+            builder.addCase(deleteTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+                state.todos = state.todos.filter((todo) => todo._id !== action.payload._id)
+            })
+            //feteching  todos
+            builder.addCase(getTodos.fulfilled, (state, action: PayloadAction<Todo[]|[]>) => {
+                state.todos=action.payload
+            })
         }
     }
 )
 export const {
     toggleCourseManageOptions,
     setInstructorProfilePayload,
-    setProfileEditPayloadField } = instructorSlice.actions
+    setProfileEditPayloadField,
+    setTodo
+} = instructorSlice.actions
 export default instructorSlice.reducer

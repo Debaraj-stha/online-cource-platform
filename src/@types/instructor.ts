@@ -14,13 +14,13 @@ export interface SocialLinks {
 }
 
 export interface InstructorStats {
-    publishedCourses?: number
-    unpublishedCourses?: number
-    totalEarnings?: number,
-    averageRating?: number
-    totalCourses?: number
-    totalReviews?: number
-    totalStudents?: number
+    publishedCourses?: number | null
+    unpublishedCourses?: number | null
+    totalEarnings?: number | null,
+    averageRating?: number | null
+    totalCourses?: number | null
+    totalReviews?: number | null
+    totalStudents?: number | null
 }
 
 export interface Instructor {
@@ -36,4 +36,22 @@ export interface Instructor {
     targetAudience?: string[]
     topReviews?: Review[]
     stats: InstructorStats
+}
+
+
+
+export  interface Activity{
+    title:string,
+    _id:string,
+    description?:string,
+    course?:string,
+    targetUser?:string,
+    type:string,
+    meta:{}
+    createdAt?:string
+}
+
+export interface Todo{
+    title:string,
+    _id?:string
 }

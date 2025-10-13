@@ -1,17 +1,35 @@
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaTasks } from 'react-icons/fa';
 import gsap from 'gsap';
 import Skeleton from '../Skeleton';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../../store/store';
+import { deleteTodo, getTodos } from '../../store/reducers/instructorReducer';
 
 const Tasks = () => {
-  const tasks = [
-    "Review new student questions",
-    "Update React for Beginners course",
-    "Check assignments to grade",
-  ];
+  const todos = useSelector((state: RootState) => state.instructor.todos)
   const ref = useRef<HTMLUListElement>(null)
+  const [isDeleting, setDeleting] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
+
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        setLoading(true)
+        await dispatch(getTodos())
+
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTodos()
+  }, [dispatch])
+
+
   gsap.registerPlugin(ScrollTrigger)
   useGSAP(() => {
     if (!ref.current) return
@@ -30,7 +48,21 @@ const Tasks = () => {
 
     })
   }, { scope: ref })
-  const loading = false
+
+
+
+
+const handleDelete = async (id: string) => {
+    try {
+      setDeleting(true)
+      await dispatch(deleteTodo(id))
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+
+
 
   return (
     <div className="bg-gray-800 text-white p-6 rounded-xl shadow-md">
@@ -51,13 +83,16 @@ const Tasks = () => {
           :
 
           <ul className="space-y-3" ref={ref}>
-            {tasks.map((task, idx) => (
+            {todos.map((task, index) => (
               <li
-                key={idx}
+                key={task._id ?? index}
                 className="p-3 bg-gray-700 rounded-lg flex items-center justify-between text-sm task"
               >
-                {task}
-                <button className="text-xs bg-green-600 px-2 py-1 rounded hover:bg-green-700">
+                {index + 1}. {task.title}
+                <button className="text-xs bg-green-600 px-2 py-1 rounded hover:bg-green-700 disabled:opacity-50"
+                  disabled={isDeleting}
+                  onClick={() => handleDelete(task._id!)}
+                >
                   Mark Done
                 </button>
               </li>

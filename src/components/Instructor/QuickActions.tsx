@@ -33,7 +33,8 @@ const QuickActions = () => {
             onClick: () => {
                 setModalOpen(true)
             }
-        }
+        },
+        
     ]
     const ref = useRef<HTMLDivElement>(null)
 
