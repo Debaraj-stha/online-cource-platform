@@ -3,7 +3,7 @@ import type { Course } from "../../@types/course";
 import type { LoadCourseOptions } from "../reducer-types/course";
 import apiHelper from "../../utils/apiHelper";
 import { getCookie } from "../../utils/manage-cookie";
-import type { Activity, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
+import type { Activity, CoursePerformance, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 export interface InstructorPayload {
@@ -40,6 +40,7 @@ interface InstructorState {
     activities?: Activity[]
     todos: Todo[]
     todo: Todo
+    coursePerformance: CoursePerformance[]
 }
 
 
@@ -59,7 +60,8 @@ const initialState: InstructorState = {
     todo: {
         title: "",
         _id: ""
-    }
+    },
+    coursePerformance: []
 
 }
 
@@ -439,6 +441,31 @@ export const instructorActivities = createAsyncThunk(
 )
 
 
+export const getCoursePerformance = createAsyncThunk(
+    "getCoursePerformance",
+    async (_, { rejectWithValue, dispatch }) => {
+        try {
+            const url = `${SERVER_URL}/course/performance`
+            const res = await apiHelper(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+            },
+                false,
+                dispatch
+            )
+            if (res.coursePerformance) {
+                return res.coursePerformance
+            }
+            return []
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+
 
 
 const instructorSlice = createSlice(
@@ -478,9 +505,9 @@ const instructorSlice = createSlice(
             setTodoTitle(state, action: PayloadAction<string>) {
                 state.todo.title = action.payload
             },
-            clearTodo(state){
-                state.todo={
-                    title:"",
+            clearTodo(state) {
+                state.todo = {
+                    title: "",
                 }
             }
         },
@@ -566,6 +593,10 @@ const instructorSlice = createSlice(
             builder.addCase(updateTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
                 state.todos = state.todos.filter((todo) => todo._id !== action.payload._id)
                 state.todos.push(action.payload)
+            })
+            //get course performances
+            builder.addCase(getCoursePerformance.fulfilled, (state, action: PayloadAction<CoursePerformance[] | []>) => {
+                state.coursePerformance = action.payload
             })
         }
     }

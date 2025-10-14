@@ -23,6 +23,14 @@ export interface InstructorStats {
     totalStudents?: number | null
 }
 
+export interface CoursePerformance{
+    rating:number
+    revenue:number
+    title:string
+    enrollments:number
+
+}
+
 export interface Instructor {
     name: string;
     title?: string; // e.g., "Senior Web Developer"

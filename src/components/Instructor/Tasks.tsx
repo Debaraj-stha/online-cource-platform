@@ -83,39 +83,42 @@ const Tasks = () => {
               ))
             }
           </ul>
-          :
+          : todos.length == 0 ?
+            <div className='flex justify-center items-center'>
+              <p className='text-center '>No todos are available to show</p>
+            </div>
+            :
+            <ul className="space-y-3" ref={ref}>
+              {todos.map((task, index) => (
+                <li
+                  key={task._id ?? index}
+                  className="p-3 bg-gray-700 rounded-lg flex items-center justify-between text-sm task"
+                >
+                  {index + 1}. {task.title}
+                  <div className='flex gap-4'>
+                    <button
+                      title='Mark as done'
+                      className="text-xs bg-red-600 px-2 py-1 rounded hover:bg-red-700 disabled:opacity-50"
+                      disabled={isDeleting}
+                      onClick={() => handleDelete(task._id!)}
+                    >
+                      Mark Done
+                    </button>
+                    <button
+                      title='Edit todo'
+                      className="text-xs bg-green-600 px-2 py-1 rounded hover:bg-green-700 disabled:opacity-50"
 
-          <ul className="space-y-3" ref={ref}>
-            {todos.map((task, index) => (
-              <li
-                key={task._id ?? index}
-                className="p-3 bg-gray-700 rounded-lg flex items-center justify-between text-sm task"
-              >
-                {index + 1}. {task.title}
-                <div className='flex gap-4'>
-                  <button
-                    title='Mark as done'
-                    className="text-xs bg-red-600 px-2 py-1 rounded hover:bg-red-700 disabled:opacity-50"
-                    disabled={isDeleting}
-                    onClick={() => handleDelete(task._id!)}
-                  >
-                    Mark Done
-                  </button>
-                  <button
-                    title='Edit todo'
-                    className="text-xs bg-green-600 px-2 py-1 rounded hover:bg-green-700 disabled:opacity-50"
-
-                    onClick={() => {
-                      setEditTodoId(task._id!)
-                      dispatch(setTodo(task))
-                    }}
-                  >
-                    Edit
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                      onClick={() => {
+                        setEditTodoId(task._id!)
+                        dispatch(setTodo(task))
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
       }
       {
         editTodoId != null && <CreateTodo onClose={() => {
@@ -123,7 +126,7 @@ const Tasks = () => {
           dispatch(clearTodo())
 
         }}
-        isEditMode={true}
+          isEditMode={true}
         />
       }
     </div>
