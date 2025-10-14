@@ -381,6 +381,40 @@ export const getTodos = createAsyncThunk(
 )
 
 
+
+export const updateTodo = createAsyncThunk(
+    "updateTodo",
+    async ({ id, title }: { id: string, title: string }, { rejectWithValue, dispatch }) => {
+        try {
+
+            const url = `${SERVER_URL}/todo/edit/${id}`;
+            const res = await apiHelper(url, {
+                method: "PATCH",
+                body: { title },
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+            },
+                false,
+                dispatch
+            );
+            if (res) {
+                const message: Message = {
+                    id: Date.now(),
+                    type: "info",
+                    messages: "Todo updated successfully"
+                };
+                (dispatch as AppDispatch)(setMessageWithTimeout(message));
+                return res.todo
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+
 export const instructorActivities = createAsyncThunk(
     "instructorActivities",
     async (_, { rejectWithValue, dispatch }) => {
@@ -438,8 +472,16 @@ const instructorSlice = createSlice(
             clearProfileEditPayload(state) {
                 state.profileEditPayload = undefined;
             },
-            setTodo(state, action: PayloadAction<string>) {
+            setTodo(state, action: PayloadAction<Todo>) {
+                state.todo = action.payload
+            },
+            setTodoTitle(state, action: PayloadAction<string>) {
                 state.todo.title = action.payload
+            },
+            clearTodo(state){
+                state.todo={
+                    title:"",
+                }
             }
         },
         extraReducers: (builder) => {
@@ -517,8 +559,13 @@ const instructorSlice = createSlice(
                 state.todos = state.todos.filter((todo) => todo._id !== action.payload._id)
             })
             //feteching  todos
-            builder.addCase(getTodos.fulfilled, (state, action: PayloadAction<Todo[]|[]>) => {
-                state.todos=action.payload
+            builder.addCase(getTodos.fulfilled, (state, action: PayloadAction<Todo[] | []>) => {
+                state.todos = action.payload
+            })
+            //updating  todos
+            builder.addCase(updateTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+                state.todos = state.todos.filter((todo) => todo._id !== action.payload._id)
+                state.todos.push(action.payload)
             })
         }
     }
@@ -527,6 +574,8 @@ export const {
     toggleCourseManageOptions,
     setInstructorProfilePayload,
     setProfileEditPayloadField,
-    setTodo
+    setTodo,
+    setTodoTitle,
+    clearTodo
 } = instructorSlice.actions
 export default instructorSlice.reducer

@@ -1,12 +1,13 @@
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FaTasks } from 'react-icons/fa';
 import gsap from 'gsap';
 import Skeleton from '../Skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../store/store';
-import { deleteTodo, getTodos } from '../../store/reducers/instructorReducer';
+import { clearTodo, deleteTodo, getTodos, setTodo } from '../../store/reducers/instructorReducer';
+import CreateTodo from './CreateTodo';
 
 const Tasks = () => {
   const todos = useSelector((state: RootState) => state.instructor.todos)
@@ -14,6 +15,7 @@ const Tasks = () => {
   const [isDeleting, setDeleting] = useState(false)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
+  const [editTodoId, setEditTodoId] = useState<string | null>(null)
 
 
   useEffect(() => {
@@ -52,7 +54,7 @@ const Tasks = () => {
 
 
 
-const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string) => {
     try {
       setDeleting(true)
       await dispatch(deleteTodo(id))
@@ -60,6 +62,7 @@ const handleDelete = async (id: string) => {
       setDeleting(false)
     }
   }
+
 
 
 
@@ -89,15 +92,39 @@ const handleDelete = async (id: string) => {
                 className="p-3 bg-gray-700 rounded-lg flex items-center justify-between text-sm task"
               >
                 {index + 1}. {task.title}
-                <button className="text-xs bg-green-600 px-2 py-1 rounded hover:bg-green-700 disabled:opacity-50"
-                  disabled={isDeleting}
-                  onClick={() => handleDelete(task._id!)}
-                >
-                  Mark Done
-                </button>
+                <div className='flex gap-4'>
+                  <button
+                    title='Mark as done'
+                    className="text-xs bg-red-600 px-2 py-1 rounded hover:bg-red-700 disabled:opacity-50"
+                    disabled={isDeleting}
+                    onClick={() => handleDelete(task._id!)}
+                  >
+                    Mark Done
+                  </button>
+                  <button
+                    title='Edit todo'
+                    className="text-xs bg-green-600 px-2 py-1 rounded hover:bg-green-700 disabled:opacity-50"
+
+                    onClick={() => {
+                      setEditTodoId(task._id!)
+                      dispatch(setTodo(task))
+                    }}
+                  >
+                    Edit
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
+      }
+      {
+        editTodoId != null && <CreateTodo onClose={() => {
+          setEditTodoId(null);
+          dispatch(clearTodo())
+
+        }}
+        isEditMode={true}
+        />
       }
     </div>
   )
