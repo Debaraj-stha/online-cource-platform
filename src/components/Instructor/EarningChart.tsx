@@ -1,50 +1,73 @@
-import React, { useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import { FaChartLine } from "react-icons/fa";
 import DynamicChart from "../DynamicChart";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Skeleton from "../Skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store/store";
+import { getEarningStats } from "../../store/reducers/instructorReducer";
+import { months } from "../../constants/instructors";
 
 
 const EarningChart = () => {
   const [chartType, setChartType] = useState<"line" | "bar">("line");
-  const earnings = [500, 700, 2800, 1200, 1500, 2000, 3400, 3000, 1200, 5000, 1800, 3211];
-  const maxEarning = Math.max(...earnings);
-  const minEarning = Math.min(...earnings);
-  const maxIndex = earnings.indexOf(maxEarning); // Index of highest month
-  const minIndex = earnings.indexOf(minEarning); // Index of highest month
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
 
-  const loading = false
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true)
+        await dispatch(getEarningStats())
+
+      } finally {
+        setLoading(false)
+      }
+    })()
+
+  }, [dispatch])
+
+
+
+  const { earnings } = useSelector((state: RootState) => state.instructor)
+  const monthlyEarnings = earnings?.earningByInstructorPerMonth
+
+
+
+  const earningAmounts = monthlyEarnings?.map(e => e.totalEarning) ?? [];
+  const earningMonths = monthlyEarnings?.map(e => e.month) ?? [];
+
+
+
+  const maxEarning = Math.max(...earningAmounts);
+  const minEarning = Math.min(...earningAmounts);
+  const maxIndex = earningAmounts.indexOf(maxEarning); // Index of highest month
+  const minIndex = earningAmounts.indexOf(minEarning); // Index of lowest month
+
+
+  const monthsInWord = earningMonths.map((m) => months[m - 1])
+
+  const backgroundColors = earningAmounts.map((_, index) => {
+    if (index === maxIndex) return "rgba(34,0,225,0.9)"; // green for max
+    if (index === minIndex) return "rgba(250,204,21,0.9)"; // yellow for min
+    return "rgba(0,222,0,0.5)"; // default soft green
+  });
+
 
   const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: monthsInWord,
     datasets: [
       {
         label: "Earnings ($)",
-        data: earnings.map((v, idx) => (idx === maxIndex || idx === minIndex ? null : v)),
+        data: earningAmounts,
         borderColor: "#4ade80",
-        backgroundColor: "rgba(74, 222, 128, 0.7)",
+        backgroundColor: backgroundColors,
         fill: true,
-        pointRadius: 4,
+        pointRadius: 7,
       },
-      {
-        label: "Highest Month",
-        data: earnings.map((v, idx) => (idx === maxIndex ? v : null)),
-        borderColor: "#ffce56",
-        backgroundColor: "#ffce56",
-        pointRadius: 10,
-        pointBackgroundColor: "#ffce56",
-        fill: false,
-      },
-      {
-        label: "Lowest Month",
-        data: earnings.map((v, idx) => (idx === minIndex ? v : null)),
-        borderColor: "#7c3aed",
-        backgroundColor: "#7c3aed",
-        pointRadius: 10,
-        pointBackgroundColor: "#7c3aed",
-        fill: false,
-      },
+
     ],
   };
 
@@ -78,9 +101,9 @@ const EarningChart = () => {
     <>
       {
         loading ?
-         <div className="h-96">
-           <Skeleton extraClass="h-full w-2xl  bg-gray-700" />
-         </div>
+          <div className="h-96">
+            <Skeleton extraClass="h-full w-2xl  bg-gray-700" />
+          </div>
           : <div className="chart_bg" ref={ref}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <FaChartLine /> Earnings Overview

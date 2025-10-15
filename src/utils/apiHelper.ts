@@ -1,20 +1,21 @@
 import { setMessageWithTimeout, type Message } from "../store/reducers/messageReducer";
 import type { AppDispatch } from "../store/store";
+import { removeCookie } from "./manage-cookie";
 
 type ApiOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   headers?: Record<string, string>;
   body?: any;
-  
+
 };
 
 const apiHelper = async (
   url: string,
   options: ApiOptions = {
-    method:"GET"
+    method: "GET"
   },
   isFormData = false,
-  dispatch?:any
+  dispatch?: any
 ) => {
   try {
     const headers: Record<string, string> = {
@@ -39,21 +40,30 @@ const apiHelper = async (
     const res = await response.json();
 
     if (response.status !== 200 && response.status !== 201) {
-      throw new Error(res.message || "API error");
+      throw new Error(res.error || res.message || "API error");
     }
 
     return res;
   } catch (error: any) {
-    const message:Message={
-      messages:error?.message||"API called failed",
-      id:Date.now(),
-      type:"error"
-    };
-     console.error("API call failed:", error);
-     if(dispatch)
-    (dispatch as AppDispatch)(setMessageWithTimeout(message))
-   
-    throw error;
+    console.log(error.message)
+    if (error.message === "jwt expired") {
+      //if jwt token expired,remove user data from cookie and then redirect to login
+      removeCookie("token")
+      removeCookie("user")
+      window.location.pathname = "/auth/login"
+    }
+    else {
+      const message: Message = {
+        messages: error?.message || "API called failed",
+        id: Date.now(),
+        type: "error"
+      };
+      console.error("API call failed:", error);
+      if (dispatch)
+        (dispatch as AppDispatch)(setMessageWithTimeout(message))
+
+      throw error;
+    }
   }
 };
 

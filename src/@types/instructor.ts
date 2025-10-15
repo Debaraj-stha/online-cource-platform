@@ -23,12 +23,22 @@ export interface InstructorStats {
     totalStudents?: number | null
 }
 
-export interface CoursePerformance{
-    rating:number
-    revenue:number
-    title:string
-    enrollments:number
+export interface CoursePerformance {
+    rating: number
+    revenue: number
+    title: string
+    enrollments: number
 
+}
+
+export interface MonthlyEarning {
+    totalEarning: number,
+    month: number
+    year: number
+}
+
+export interface Earnings {
+    earningByInstructorPerMonth: MonthlyEarning[]
 }
 
 export interface Instructor {
@@ -48,18 +58,18 @@ export interface Instructor {
 
 
 
-export  interface Activity{
-    title:string,
-    _id:string,
-    description?:string,
-    course?:string,
-    targetUser?:string,
-    type:string,
-    meta:{}
-    createdAt?:string
+export interface Activity {
+    title: string,
+    _id: string,
+    description?: string,
+    course?: string,
+    targetUser?: string,
+    type: string,
+    meta: {}
+    createdAt?: string
 }
 
-export interface Todo{
-    title:string,
-    _id?:string
+export interface Todo {
+    title: string,
+    _id?: string
 }

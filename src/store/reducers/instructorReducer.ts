@@ -3,7 +3,7 @@ import type { Course } from "../../@types/course";
 import type { LoadCourseOptions } from "../reducer-types/course";
 import apiHelper from "../../utils/apiHelper";
 import { getCookie } from "../../utils/manage-cookie";
-import type { Activity, CoursePerformance, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
+import type { Activity, CoursePerformance, Earnings, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 export interface InstructorPayload {
@@ -41,6 +41,7 @@ interface InstructorState {
     todos: Todo[]
     todo: Todo
     coursePerformance: CoursePerformance[]
+    earnings?: Earnings | null
 }
 
 
@@ -61,7 +62,9 @@ const initialState: InstructorState = {
         title: "",
         _id: ""
     },
-    coursePerformance: []
+    coursePerformance: [],
+    earnings: null
+
 
 }
 
@@ -117,7 +120,6 @@ export const loadInstructorPopularCourse = createAsyncThunk(
             },
                 false,
                 dispatch)
-            console.log("popular course", res)
             return {
                 courses: res.courses ?? []
             }
@@ -167,7 +169,6 @@ export const loadInstructorCourses = createAsyncThunk(
                 false,
                 dispatch
             )
-            console.log(page, limit, res)
 
             return {
                 courses: res.courses ?? [],
@@ -422,7 +423,6 @@ export const instructorActivities = createAsyncThunk(
     async (_, { rejectWithValue, dispatch }) => {
         try {
             const url = `${SERVER_URL}/user/activities`
-            console.log(url)
             const res = await apiHelper(url, {
                 method: "GET",
                 headers: {
@@ -465,6 +465,31 @@ export const getCoursePerformance = createAsyncThunk(
     }
 )
 
+
+export const getEarningStats = createAsyncThunk(
+    "getEarningStats",
+    async (_, { rejectWithValue, dispatch }) => {
+        try {
+            const url = `${SERVER_URL}/instructor/earnings`;
+            const res = await apiHelper(url, {
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+                method: "GET"
+            },
+                false,
+                dispatch
+            )
+            if (res) {
+                
+                return res.earnings
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+
+)
 
 
 
@@ -597,6 +622,10 @@ const instructorSlice = createSlice(
             //get course performances
             builder.addCase(getCoursePerformance.fulfilled, (state, action: PayloadAction<CoursePerformance[] | []>) => {
                 state.coursePerformance = action.payload
+            })
+            //get earnings of instructor
+            builder.addCase(getEarningStats.fulfilled, (state, action: PayloadAction<Earnings | null>) => {
+                state.earnings = action.payload
             })
         }
     }
