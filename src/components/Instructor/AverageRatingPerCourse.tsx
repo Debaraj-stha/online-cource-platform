@@ -1,9 +1,19 @@
-import React from "react";
+
 import DynamicChart from "../DynamicChart";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const AverageRatingPerCourse = () => {
-  const labels = ["React Basics", "Advanced JS", "UI/UX Design", "Node.js", "Python DS"];
-  const ratings = [4.5, 4.2, 4.8, 3.9, 4.6]; // example average ratings
+
+  const {earnings}=useSelector((state:RootState)=>state.instructor)
+
+  const averageRatingsPerCourse=earnings?.averageRatingsPerCourse
+
+  console.log(averageRatingsPerCourse)
+
+
+  const labels = averageRatingsPerCourse?.map((ele)=>ele.title)??[];
+  const ratings = averageRatingsPerCourse?.map((ele)=>ele.averageRating)??[]
 
   const data = {
     labels,
@@ -35,7 +45,7 @@ const AverageRatingPerCourse = () => {
     },
     scales: {
       x: {
-        ticks: { color: "#9ca3af" },
+        ticks: { color: "#9ca3af",font:{size:14} },
         grid: { color: "#374151" },
       },
       y: {

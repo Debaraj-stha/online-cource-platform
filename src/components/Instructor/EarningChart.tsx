@@ -1,35 +1,20 @@
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaChartLine } from "react-icons/fa";
 import DynamicChart from "../DynamicChart";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Skeleton from "../Skeleton";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/store";
-import { getEarningStats } from "../../store/reducers/instructorReducer";
+import {  useSelector } from "react-redux";
+import type {  RootState } from "../../store/store";
 import { months } from "../../constants/instructors";
+import useLoadEarningStats from "../../hooks/useLoadEarningStats";
 
 
 const EarningChart = () => {
   const [chartType, setChartType] = useState<"line" | "bar">("line");
-  const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch<AppDispatch>()
 
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true)
-        await dispatch(getEarningStats())
-
-      } finally {
-        setLoading(false)
-      }
-    })()
-
-  }, [dispatch])
-
-
+  const { loadStats, loading } = useLoadEarningStats()
+  loadStats()
 
   const { earnings } = useSelector((state: RootState) => state.instructor)
   const monthlyEarnings = earnings?.earningByInstructorPerMonth

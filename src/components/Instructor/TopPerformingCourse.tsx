@@ -1,12 +1,18 @@
-import React from "react";
 import DynamicChart from "../DynamicChart";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const TopPerformingCourse = () => {
-  const labels = ["React Basics", "Advanced JS", "UI/UX Design", "Node.js", "Python DS"];
-  const enrollments = [200, 180, 150, 120, 100]; // Example numbers
+  const { earnings } = useSelector((state: RootState) => state.instructor)
+  const topPerformingCourse = earnings?.topPerformingCoursesByEnrollment
+
+
+  const enrollments = topPerformingCourse?.map((ele) => ele.totalEnrollments) ?? []
+  const courses = topPerformingCourse?.map((ele) => ele.title) ?? []
+
 
   const data = {
-    labels,
+    labels: courses,
     datasets: [
       {
         label: "Enrollments",

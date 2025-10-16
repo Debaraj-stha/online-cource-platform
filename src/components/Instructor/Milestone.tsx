@@ -2,13 +2,17 @@ import { useGSAP } from "@gsap/react";
 import React, { useRef } from "react";
 import gsap from "gsap";
 import {  formatPrice } from "../../utils/localeFormatter";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const Milestone = () => {
+const {stats}=useSelector((state:RootState)=>state.instructor)
+
   const milestones = [
-    { label: "Total Students", value: 1200.00 },
-    { label: "Total Revenue", value: 12500 },
-    { label: "Courses Published", value: 5 },
-    { label: "Certificates Issued", value: 450 },
+    { label: "Total Students", value: stats?.totalStudents??0 },
+    { label: "Total Revenue", value: stats?.totalEarnings??0 ,type:"currency" },
+    { label: "Courses Published", value: stats?.publishedCourses??0 },
+    { label: "Certificates Issued", value: stats?.certificatesIssue??0 },
   ];
   const ref = useRef<HTMLDivElement>(null)
 
@@ -35,9 +39,9 @@ const Milestone = () => {
           <div className="text-3xl font-bold">
             <div className="text-3xl font-bold">
               {
-              item.label === "Courses Published" || item.label === "Certificates Issued"
-                ? item.value
-                : formatPrice(item.value, "en-US")}
+              item.type! ==="currency"
+                ? formatPrice(item.value, "en-US")
+                : item.value }
             </div>
           </div>
           <div className="text-gray-400 mt-1">{item.label}</div>

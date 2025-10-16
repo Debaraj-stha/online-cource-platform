@@ -1,4 +1,6 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense,  useState } from "react";
+import useLoadEarningStats from "../../hooks/useLoadEarningStats";
+
 
 //lazy load so that components can be imported when they are required
 // Milestones / Summary
@@ -29,6 +31,10 @@ const Reports = () => {
     const [showCoursePerformance, setShowCoursePerformance] = useState(false);
     const [showStudentInsights, setShowStudentInsights] = useState(false);
     const [showSatisfaction, setShowSatisfaction] = useState(false);
+
+    const { loadStats } = useLoadEarningStats()
+    loadStats()
+
 
     return (
         <div className="space-y-6">

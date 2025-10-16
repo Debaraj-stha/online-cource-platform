@@ -3,7 +3,7 @@ import type { Course } from "../../@types/course";
 import type { LoadCourseOptions } from "../reducer-types/course";
 import apiHelper from "../../utils/apiHelper";
 import { getCookie } from "../../utils/manage-cookie";
-import type { Activity, CoursePerformance, Earnings, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
+import type { Activity, CoursePerformance, InstructorReports, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
 export interface InstructorPayload {
@@ -41,7 +41,7 @@ interface InstructorState {
     todos: Todo[]
     todo: Todo
     coursePerformance: CoursePerformance[]
-    earnings?: Earnings | null
+    earnings?: InstructorReports | null
 }
 
 
@@ -481,7 +481,7 @@ export const getEarningStats = createAsyncThunk(
                 dispatch
             )
             if (res) {
-                
+                console.log("res",res)
                 return res.earnings
             }
         } catch (error: any) {
@@ -624,7 +624,7 @@ const instructorSlice = createSlice(
                 state.coursePerformance = action.payload
             })
             //get earnings of instructor
-            builder.addCase(getEarningStats.fulfilled, (state, action: PayloadAction<Earnings | null>) => {
+            builder.addCase(getEarningStats.fulfilled, (state, action: PayloadAction<InstructorReports | null>) => {
                 state.earnings = action.payload
             })
         }

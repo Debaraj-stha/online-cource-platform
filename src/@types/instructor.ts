@@ -21,6 +21,7 @@ export interface InstructorStats {
     totalCourses?: number | null
     totalReviews?: number | null
     totalStudents?: number | null
+    certificatesIssue?: null | number
 }
 
 export interface CoursePerformance {
@@ -37,8 +38,33 @@ export interface MonthlyEarning {
     year: number
 }
 
-export interface Earnings {
+export interface EarningByCourse {
+    course: String
+    totalEarning: number
+}
+
+export interface EarningPerYear {
+    totalEarning: number,
+    year: number
+}
+
+export interface TopPerformingCoursesByEnrollment {
+    courseId?: string
+    title: string
+    totalEnrollments: number
+}
+
+export interface AverageRatingPerCourse{
+    title:string
+    averageRating:number
+}
+
+export interface InstructorReports {
     earningByInstructorPerMonth: MonthlyEarning[]
+    earningByCourse: EarningByCourse[]
+    earningPerYear: EarningPerYear[]
+    topPerformingCoursesByEnrollment: TopPerformingCoursesByEnrollment[]
+    averageRatingsPerCourse:AverageRatingPerCourse[]
 }
 
 export interface Instructor {
