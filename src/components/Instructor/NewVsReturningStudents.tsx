@@ -1,9 +1,12 @@
 import React from "react";
 import DynamicChart from "../DynamicChart";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const NewVsReturningStudents = () => {
+  const newVsReturningStudents = useSelector((state: RootState) => state.instructor.earnings?.newVsReturningStudents)
   const labels = ["New Students", "Returning Students"];
-  const students = [300, 150]; // example numbers
+  const students = [newVsReturningStudents?.newStudents??0,newVsReturningStudents?.returningStudents??0]
 
   const data = {
     labels,

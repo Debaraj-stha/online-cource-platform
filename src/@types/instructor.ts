@@ -65,20 +65,25 @@ export interface CourseCompletionRate {
     completedCount: number
 }
 
-export interface EnrollmentTrends{
-    year:number
-    month:string
-    totalEnrollments:number
+export interface EnrollmentTrends {
+    year: number
+    month: string
+    totalEnrollments: number
 }
 
-export interface StudentByGeography{
-    totalStudents:number
-    country:string
+export interface StudentByGeography {
+    totalStudents: number
+    country: string
 }
 
-export interface StudentEngagements{
-month:string
-totalActiveStudents:number
+export interface StudentEngagements {
+    month: string
+    totalActiveStudents: number
+}
+
+export interface NewVsReturningStudents {
+    newStudents: number,
+    returningStudents: number,
 }
 
 export interface InstructorReports {
@@ -87,10 +92,11 @@ export interface InstructorReports {
     earningPerYear: EarningPerYear[]
     topPerformingCoursesByEnrollment: TopPerformingCoursesByEnrollment[]
     averageRatingsPerCourse: AverageRatingPerCourse[]
-    courseCompletionRate:CourseCompletionRate[]
-    enrollmentTrends:EnrollmentTrends[]
-    studentGeography:StudentByGeography[]
-    studentEngagements:StudentEngagements[]
+    courseCompletionRate: CourseCompletionRate[]
+    enrollmentTrends: EnrollmentTrends[]
+    studentGeography: StudentByGeography[]
+    studentEngagements: StudentEngagements[]
+    newVsReturningStudents:NewVsReturningStudents
 }
 
 export interface Instructor {
