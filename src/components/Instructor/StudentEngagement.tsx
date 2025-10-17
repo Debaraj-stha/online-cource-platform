@@ -1,9 +1,12 @@
 import React from "react";
 import DynamicChart from "../DynamicChart";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const StudentEngagement = () => {
-    const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
-    const activeStudents = [120, 150, 180, 200, 220, 210, 230, 250]; // Example numbers
+        const studentEngagements = useSelector((state: RootState) => state.instructor.earnings?.studentEngagements)
+    const labels = studentEngagements?.map((ele)=>ele.month)??[];
+    const activeStudents = studentEngagements?.map((ele)=>ele.totalActiveStudents)??[]; // Example numbers
 
     const data = {
         labels,
