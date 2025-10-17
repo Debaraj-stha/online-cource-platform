@@ -1,14 +1,16 @@
 import React from 'react'
 import DynamicChart from '../DynamicChart'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../../store/store'
 
 const EnrollmentTrend = () => {
   // Example data (you’ll later fetch this from Firestore/DB)
-  const labels = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  ]
+      const enrollmentTrends=useSelector((state:RootState)=>state.instructor.earnings?.enrollmentTrends)
+  const labels = enrollmentTrends?.map((ele)=>ele.month)??[]
 
-  const enrollments = [120, 150, 180, 200, 250, 300, 280, 310, 290, 340, 370, 400]
+  const enrollments = enrollmentTrends?.map((ele)=>ele.totalEnrollments)??[]
+
+  console.log(enrollmentTrends)
 
   const data = {
     labels,

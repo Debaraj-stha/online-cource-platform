@@ -65,6 +65,12 @@ export interface CourseCompletionRate {
     completedCount: number
 }
 
+export interface EnrollmentTrends{
+    year:number
+    month:string
+    totalEnrollments:number
+}
+
 export interface InstructorReports {
     earningByInstructorPerMonth: MonthlyEarning[]
     earningByCourse: EarningByCourse[]
@@ -72,6 +78,7 @@ export interface InstructorReports {
     topPerformingCoursesByEnrollment: TopPerformingCoursesByEnrollment[]
     averageRatingsPerCourse: AverageRatingPerCourse[]
     courseCompletionRate:CourseCompletionRate[]
+    enrollmentTrends:EnrollmentTrends[]
 }
 
 export interface Instructor {
