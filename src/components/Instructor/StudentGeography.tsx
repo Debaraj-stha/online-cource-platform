@@ -1,10 +1,13 @@
 import React from "react";
 import DynamicChart from "../DynamicChart";
+import type { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 const StudentGeography = () => {
     // Example data (replace with real DB data later)
-    const labels = ["Nepal", "India", "USA", "UK", "Germany"];
-    const students = [120, 200, 150, 80, 50];
+    const studentGeography = useSelector((state: RootState) => state.instructor.earnings?.studentGeography)
+    const labels =studentGeography?.map((ele)=>ele.country)??[]
+    const students = studentGeography?.map((ele)=>ele.totalStudents)??[];
 
     const data = {
         labels,

@@ -71,6 +71,11 @@ export interface EnrollmentTrends{
     totalEnrollments:number
 }
 
+export interface StudentByGeography{
+    totalStudents:number
+    country:string
+}
+
 export interface InstructorReports {
     earningByInstructorPerMonth: MonthlyEarning[]
     earningByCourse: EarningByCourse[]
@@ -79,6 +84,7 @@ export interface InstructorReports {
     averageRatingsPerCourse: AverageRatingPerCourse[]
     courseCompletionRate:CourseCompletionRate[]
     enrollmentTrends:EnrollmentTrends[]
+    studentGeography:StudentByGeography[]
 }
 
 export interface Instructor {
