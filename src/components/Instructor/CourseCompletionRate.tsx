@@ -1,10 +1,14 @@
 import React from 'react'
 import DynamicChart from '../DynamicChart'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../../store/store'
 
 const CourseCompletionRate = () => {
     // Example data (replace with DB data later)
-    const labels = ["React Basics", "Advanced JS", "UI/UX Design", "Node.js", "Python for Data Science"]
-    const completionRates = [85, 72, 65, 90, 78] // percentage values
+    const courseCompletionRate=useSelector((state:RootState)=>state.instructor.earnings?.courseCompletionRate)
+
+    const labels = courseCompletionRate?.map((ele)=>ele.title)??[]
+    const completionRates = courseCompletionRate?.map((ele)=>ele.completionRate)??[] // percentage values
 
     const data = {
         labels,

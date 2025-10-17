@@ -54,9 +54,15 @@ export interface TopPerformingCoursesByEnrollment {
     totalEnrollments: number
 }
 
-export interface AverageRatingPerCourse{
-    title:string
-    averageRating:number
+export interface AverageRatingPerCourse {
+    title: string
+    averageRating: number
+}
+export interface CourseCompletionRate {
+    completionRate: number
+    title: string
+    totalEnrolled: number
+    completedCount: number
 }
 
 export interface InstructorReports {
@@ -64,7 +70,8 @@ export interface InstructorReports {
     earningByCourse: EarningByCourse[]
     earningPerYear: EarningPerYear[]
     topPerformingCoursesByEnrollment: TopPerformingCoursesByEnrollment[]
-    averageRatingsPerCourse:AverageRatingPerCourse[]
+    averageRatingsPerCourse: AverageRatingPerCourse[]
+    courseCompletionRate:CourseCompletionRate[]
 }
 
 export interface Instructor {
