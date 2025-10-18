@@ -5,7 +5,7 @@ import type { RootState } from '../../store/store'
 
 const EnrollmentTrend = () => {
   // Example data (you’ll later fetch this from Firestore/DB)
-      const enrollmentTrends=useSelector((state:RootState)=>state.instructor.earnings?.enrollmentTrends)
+      const enrollmentTrends=useSelector((state:RootState)=>state.instructor.reports?.enrollmentTrends)
   const labels = enrollmentTrends?.map((ele)=>ele.month)??[]
 
   const enrollments = enrollmentTrends?.map((ele)=>ele.totalEnrollments)??[]

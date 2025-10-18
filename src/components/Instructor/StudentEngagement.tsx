@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 
 const StudentEngagement = () => {
-        const studentEngagements = useSelector((state: RootState) => state.instructor.earnings?.studentEngagements)
+        const studentEngagements = useSelector((state: RootState) => state.instructor.reports?.studentEngagements)
     const labels = studentEngagements?.map((ele)=>ele.month)??[];
     const activeStudents = studentEngagements?.map((ele)=>ele.totalActiveStudents)??[]; // Example numbers
 

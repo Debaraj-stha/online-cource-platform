@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 
 const TopPerformingCourse = () => {
-  const { earnings } = useSelector((state: RootState) => state.instructor)
-  const topPerformingCourse = earnings?.topPerformingCoursesByEnrollment
+  const { reports } = useSelector((state: RootState) => state.instructor)
+  const topPerformingCourse = reports?.topPerformingCoursesByEnrollment
 
 
   const enrollments = topPerformingCourse?.map((ele) => ele.totalEnrollments) ?? []

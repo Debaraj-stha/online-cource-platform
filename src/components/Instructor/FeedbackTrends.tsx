@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 
 const FeedbackTrends = () => {
-    const instructorReviewsCount=useSelector((state:RootState)=>state.instructor.earnings?.instructorReviewsCount)
+    const instructorReviewsCount=useSelector((state:RootState)=>state.instructor.reports?.instructorReviewsCount)
     const labels = ["Neutral", "Positive", "Negative"];
     const feedbacks = [instructorReviewsCount?.neutral??0,instructorReviewsCount?.positive??0,instructorReviewsCount?.negative??0];
 

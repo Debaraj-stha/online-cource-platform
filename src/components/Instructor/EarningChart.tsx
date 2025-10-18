@@ -16,8 +16,8 @@ const EarningChart = () => {
   const { loadStats, loading } = useLoadEarningStats()
   loadStats()
 
-  const { earnings } = useSelector((state: RootState) => state.instructor)
-  const monthlyEarnings = earnings?.earningByInstructorPerMonth
+  const { reports } = useSelector((state: RootState) => state.instructor)
+  const monthlyEarnings = reports?.earningByInstructorPerMonth
 
 
 

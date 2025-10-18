@@ -5,8 +5,8 @@ import type { RootState } from '../../store/store'
 
 const EarningPerYear = () => {
 
-    const { earnings } = useSelector((state: RootState) => state.instructor)
-    const earningPerYear = earnings?.earningPerYear
+    const { reports } = useSelector((state: RootState) => state.instructor)
+    const earningPerYear = reports?.earningPerYear
 
 
 

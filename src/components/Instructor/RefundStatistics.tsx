@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 
 const RefundStatistics = () => {
-  const refundStats=useSelector((state:RootState)=>state.instructor.earnings?.refundStats)
+  const refundStats=useSelector((state:RootState)=>state.instructor.reports?.refundStats)
   const labels = ["Successful Enrollments", "Refunded"];
   const dataValues = [refundStats?.successfulEnrollments??0,refundStats?.refunded??0]; // example numbers
 

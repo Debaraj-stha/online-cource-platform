@@ -5,9 +5,9 @@ import type { RootState } from "../../store/store";
 
 const AverageRatingPerCourse = () => {
 
-  const {earnings}=useSelector((state:RootState)=>state.instructor)
+  const {reports}=useSelector((state:RootState)=>state.instructor)
 
-  const averageRatingsPerCourse=earnings?.averageRatingsPerCourse
+  const averageRatingsPerCourse=reports?.averageRatingsPerCourse
 
   console.log(averageRatingsPerCourse)
 

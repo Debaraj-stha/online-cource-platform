@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const StudentGeography = () => {
     // Example data (replace with real DB data later)
-    const studentGeography = useSelector((state: RootState) => state.instructor.earnings?.studentGeography)
+    const studentGeography = useSelector((state: RootState) => state.instructor.reports?.studentGeography)
     const labels =studentGeography?.map((ele)=>ele.country)??[]
     const students = studentGeography?.map((ele)=>ele.totalStudents)??[];
 

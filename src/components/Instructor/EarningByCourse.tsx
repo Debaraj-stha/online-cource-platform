@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 
 const EarningByCourse = () => {
-  let { earnings } = useSelector((state: RootState) => state.instructor)
+  let { reports } = useSelector((state: RootState) => state.instructor)
   const dispatch = useDispatch<AppDispatch>()
 
 
@@ -16,7 +16,7 @@ const EarningByCourse = () => {
   }, [dispatch])
 
 
-  const earningByCourse = earnings?.earningByCourse
+  const earningByCourse = reports?.earningByCourse
   const courses = earningByCourse?.map((ele) => ele.course) ?? [];
   const totalEarningByCourse = earningByCourse?.map((ele) => ele.totalEarning) ?? [];
 

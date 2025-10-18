@@ -5,7 +5,7 @@ import type { RootState } from '../../store/store'
 
 const CourseCompletionRate = () => {
     // Example data (replace with DB data later)
-    const courseCompletionRate=useSelector((state:RootState)=>state.instructor.earnings?.courseCompletionRate)
+    const courseCompletionRate=useSelector((state:RootState)=>state.instructor.reports?.courseCompletionRate)
 
     const labels = courseCompletionRate?.map((ele)=>ele.title)??[]
     const completionRates = courseCompletionRate?.map((ele)=>ele.completionRate)??[] // percentage values

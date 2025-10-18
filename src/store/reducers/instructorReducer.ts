@@ -41,7 +41,7 @@ interface InstructorState {
     todos: Todo[]
     todo: Todo
     coursePerformance: CoursePerformance[]
-    earnings?: InstructorReports | null
+    reports?: InstructorReports | null
 }
 
 
@@ -63,7 +63,7 @@ const initialState: InstructorState = {
         _id: ""
     },
     coursePerformance: [],
-    earnings: null
+    reports: null
 
 
 }
@@ -625,7 +625,7 @@ const instructorSlice = createSlice(
             })
             //get earnings of instructor
             builder.addCase(getEarningStats.fulfilled, (state, action: PayloadAction<InstructorReports | null>) => {
-                state.earnings = action.payload
+                state.reports = action.payload
             })
         }
     }
