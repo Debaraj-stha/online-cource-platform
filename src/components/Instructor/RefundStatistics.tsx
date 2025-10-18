@@ -1,9 +1,12 @@
-import React from "react";
+
 import DynamicChart from "../DynamicChart";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const RefundStatistics = () => {
+  const refundStats=useSelector((state:RootState)=>state.instructor.earnings?.refundStats)
   const labels = ["Successful Enrollments", "Refunded"];
-  const dataValues = [800, 50]; // example numbers
+  const dataValues = [refundStats?.successfulEnrollments??0,refundStats?.refunded??0]; // example numbers
 
   const data = {
     labels,

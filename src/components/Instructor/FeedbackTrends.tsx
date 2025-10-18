@@ -1,9 +1,13 @@
-import React from "react";
+
 import DynamicChart from "../DynamicChart";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const FeedbackTrends = () => {
+    const instructorReviewsCount=useSelector((state:RootState)=>state.instructor.earnings?.instructorReviewsCount)
     const labels = ["Neutral", "Positive", "Negative"];
-    const feedbacks = [200, 400, 120];
+    const feedbacks = [instructorReviewsCount?.neutral??0,instructorReviewsCount?.positive??0,instructorReviewsCount?.negative??0];
+
 
     const data = {
         labels,

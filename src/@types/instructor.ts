@@ -1,4 +1,4 @@
-import type { Review } from "./reviews"
+import type { Review, ReviewType } from "./reviews"
 
 export interface InstructorCertificate {
     id: string
@@ -86,6 +86,17 @@ export interface NewVsReturningStudents {
     returningStudents: number,
 }
 
+export interface InstructorReviewsCount{
+    positive:number
+    negative:number
+    neutral:number
+}
+
+export interface RefundStats{
+    successfulEnrollments:number
+    refunded:number
+}
+
 export interface InstructorReports {
     earningByInstructorPerMonth: MonthlyEarning[]
     earningByCourse: EarningByCourse[]
@@ -97,6 +108,8 @@ export interface InstructorReports {
     studentGeography: StudentByGeography[]
     studentEngagements: StudentEngagements[]
     newVsReturningStudents:NewVsReturningStudents
+    instructorReviewsCount:InstructorReviewsCount
+    refundStats:RefundStats
 }
 
 export interface Instructor {
