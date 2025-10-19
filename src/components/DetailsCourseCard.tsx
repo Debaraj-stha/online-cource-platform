@@ -39,6 +39,8 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
         discountReason: course.discountReason
     }
 
+    const pixcelImageURL = `${SERVER_URL}/visit/course/${course.id}?userId=${user.id!}`
+
     const handleEnroll = () => {
         if (!user) {
             const message: Message = {
@@ -66,6 +68,15 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
                         :
 
                         <div className="grid md:grid-cols-2 gap-8 p-6 md:p-12">
+                            {
+                                // tracker to track the course user has visited
+                                user.id &&  <img
+                                src={`${pixcelImageURL}`}
+                                alt=''
+                                className='divide-none'
+                            />
+                            }
+                           
 
                             {/* Left: Thumbnail + Pricing */}
                             <div className="flex flex-col gap-5">
