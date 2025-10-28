@@ -71,16 +71,20 @@ export type Level = "beginner" | "intermediate" | "advanced";
 
 export type Language = "english" | "nepali" | "hindi" | "other";
 export interface CourseResource {
-  id: string;           // unique id for the resource
+  id?: string;           // unique id for the resource
   courseId: string;     // which course it belongs to
-  title: string;        // display name
+  title?: string;        // display name
   type: ResourceType;   // type of resource
-  url: string;          // link to download/view
+  url: File|string;          // link to download/view
   size?: string;        // optional size info (e.g., "2MB")
-  description?: string; // optional description
+  description?: File|string; // optional description
   createdAt?: string;   // timestamp
-  thumbnail?:string
+  thumbnail?:File|string
   preview?:string
+  lessonId?:string
+  moduleId?:string
+  full_video?:File|string
+  doc?:File|string
 }
 export interface Lesson {
     id: string;
@@ -179,7 +183,7 @@ export interface Course {
     preview?:string,
     targetedAudiences?:TargetAudience[]
     certificate?:File|null|string
-    priceUnit:Currency
+    currency:Currency
 }
 
 export type CourseType="popular"|"new"|"highest-rated"|null

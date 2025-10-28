@@ -34,6 +34,7 @@ const Reports = lazy(() => import("./Instructor/Reports"));
 const Instructorcourses = lazy(() => import("./Instructor/Instructorcourses"));
 const CreateCourse = lazy(() => import("./Instructor/CreateCourse"));
 const EditCourse = lazy(() => import("./Instructor/EditCourse"));
+const AddResources = lazy(() => import("./Instructor/AddResources"));
 
 
 
@@ -100,6 +101,7 @@ const AppRoutes = () => {
             <Route path="course/:courseId/delete" element={<DeleteCourse />} />
             <Route path="create-course" element={<CreateCourse />} />
             <Route path="edit-course/:courseId" element={<EditCourse />} />
+            <Route path="edit-course/:courseId/add-resources/" element={<AddResources />} />
             <Route path="settings" element={<Setting />} />
             <Route path="settings/change-email" element={<ChangeEmail />} />
             <Route path="profile" element={<Profile />} />

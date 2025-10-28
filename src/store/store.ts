@@ -16,8 +16,15 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["course/setFileFields","instructor/setProfileEditPayloadField"], 
-        ignoredPaths: ["course.course.thumbnail", "course.course.certificate","instructor.profileEditPayload.profilePicture"],
+        ignoredActions: ["course/setFileFields","instructor/setProfileEditPayloadField","instructor/setResourceField"], 
+        ignoredPaths: ["course.course.thumbnail", 
+          "course.course.certificate",
+          "instructor.profileEditPayload.profilePicture",
+          "instructor.resource.doc",
+           "instructor.resource.full_video",
+           "instructor.resource.preview",
+            "instructor.resource.thumbnail"
+        ],
 
       }
     })

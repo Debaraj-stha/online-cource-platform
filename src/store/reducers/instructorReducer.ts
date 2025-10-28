@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Course } from "../../@types/course";
+import type { Course, CourseResource, ResourceType } from "../../@types/course";
 import type { LoadCourseOptions } from "../reducer-types/course";
 import apiHelper from "../../utils/apiHelper";
 import { getCookie } from "../../utils/manage-cookie";
@@ -42,6 +42,7 @@ interface InstructorState {
     todo: Todo
     coursePerformance: CoursePerformance[]
     reports?: InstructorReports | null
+    resource: CourseResource | null
 }
 
 
@@ -63,7 +64,14 @@ const initialState: InstructorState = {
         _id: ""
     },
     coursePerformance: [],
-    reports: null
+    reports: null,
+    resource: {
+        type: "video",
+        url: "",
+        courseId: "",
+        thumbnail: "",
+        preview: ''
+    }
 
 
 }
@@ -481,7 +489,7 @@ export const getEarningStats = createAsyncThunk(
                 dispatch
             )
             if (res) {
-                console.log("res",res)
+                console.log("res", res)
                 return res.earnings
             }
         } catch (error: any) {
@@ -491,6 +499,43 @@ export const getEarningStats = createAsyncThunk(
 
 )
 
+
+export const addResourceToLesson = createAsyncThunk(
+    "addResource",
+    async (resource: CourseResource, { rejectWithValue, dispatch }) => {
+        try {
+
+            const url = `${SERVER_URL}/course/${resource.courseId}/modules/${resource.moduleId}/lessons/${resource.lessonId}/add-resource`;
+            const formData = new FormData();
+            Object.entries(resource).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+
+            const res = await apiHelper(url, {
+                method: "PATCH",
+                body: formData,
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+            },
+                true,
+                dispatch
+            );
+            if (res) {
+                const message: Message = {
+                    id: Date.now(),
+                    type: "info",
+                    messages: "Resource added successfully"
+                };
+                (dispatch as AppDispatch)(setMessageWithTimeout(message));
+                return res.resource
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
 
 
 const instructorSlice = createSlice(
@@ -533,6 +578,34 @@ const instructorSlice = createSlice(
             clearTodo(state) {
                 state.todo = {
                     title: "",
+                }
+            },
+            setResourceField<K extends keyof CourseResource>(state: InstructorState, action: PayloadAction<{ field: K; value: CourseResource[K] }>) {
+                const { field, value } = action.payload;
+                if (!state.resource) {
+                    state.resource = {
+                        type: "video",
+                        url: "",
+                        courseId: "",
+                        thumbnail: "",
+                        preview: ''
+                    };
+                }
+                state.resource[field] = value;
+            },
+            //on chaning resource type clear previous values
+            clearResourceValue(state, action: PayloadAction<ResourceType>) {
+                if (state.resource) {
+                    state.resource = {
+                        ...state.resource,
+                        type: action.payload,
+                        url: "",
+                        thumbnail: "",
+                        doc: "",
+                        full_video: "",
+                        preview: '',
+
+                    }
                 }
             }
         },
@@ -636,6 +709,8 @@ export const {
     setProfileEditPayloadField,
     setTodo,
     setTodoTitle,
-    clearTodo
+    clearTodo,
+    setResourceField,
+    clearResourceValue
 } = instructorSlice.actions
 export default instructorSlice.reducer

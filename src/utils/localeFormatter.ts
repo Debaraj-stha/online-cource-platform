@@ -1,4 +1,4 @@
-
+import NepaliDate from 'nepali-date-converter'
 
 /**
  * Format price based on locale, defaulting to Nepali Rupee (NPR)
@@ -15,40 +15,17 @@ export const currencyMap: Record<string, string> = {
  * Format price based on locale and currency.
  * Always returns a string, never undefined.
  */
-export const formatPrice = (
-  price: number,
-  languageCode?: string,
-  localCurrency?: string
-): string => {
-  // Ensure languageCode fallback
-  const langKey = languageCode?.split('-')[0]?.toLowerCase() || 'np';
-
-  // Ensure currency fallback
-  const currency = localCurrency || currencyMap[langKey] || 'NPR';
-
-  // Ensure valid locale
-  const locale = languageCode ? languageCode.replace('_', '-') : 'np-NP';
-  console.log("currency",currency)
-
+export const formatPrice = (price: number): string => {
   try {
-    return new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency,
+    return new Intl.NumberFormat("ne-NP", {
+      style: "currency",
+      currency: "NPR",
     }).format(price);
   } catch (error) {
-    console.error(
-      'formatPrice failed, falling back to default:',
-      error,
-      { price, locale, currency }
-    );
-    // fallback: Nepali currency and locale
-    return new Intl.NumberFormat('ne-NP', {
-      style: 'currency',
-      currency: 'NPR',
-    }).format(price);
+    console.error("formatPrice failed, falling back to default:", error);
+    return `रू ${price}`;
   }
 };
-
 
 
 /**
@@ -58,14 +35,14 @@ export const formatPrice = (
  * @returns 
  */
 export const formatDate = (date: string | Date, countryShortName: string) => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
 
-    return new Intl.DateTimeFormat(countryShortName, {
-        year: "numeric",
-        month: 'long',
-        day: 'numeric',
-        weekday: 'short'
-    }).format(dateObj);
+  return new Intl.DateTimeFormat(countryShortName, {
+    year: "numeric",
+    month: 'long',
+    day: 'numeric',
+    weekday: 'short'
+  }).format(dateObj);
 };
 /**
  * format time based on locale
@@ -74,12 +51,12 @@ export const formatDate = (date: string | Date, countryShortName: string) => {
  * @returns 
  */
 export const formatTime = (time: string | Date, countryShortName: string) => {
-    const dateObj = typeof time === 'string' ? new Date(time) : time;
+  const dateObj = typeof time === 'string' ? new Date(time) : time;
 
-    return new Intl.DateTimeFormat(countryShortName, {
-        hour: "2-digit",
-        minute: "2-digit",
-    }).format(dateObj);
+  return new Intl.DateTimeFormat(countryShortName, {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(dateObj);
 };
 
 /**
@@ -88,22 +65,23 @@ export const formatTime = (time: string | Date, countryShortName: string) => {
  * @param countryShortName -short country name like USA,Nep,IN
  * @returns 
  */
-export const formatDateTime = (date: string | Date, countryShortName: string) => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    return new Intl.DateTimeFormat(countryShortName, {
-        year: 'numeric',
-        month: 'long',
-        day: '2-digit',
-        weekday: 'short',
-        hour: "2-digit",
-        minute: "2-digit",
-    }).format(dateObj);
+export const formatDateTime = (date: string | Date, locale = "ne-Np") => {
+  const dateObj = typeof date === 'string' ? new NepaliDate(2051, 5, 24) : date;
+  return dateObj?.toLocaleString(locale, {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 };
 
 export const formatNumber = (value: number, countryShortName: string, options: Intl.NumberFormatOptions) => {
-    return new Intl.NumberFormat(countryShortName, {
-        maximumFractionDigits: 2,
-        ...options
-    }).format(value)
+  return new Intl.NumberFormat(countryShortName, {
+    maximumFractionDigits: 2,
+    ...options
+  }).format(value)
 
 }

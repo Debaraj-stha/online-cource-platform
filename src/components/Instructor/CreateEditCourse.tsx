@@ -124,6 +124,17 @@ const CreateEditCourse = ({ isEditMode, course }: Props) => {
     <div className="container mt-6 md:mt-14 lg:mt-20 xl:mt-32 bg-gray-900 rounded-xl space-y-6 p-6 text-white">
 
       <h1 className="text-2xl font-bold">{isEditMode ? `Edit Course: ${course.title}` : "Create Course"}</h1>
+      {
+        isEditMode && (
+          <div>
+          <button className="primary-button" title="Add resources to lessons"
+          onClick={()=>navigate("add-resources/")}
+          >
+            Add Resources
+          </button>
+          </div>
+        )
+      }
       <StepIndecitor steps={10} currentStep={step} onClick={goToStep} />
       {
         step === 1 && <Suspense>

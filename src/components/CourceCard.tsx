@@ -19,11 +19,9 @@ interface Props {
 
 }
 const CourseCard = ({ course, view = 'home', onClick, locale = "en_US", isInstructorMode = false }: Props) => {
-const storageCurrency = localStorage.getItem("currency");
-const localCurrency = storageCurrency!="undefined" || storageCurrency!==undefined ? storageCurrency : "USD"; // fallback if null or empty
+const localCurrency = "Np" // fallback if null or empty
   const priceWithDiscount = course.price - (course.discount ?? 0)
-  const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.priceUnit, localCurrency!)
-  const [language_code, countryShortName] = locale.split("_")
+  const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.currency, localCurrency!)
   const SERVER_URL = import.meta.env.VITE_SERVER_BASE_URL
   const thumbnail = `${SERVER_URL}/uploads/${course.thumbnail.toString()}`
   const isHome = view === 'home'
@@ -33,7 +31,6 @@ const localCurrency = storageCurrency!="undefined" || storageCurrency!==undefine
   const localPrice = success ? price : priceWithDiscount
 
   if (isDetails) return <DetailsCourseCard locale={locale} />
-
 
 
   return (
@@ -49,20 +46,20 @@ const localCurrency = storageCurrency!="undefined" || storageCurrency!==undefine
           ) : course.discount ? (
             <>
               <span className="line-through mr-2">
-                {localPrice ? formatPrice(localPrice, language_code, localCurrency!) : '...'}
+                {localPrice ? formatPrice(localPrice) : '...'}
               </span>
               <span>
                 {localPrice
-                  ? formatPrice(localPrice - course.discount, language_code, localCurrency!)
+                  ? formatPrice(localPrice - course.discount)
                   : '...'}
               </span>
             </>
           ) : (
-            <span>{localPrice ? formatPrice(localPrice, language_code, localCurrency!) : '...'}</span>
+            <span>{localPrice ? formatPrice(localPrice) : '...'}</span>
           )}
         </p>
 
-        <p>{formatDateTime(course.createdAt!, countryShortName)}</p>
+        <p>{formatDateTime(course.createdAt!, "Nep")}</p>
         <Link to="/" className="text-sm">Instructor: {course.instructor?.name}</Link>
         <p className="text-sm">Rating: ⭐ {course.rating?.toFixed(1) ?? 'N/A'}</p>
         <p className="text-sm">Enrolled: {course.totalEnrolled ?? 0}</p>
