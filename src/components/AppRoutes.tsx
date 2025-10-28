@@ -25,6 +25,7 @@ import MoreCourse from "../pages/MoreCourse";
 import StudentRoute from "./StudentRoute";
 import { getCookie } from "../utils/manage-cookie";
 import DeleteCourse from "./Instructor/DeleteCourse";
+import InstructorCoursesReviews from "./Instructor/InstructorCoursesReviews";
 
 
 // Lazy-load instructor-only routes
@@ -101,6 +102,7 @@ const AppRoutes = () => {
             <Route path="course/:courseId/delete" element={<DeleteCourse />} />
             <Route path="create-course" element={<CreateCourse />} />
             <Route path="edit-course/:courseId" element={<EditCourse />} />
+            <Route path="reviews" element={<InstructorCoursesReviews />} />
             <Route path="edit-course/:courseId/add-resources/" element={<AddResources />} />
             <Route path="settings" element={<Setting />} />
             <Route path="settings/change-email" element={<ChangeEmail />} />

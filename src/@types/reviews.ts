@@ -12,8 +12,10 @@ negative: 1-2 stars
 */
 export type ReviewType = "positive" | "neutral" | "negative";
 export type ReactionType = "like" | "dislike"
+export type ReviewStatus='approved'|"pending"|"rejected"
 export interface Review {
     id?: string;
+    _id?:string
     courseId: string;
     user?:User,
     rating: number; // 1 to 5
@@ -27,7 +29,9 @@ export interface Review {
     edited?:boolean,
     reported?:boolean,
     userId?:string,
+    status:ReviewStatus
     hasUserReact:ReactionType|null
+    course?:string
     reviewReactionCount?:ReviewReactionState
 }
 

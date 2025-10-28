@@ -9,6 +9,7 @@ import {
   FaChartBar,
   FaCog,
 } from "react-icons/fa";
+import { MdReviews } from "react-icons/md";
 
 export interface SidebarLink {
   label: string;
@@ -76,6 +77,12 @@ export const sidebarNavLinks: SidebarLink[] = [
     label: "Earnings",
     path: "/instructor/earnings",
     icon: FaWallet,
+    role: ["instructor"],
+  },
+  {
+    label: "Reviews",
+    path: "/instructor/reviews", // instructor version
+    icon: MdReviews,
     role: ["instructor"],
   },
 

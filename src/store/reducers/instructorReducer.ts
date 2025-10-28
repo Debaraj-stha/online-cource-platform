@@ -6,6 +6,7 @@ import { getCookie } from "../../utils/manage-cookie";
 import type { Activity, CoursePerformance, InstructorReports, Instructor, InstructorStats, SocialLinks, Todo } from "../../@types/instructor";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
 import type { AppDispatch } from "../store";
+import type { Review } from "../../@types/reviews";
 export interface InstructorPayload {
     title?: string;
     bio?: string;
@@ -43,6 +44,7 @@ interface InstructorState {
     coursePerformance: CoursePerformance[]
     reports?: InstructorReports | null
     resource: CourseResource | null
+    reviews: Review[] | null
 }
 
 
@@ -71,7 +73,8 @@ const initialState: InstructorState = {
         courseId: "",
         thumbnail: "",
         preview: ''
-    }
+    },
+    reviews: []
 
 
 }
@@ -489,7 +492,7 @@ export const getEarningStats = createAsyncThunk(
                 dispatch
             )
             if (res) {
-                console.log("res", res)
+
                 return res.earnings
             }
         } catch (error: any) {
@@ -537,6 +540,56 @@ export const addResourceToLesson = createAsyncThunk(
     }
 )
 
+
+export const getInstructorAllReviews = createAsyncThunk(
+    "getInstructorAllReviews",
+    async (_, { rejectWithValue, dispatch }) => {
+        try {
+            const url = `${SERVER_URL}/instructor/reviews`;
+            const res = await apiHelper(url, {
+                headers: {
+                    "Authorization": `Bearer ${TOKEN}`
+                },
+                method: "GET"
+            },
+                false,
+                dispatch
+            )
+            if (res) {
+                return res.reviews
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+
+)
+
+export const manageReview = createAsyncThunk(
+    "manageReview",
+    async ({ reviewId, status }: { reviewId: string, status: string }, { rejectWithValue, dispatch }) => {
+        try {
+            const url = `${SERVER_URL}/course/review/manage/${reviewId}?status=${status}`
+            const res = await apiHelper(
+                url,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Authorization": `Bearer ${TOKEN}`
+                    },
+
+                },
+                false,
+                dispatch
+            )
+            if(res){
+                return res.status
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
 
 const instructorSlice = createSlice(
     {
@@ -699,7 +752,11 @@ const instructorSlice = createSlice(
             //get earnings of instructor
             builder.addCase(getEarningStats.fulfilled, (state, action: PayloadAction<InstructorReports | null>) => {
                 state.reports = action.payload
+            });
+            builder.addCase(getInstructorAllReviews.fulfilled, (state, action: PayloadAction<Review[] | null>) => {
+                state.reviews = action.payload
             })
+
         }
     }
 )
