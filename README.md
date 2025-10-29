@@ -226,9 +226,4 @@ Deployed using:
 
 This project is open-source under the **MIT License**.
 
-```
 
----
-
-Would you like me to also generate a clean **`.env.example`** file (with sample keys and comments) so you can directly include it in your repo?
-```
