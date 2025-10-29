@@ -75,7 +75,7 @@ const Navbar = () => {
         });
 
         gsap.to(links, {
-            opacity: 0.9,
+            // opacity: 0.9,
             stagger: 0.2,
             duration: 0.4,
             ease: "power2.out",
