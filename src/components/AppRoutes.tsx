@@ -67,7 +67,7 @@ const AppRoutes = () => {
         <Route path="/courses/view-more" element={<MoreCourse />} />
         <Route path="/courses/:course_id" element={<Course />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/setting" element={<Setting />} />
+        <Route path="/settings" element={<Setting />} />
         <Route path="/verify-email/" element={<EmailVerification />} />
         <Route path="/verify-email/:token" element={<EmailVerification />} />
 

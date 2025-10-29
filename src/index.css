@@ -1,10 +1,7 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-@import url("./css/fonts.css");
-@import url("./css/custom.css");
-
+@import url("./css//fonts.css"); 
+@import url("./css/custom.css"); 
+@import "tailwindcss";
+ @tailwind utilities;
 
 @theme {
   --font-heading: "Montserrat", sans-serif;
