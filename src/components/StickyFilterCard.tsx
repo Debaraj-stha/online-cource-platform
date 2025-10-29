@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react';
 import FilterByCategory from './FilterByCategory'
 import FilterOptions from './FilterOptions'
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { testimonials } from '../constants/home';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

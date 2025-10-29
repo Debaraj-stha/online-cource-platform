@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import Input from './Input'
 import Modal from './Modal'
 import type { AppDispatch } from '../store/store'
@@ -53,6 +53,9 @@ const ReviewReportModal = ({ reviewId, courseId, onClose }: Props) => {
             '>Cancel</button>
                 </div>
             </div>
+            {
+                error && <p className='text-red-600 mt-2'>{error}</p>
+            }
         </Modal>
 
     )

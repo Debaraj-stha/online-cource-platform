@@ -1,11 +1,9 @@
-import React, { useRef } from 'react'
-import CourseCard from './CourceCard'
-import CourseSkeleton from './CourseSkeleton'
+import { useRef } from 'react';
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const EnrolledCourses = () => {
-  const loading = false
+
 
   const ref = useRef<HTMLDivElement>(null)
 

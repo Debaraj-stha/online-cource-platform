@@ -4,68 +4,11 @@ export type PaymentMethod="KHALTI"|"E-SEWA"|"BANK-TRANSFER"
 export type Category =
   // Programming & Tech
   | "web-development"
-  | "frontend-development"
-  | "backend-development"
-  | "fullstack-development"
-  | "mobile-development"
-  | "app-development"
-  | "game-development"
-  | "software-development"
-  | "cloud-computing"
-  | "devops"
-  | "cybersecurity"
-  | "blockchain"
   | "ai-ml"
   | "data-science"
-  | "big-data"
-  | "machine-learning"
-  | "artificial-intelligence"
-  | "programming-languages"
+  |"other"
 
-  // Design & Creative
-  | "design"
-  | "graphic-design"
-  | "ui-ux"
-  | "animation"
-  | "photography"
-  | "video-editing"
-  | "music"
-  | "illustration"
-  | "3d-modelling"
 
-  // Business & Management
-  | "business"
-  | "marketing"
-  | "finance"
-  | "entrepreneurship"
-  | "project-management"
-  | "leadership"
-  | "human-resources"
-  | "sales"
-  | "management"
-  | "strategy"
-
-  // Personal Development & Lifestyle
-  | "personal-development"
-  | "health-fitness"
-  | "nutrition"
-  | "language-learning"
-  | "productivity"
-  | "mindfulness"
-  | "career-development"
-  | "coaching"
-
-  // Education & Science
-  | "teaching-education"
-  | "social-science"
-  | "research"
-  | "mathematics"
-  | "physics"
-  | "chemistry"
-  | "biology"
-
-  // Others
-  | "other";
 
 export type Level = "beginner" | "intermediate" | "advanced";
 
@@ -75,9 +18,9 @@ export interface CourseResource {
   courseId: string;     // which course it belongs to
   title?: string;        // display name
   type: ResourceType;   // type of resource
-  url: File|string;          // link to download/view
+  url: string;          // link to download/view
   size?: string;        // optional size info (e.g., "2MB")
-  description?: File|string; // optional description
+  description?: string; // optional description
   createdAt?: string;   // timestamp
   thumbnail?:File|string
   preview?:string

@@ -10,7 +10,6 @@ import LoadMoreButton from "../components/LoadMoreButton"
 const Mylearning = () => {
   const dispatch = useDispatch<AppDispatch>()
   const [loading, setLoading] = useState(true)
-  const [loadingMore, setLoadingMore] = useState(true)
   const [error, setError] = useState("")
   const [page, setPage] = useState(1)
   const limit=10
@@ -22,13 +21,13 @@ const Mylearning = () => {
 
   const handleLoadMore = async () => {
     try {
-      setLoadingMore(true)
+    
       const result = await dispatch(loadMyCourse({ studentId: user.id!, loadMore: true }))
       if (loadMyCourse.fulfilled.match(result)) {
         setPage((prev) => prev + 1) //increase current page number by on eon success
       }
     } finally {
-      setLoadingMore(false)
+
     }
   }
 

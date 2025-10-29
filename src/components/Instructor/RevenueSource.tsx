@@ -1,4 +1,3 @@
-import React from "react";
 import DynamicChart from "../DynamicChart";
 
 const RevenueSource = () => {

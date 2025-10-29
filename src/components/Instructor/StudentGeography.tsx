@@ -1,4 +1,3 @@
-import React from "react";
 import DynamicChart from "../DynamicChart";
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";

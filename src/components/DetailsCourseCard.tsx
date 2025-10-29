@@ -12,7 +12,7 @@ import { memo } from 'react'
 interface Props {
     locale?: string
 }
-const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
+const DetailsCourseCard = memo(({}: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.auth)
     const enrolledCourseIds = useSelector((state: RootState) => state.course.enrolledCourseIds as string[])
@@ -22,15 +22,14 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
     const course = detailedCourse?.course!
     const localCurrency = localStorage.getItem("currency") || "USD"
     const priceWithDiscount = course.price - (course.discount ?? 0)
-    const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.priceUnit, localCurrency)
-    const [language_code, _] = locale.split("_")
+    const { price, success } = convertPriceToLocalPrice(priceWithDiscount, course.currency, localCurrency)
     const SERVER_URL = import.meta.env.VITE_SERVER_BASE_URL
     const thumbnail = `${SERVER_URL}/uploads/${course.thumbnail.toString()}`
     const navigate = useNavigate()
 
     //if converted ,new price else original price
     const localPrice = success ? price : priceWithDiscount
-    const { price: localDiscount, success: discountSuccess } = convertPriceToLocalPrice(course.discount ?? 0, course.priceUnit, localCurrency)
+    const { price: localDiscount, success: discountSuccess } = convertPriceToLocalPrice(course.discount ?? 0, course.currency, localCurrency)
     const discountPrice = (discountSuccess ? localDiscount : course.discount) || 0
     const courseDetails = {
         name: course.title,
@@ -95,11 +94,11 @@ const DetailsCourseCard = memo(({ locale = "en_US" }: Props) => {
                                             "Free"
                                         ) : course.discount ? (
                                             <>
-                                                <span className="line-through mr-2">{formatPrice(discountPrice, language_code)}</span>
-                                                <span>{formatPrice(localPrice, language_code)}</span>
+                                                <span className="line-through mr-2">{formatPrice(discountPrice)}</span>
+                                                <span>{formatPrice(localPrice)}</span>
                                             </>
                                         ) : (
-                                            <span>{formatPrice(localPrice, language_code)}</span>
+                                            <span>{formatPrice(localPrice)}</span>
                                         )}
                                     </p>
 

@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 import HighestRatedCoursesCard from './HighestRatedCoursesCard'
 import { Link } from 'react-router-dom';
 import GridWrapper from './GridWrapper';
 import CourseSkeleton from './CourseSkeleton';
-import { loadHighestRatedCourses, type LoadCourseOptions } from '../store/reducers/courseReducer';
+import { loadHighestRatedCourses } from '../store/reducers/courseReducer';
 import type { AppDispatch, RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorCard from './ErrorCard';
 import type { CourseType } from '../@types/course';
+import type { LoadCourseOptions } from '../store/reducer-types/course';
 interface Props {
     viewMore?: boolean
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { team } from "../constants/team";
 import { useDragScroll } from "../hooks/useDragScroll";
 import TeamMember from "./TeamMember";

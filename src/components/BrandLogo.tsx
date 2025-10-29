@@ -1,8 +1,6 @@
-import React from 'react'
-import { SITE_NAME } from '../constants/common'
 import logo from "../assets/images/logo.png"
 
-const BrandLogo = ({ isHeader = false, textClass = "" }: { isHeader?: boolean, textClass?: string }) => {
+const BrandLogo = ({ isHeader = false}: { isHeader?: boolean, textClass?: string }) => {
     return (
         <div className="flex items-center gap-3 brand">
             <img

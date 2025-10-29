@@ -8,7 +8,6 @@ import Modal from "./Modal"
 import { setMessageWithTimeout, type Message } from "../store/reducers/messageReducer"
 import type { ReviewEditableField } from "../store/reducer-types/course"
 import { useNavigate } from "react-router-dom"
-import { removeCookie } from "../utils/manage-cookie"
 import { setPendingAction, type PendingAction } from "../store/reducers/pendingActionReducer"
 
 interface Props {

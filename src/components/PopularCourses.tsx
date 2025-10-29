@@ -7,9 +7,10 @@ import CourseSkeleton from './CourseSkeleton';
 
 import type { AppDispatch, RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadPopularCourses, type LoadCourseOptions } from '../store/reducers/courseReducer';
+import { loadPopularCourses } from '../store/reducers/courseReducer';
 import ErrorCard from './ErrorCard';
 import type { CourseType } from '../@types/course';
+import type { LoadCourseOptions } from '../store/reducer-types/course';
 
 
 interface Props {

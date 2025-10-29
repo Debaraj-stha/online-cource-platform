@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import AddCourseVideo from './Instructor/AddCourseVideo'
 
 const Test = () => {

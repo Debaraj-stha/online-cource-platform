@@ -1,16 +1,14 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react';
 import { FaChartLine, FaPen, FaPlus } from 'react-icons/fa'
 import CreateTodo from './CreateTodo'
 import { useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { useSelector } from 'react-redux'
-import type { RootState } from '../../store/store'
+
 
 const QuickActions = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const navigate = useNavigate()
-    const { todo } = useSelector((state: RootState) => state.instructor)
 
     const actions = [
         {

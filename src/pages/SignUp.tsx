@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import BrandLogo from "../components/BrandLogo";
+
 import gif from "../assets/videos/Sign-up2.gif"; // you can replace with any signup illustration
 import SignUpForm from "../components/SignUpForm";
 import useLoginSignupAnimation from "../hooks/useLoginSignupAnimation";
 
 const SignUp = () => {
-     const [message, setMessage] = useState("");
       const {containerRef,gifRef,formRef}=useLoginSignupAnimation()
 
   
@@ -28,10 +26,7 @@ const SignUp = () => {
                     {/* Signup Form */}
                    <SignUpForm/>
 
-                    {/* Signup Message */}
-                    {message && (
-                        <p className="mt-4 text-sm text-center text-gray-300">{message}</p>
-                    )}
+                    
 
                     {/* Extra Links */}
                     <div className="mt-6 text-center text-gray-400 text-sm">

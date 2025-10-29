@@ -10,6 +10,7 @@ export const initialReview: Review = {
     review: "",
     rating: 1,
     anonymous: false,
+    status: "pending",
     courseId: "",
     verifiedPurchase: false,
     hasUserReact: null

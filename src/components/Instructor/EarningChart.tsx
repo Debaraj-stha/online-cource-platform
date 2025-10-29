@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FaChartLine } from "react-icons/fa";
 import DynamicChart from "../DynamicChart";
 import gsap from "gsap";

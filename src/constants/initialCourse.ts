@@ -7,7 +7,7 @@ export const initialCourse: Course = {
     thumbnail: "",
     price: 0,
     _id:"",
-    priceUnit:"USD",
+    currency:"NPR",
 
     // optional values with defaults
     instructor: null,

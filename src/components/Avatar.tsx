@@ -1,4 +1,3 @@
-import React from 'react'
 import { getColorBasedOnName } from '../utils/colorBasedOnName'
 interface Props {
   url?: string,

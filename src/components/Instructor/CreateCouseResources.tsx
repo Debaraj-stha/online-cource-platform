@@ -56,26 +56,26 @@ const CreateCouseResources = () => {
                             placeholder='Title'
                             textColorClass='text-gray-100'
                             value={resource.title}
-                            onChange={(e) => handleChange(e, resource.id)}
+                            onChange={(e) => handleChange(e, resource.id!)}
                         />
                         <Input
                             name='url'
                             placeholder='Resouce URL'
                             textColorClass='text-gray-100'
                             value={resource.url}
-                            onChange={(e) => handleChange(e, resource.id)}
+                            onChange={(e) => handleChange(e, resource.id!)}
                         />
                         <Input
                             name='description'
                             placeholder='Resouce description(Optional)'
                             textColorClass='text-gray-100'
                             value={resource.description}
-                            onChange={(e) => handleChange(e, resource.id)}
+                            onChange={(e) => handleChange(e, resource.id!)}
                         />
                         <select
                             name='type'
                             className='border border-gray-700'
-                            onChange={(e) => handleTypeSelection(e, resource.id)}
+                            onChange={(e) => handleTypeSelection(e, resource.id!)}
                             value={resource.type || ""}
                         >
                             <option value="" disabled>Resource Type</option>
@@ -89,7 +89,7 @@ const CreateCouseResources = () => {
                             <button title='Remove resources'
                                 className='danger-button'
                                 type='button'
-                                onClick={() => removeResource(resource.id)}
+                                onClick={() => removeResource(resource.id!)}
                             >
                                 <CgClose />
                             </button>

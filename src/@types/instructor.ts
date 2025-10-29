@@ -1,4 +1,4 @@
-import type { Review, ReviewType } from "./reviews"
+import type { Review,  } from "./reviews"
 
 export interface InstructorCertificate {
     id: string

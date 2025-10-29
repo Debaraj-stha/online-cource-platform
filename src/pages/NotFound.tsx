@@ -1,4 +1,3 @@
-import React from 'react'
 import gif from "../assets/videos/not-found.gif"
 
 const NotFound = () => {

@@ -1,4 +1,4 @@
-import React, { useState,  useEffect } from "react";
+import { useEffect } from "react";
 import BrandLogo from "../components/BrandLogo";
 import gif from "../assets/videos/Sign in.gif";
 import LoginForm from "../components/LoginForm";

@@ -1,4 +1,4 @@
-import type { Course, CourseResource, Lesson, ResourceType } from "../@types/course";
+import type { Course, ResourceType } from "../@types/course";
 
 export const getCourseFormData = (course: Course, instructor_id: string) => {
   try {

@@ -1,7 +1,6 @@
 import { useGSAP } from "@gsap/react"
 import { useRef } from "react"
 import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 const useCookieAndTermAnimation = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     useGSAP(() => {

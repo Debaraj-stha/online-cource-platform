@@ -1,12 +1,10 @@
-import type { Roles } from '../@types/user'
 import Avatar from '../components/Avatar'
 import StudentProfileCard from '../components/StudentProfileCard'
 // import { popularCourses } from '../constants/courses'
 import InstructorProfileCard from '../components/InstructorProfileCard'
-import InstructorSocialLinks from '../components/InstructorSocialLinks'
 import { MdVerified } from 'react-icons/md'
 import Skeleton from '../components/Skeleton'
-import { use, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useLocation, useNavigate } from 'react-router-dom'

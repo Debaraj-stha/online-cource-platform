@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import type { Certificate } from "../@types/course";
 import Modal from "./Modal";
 import { CgClose } from "react-icons/cg";

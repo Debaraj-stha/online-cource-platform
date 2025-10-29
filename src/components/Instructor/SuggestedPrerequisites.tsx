@@ -1,4 +1,3 @@
-import React from 'react'
 import type { Category } from '../../@types/course'
 import { categoryPrerequisites } from '../../constants/prerequisitesByCategory'
 
@@ -7,7 +6,7 @@ const SuggestedPrerequisites = ({ selectedCategory,onClick }: { selectedCategory
      <div>
         <h3 className="font-semibold">Prerequisites:</h3>
         <ul className="list-disc ml-5">
-          {categoryPrerequisites[selectedCategory].map(req => (
+          {(categoryPrerequisites[selectedCategory]??[]).map(req => (
             <li key={req} onClick={()=>onClick(req)} className='cursor-pointer'>{req}</li>
           ))}
         </ul>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 import CourseCard from './CourceCard'
 import CourseSkeleton from './CourseSkeleton'
 import { useGSAP } from '@gsap/react'

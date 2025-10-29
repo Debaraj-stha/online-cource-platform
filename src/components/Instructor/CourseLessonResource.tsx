@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { CourseResource, ResourceType } from '../../@types/course';
+import type { CourseResource } from '../../@types/course';
 import Input from '../Input';
 import { resourceTypes } from '../../constants/resourceTypes';
 import { BsChevronExpand, BsChevronUp } from 'react-icons/bs';
@@ -107,7 +107,7 @@ const CourseLessonResource = ({ resources, moduleId, lessonId }: Props) => {
                   type="text"
                   name="thumbnail"
                   placeholder="Thumbnail URL"
-                  value={resource.thumbnail}
+                  value={resource.thumbnail?.toString()}
                   extraClass="flex-1 w-full"
                   textColorClass="text-gray-100"
                   onChange={(e) => updateLessonResources(e, index)}

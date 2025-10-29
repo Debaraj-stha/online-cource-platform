@@ -5,7 +5,7 @@ export const resources: CourseResource[] = [
     id: "res1",
     courseId: "web-dev-101",
     title: "HTML & CSS Cheatsheet",
-    type: "pdf",
+    type: "document",
     url: "/resources/html-css-cheatsheet.pdf",
     size: "1.2MB",
     description: "Quick reference for HTML & CSS",

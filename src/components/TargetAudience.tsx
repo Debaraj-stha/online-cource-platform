@@ -1,4 +1,3 @@
-import React from "react";
 import type { TargetAudience } from "../@types/course";
 
 const TargetAudienceCard = ({ audience }: { audience: TargetAudience[] }) => {

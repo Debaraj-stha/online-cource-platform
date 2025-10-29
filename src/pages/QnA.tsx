@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import QnAList from "../components/QnAList";
 import AskQuestionForm from "../components/AskQuestionForm";

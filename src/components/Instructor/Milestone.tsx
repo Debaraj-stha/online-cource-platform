@@ -1,5 +1,5 @@
 import { useGSAP } from "@gsap/react";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import {  formatPrice } from "../../utils/localeFormatter";
 import { useSelector } from "react-redux";
@@ -40,7 +40,7 @@ const {stats}=useSelector((state:RootState)=>state.instructor)
             <div className="text-3xl font-bold">
               {
               item.type! ==="currency"
-                ? formatPrice(item.value, "en-US")
+                ? formatPrice(item.value)
                 : item.value }
             </div>
           </div>

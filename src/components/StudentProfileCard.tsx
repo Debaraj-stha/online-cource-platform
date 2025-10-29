@@ -1,4 +1,3 @@
-import React from 'react'
 import RecentActivity from './RecentActivity'
 import StudentAchievement from './StudentAchievement'
 import CompletedCourses from './CompletedCourses'

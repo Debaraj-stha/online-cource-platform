@@ -1,4 +1,4 @@
-import React, { use, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import Input from './Input'
 import { FaUser } from 'react-icons/fa6'
 import { setProfileEditPayloadField, updateProfile, type InstructorPayload, type ProfileEditPayload } from '../store/reducers/instructorReducer'

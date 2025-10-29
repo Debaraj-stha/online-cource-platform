@@ -2,14 +2,13 @@ import esewa from "../assets/images/esewa_logo.png"
 import khalti from "../assets/images/khalti.png"
 import banktransfer from "../assets/images/bank-transfer.svg"
 import { useState } from "react"
-import { Navigate, useLocation, useParams } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom";
 import usePayment, { type InitProps } from "../hooks/usePayment"
 import PaymentLoading from "../components/PaymentLoading"
 import PaymentError from "../components/PaymentError"
 import { TAX } from "../constants/common"
 import BankDetails from "../components/BankDetails"
 import DemoPaymentInfoCard from "../components/DemoPaymentInfoCard"
-import { getCookie } from "../utils/manage-cookie"
 
 interface CardProps {
     image: string

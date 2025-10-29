@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import type { Course, View } from '../@types/course';
 import CourseCard from './CourceCard';
 import { useCourseGridAnimation } from '../hooks/useCourseGridAnimation';

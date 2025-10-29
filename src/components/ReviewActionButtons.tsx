@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { MdFlag, MdThumbDown, MdThumbUp } from 'react-icons/md';
 import type { ReactionType, Review } from '../@types/reviews';

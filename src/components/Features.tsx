@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { features } from '../constants/home';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { featureImages } from '../constants/featureImages';
 import FeatureCard from './FeatureCard';
 
 

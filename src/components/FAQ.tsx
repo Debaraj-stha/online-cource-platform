@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { faq } from '../constants/home';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';

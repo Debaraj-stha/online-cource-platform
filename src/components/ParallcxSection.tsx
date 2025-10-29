@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react'
+import { type ReactNode } from 'react';
 
 const ParallaxSection = ({ image ,children}: { image: string,children:ReactNode }) => {
     return (

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams, Navigate } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import {  useParams, Navigate } from 'react-router-dom'
 import CourseCard from '../components/CourceCard'
 import SimilarCourses from '../components/SimilarCourses'
 import Curriculum from '../components/Curriculm'
@@ -21,7 +21,6 @@ import type { CourseResource, Lesson, Module } from '../@types/course'
 const Course = () => {
     const [previewVideo, setPreviewVideo] = useState("")
     const { course_id } = useParams()
-    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.auth)
     //replace overwriter the route history stack and user cannot go back by click on back button

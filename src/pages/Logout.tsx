@@ -1,5 +1,5 @@
 import { useGSAP } from "@gsap/react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiHelper from "../utils/apiHelper";
 import { getCookie, removeCookie } from "../utils/manage-cookie";

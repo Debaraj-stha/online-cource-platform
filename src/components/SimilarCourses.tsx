@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo } from 'react';
 
 import CourseCard from './CourceCard'
 import { useNavigate } from 'react-router-dom'

@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import NewCoursesCard from './NewCoursesCard';
 import GridWrapper from './GridWrapper';
 import CourseSkeleton from './CourseSkeleton';
-import { loadNewestCourses, type LoadCourseOptions } from '../store/reducers/courseReducer';
+import { loadNewestCourses } from '../store/reducers/courseReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store';
 import ErrorCard from './ErrorCard';
 import type { CourseType } from '../@types/course';
+import type { LoadCourseOptions } from '../store/reducer-types/course';
 
 interface Props {
     viewMore?: boolean

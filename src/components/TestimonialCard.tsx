@@ -1,4 +1,3 @@
-import React from 'react'
 import type { Testimonial } from '../@types/Testimonial'
 interface Props {
     testimonial: Testimonial

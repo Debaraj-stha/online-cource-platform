@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 const NumberAnimation = ({ duration = 300, target = 200,extraText="" }) => {
     const [count, setCount] = useState(0)

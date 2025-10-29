@@ -1,4 +1,3 @@
-import React from 'react'
 import { CgList } from 'react-icons/cg'
 import { GrGrid } from 'react-icons/gr'
 import ThemeToggler from './ThemeToggler'

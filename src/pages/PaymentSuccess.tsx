@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import type { AppDispatch } from "../store/store";

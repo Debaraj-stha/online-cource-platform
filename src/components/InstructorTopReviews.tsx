@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react'
+import { memo, useRef } from 'react';
 import type { Review } from '../@types/reviews'
 import ReviewCard from './ReviewCard'
 import ReviewSkeleton from './ReviewSkeleton'

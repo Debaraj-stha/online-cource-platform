@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react';
 import NumberAnimation from './NumberAnimation'
 import Skeleton from './Skeleton'
 import { useGSAP } from '@gsap/react'

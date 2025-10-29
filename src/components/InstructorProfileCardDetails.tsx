@@ -1,4 +1,3 @@
-import React from 'react'
 import InstructorSocialLinks from './InstructorSocialLinks'
 import type { Instructor } from '../@types/instructor'
 

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import { memo, useState } from 'react';
 import SortDropdown from '../components/SortDropdown';
 
 import { BiExpandVertical } from 'react-icons/bi';

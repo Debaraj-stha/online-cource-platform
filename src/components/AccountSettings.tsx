@@ -1,4 +1,3 @@
-import React from 'react'
 import { appearenceSettings } from '../constants/settings'
 import { Link } from 'react-router-dom'
 

@@ -1,4 +1,3 @@
-import React from "react";
 import image from "../assets/images/team3.avif";
 // You can swap this with team1.avif, team.avif, or even an illustration later
 

@@ -1,4 +1,4 @@
-import React, { useState, type SetStateAction } from 'react'
+import React from 'react';
 import type { CourseFAQ } from '../../@types/course'
 import { CgAdd, CgClose } from 'react-icons/cg'
 import Input from '../Input'

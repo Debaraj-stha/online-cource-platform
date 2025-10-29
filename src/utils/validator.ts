@@ -1,4 +1,3 @@
-type Field = "email" | "name" | "password" | "confirmPassword";
 
 interface Errors {
   emailError: string | null;

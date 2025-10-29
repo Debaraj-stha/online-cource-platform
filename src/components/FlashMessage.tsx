@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector} from "react-redux";
 import type { Message } from "../store/reducers/messageReducer";
-import type { AppDispatch, RootState } from "../store/store";
+import type {  RootState } from "../store/store";
 
 
 const FlashMessage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const messages = useSelector((state: RootState) => state.message);
 
 

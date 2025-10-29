@@ -1,6 +1,6 @@
-import React, { type JSX } from "react";
+import { type JSX } from "react";
 
-import { FaFilePdf, FaFileCode, FaVideo, FaLink, FaFileAlt, FaFileImage, FaFileAudio } from "react-icons/fa";
+import {  FaFileCode, FaVideo, FaLink, FaFileAlt, FaFileImage, FaFileAudio } from "react-icons/fa";
 import type { CourseResource, ResourceType } from "../@types/course";
 
 interface ResourcesProps {
@@ -8,7 +8,6 @@ interface ResourcesProps {
 }
 
 const typeIcons: Record<ResourceType, JSX.Element> = {
-    pdf: <FaFilePdf className="text-red-500" />,
     code: <FaFileCode className="text-green-500" />,
     video: <FaVideo className="text-blue-500" />,
     link: <FaLink className="text-purple-500" />,

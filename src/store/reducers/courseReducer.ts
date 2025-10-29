@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Category, Course, CourseFAQ, CourseResource, Module, ResourceType } from "../../@types/course";
+import type { Category, Course, CourseFAQ, CourseResource, Module } from "../../@types/course";
 import { initialCourse } from "../../constants/initialCourse";
 import apiHelper from "../../utils/apiHelper";
 import { setMessageWithTimeout, type Message } from "./messageReducer";
@@ -236,7 +236,7 @@ export const loadHighestRatedCourses = createAsyncThunk(
 //limit=similar course limit
 export const loadCourse = createAsyncThunk(
     "loadCourse",
-    async ({ courseId, limit }: { courseId: string, limit?: string }, { rejectWithValue, dispatch }) => {
+    async ({ courseId, limit }: { courseId: string, limit?: string }, { rejectWithValue }) => {
         try {
             const user = getCookie("user")
             const parsedData = user ? JSON.parse(user) : {}

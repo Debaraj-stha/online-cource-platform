@@ -1,5 +1,4 @@
 import InstructorCertificates from './InstructorCertificates';
-import type { InstructorCertificate } from '../@types/instructor';
 
 import { lazy, Suspense } from 'react';
 import InstructorAllCoursesCards from './InstructorAllCoursesCards';
@@ -29,10 +28,10 @@ const InstructorProfileCard = () => {
 
       <Suspense fallback={<p className='text-white'>Loading instructor stats</p>}>
         <InstructorStatsCard
-          averageRating={instructor?.stats?.averageRating}
-          totalCourses={instructor?.stats?.totalCourses}
-          totalReviews={instructor?.stats?.totalReviews}
-          totalStudents={instructor?.stats?.totalStudents}
+          averageRating={instructor?.stats?.averageRating??0}
+          totalCourses={instructor?.stats?.totalCourses??0}
+          totalReviews={instructor?.stats?.totalReviews??0}
+          totalStudents={instructor?.stats?.totalStudents??0}
         />
       </Suspense>
       <InstructorAllCoursesCards />

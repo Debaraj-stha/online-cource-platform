@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+
 
 import useLoginSignupAnimation from "../hooks/useLoginSignupAnimation";
 import ContactCardContainer from "../components/ContactCardContainer";
 
 const Contact = () => {
-  const [message, setMessage] = useState("");
   const { containerRef, gifRef, formRef } = useLoginSignupAnimation()
 
 

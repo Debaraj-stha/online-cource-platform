@@ -1,4 +1,3 @@
-import React from 'react'
 import Skeleton from './Skeleton'
 
 const ReviewSkeleton = ({ length = 6 }: { length?: number }) => {

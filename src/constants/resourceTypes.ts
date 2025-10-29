@@ -7,5 +7,4 @@ export const resourceTypes: ResourceType[] = [
     "document",
     "link",
     "other",
-    "pdf"
 ]

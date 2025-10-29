@@ -1,4 +1,3 @@
-import React from 'react'
 import Skeleton from './Skeleton'
 
 const CourseSkeleton = ({itemLength=5}:{itemLength?:number}) => {

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import capitalize from '../utils/string-func';
 import RoundedSkeleton from './RoundedSkeleton';
 import { useGSAP } from '@gsap/react';

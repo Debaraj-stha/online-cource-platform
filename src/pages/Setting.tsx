@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { Link } from "react-router-dom";
-import { adminSetting, appearenceSettings, courseSetting, paymentSetting, privacySetting } from "../constants/settings";
+import { adminSetting, courseSetting, paymentSetting, privacySetting } from "../constants/settings";
 import AppearanceSetting from "../components/AppearanceSetting";
 import NotificationSettings from "../components/NotificationSettings";
 import AccountSettings from "../components/AccountSettings";

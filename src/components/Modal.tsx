@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react'
+import { type ReactNode } from 'react';
 
 const Modal = ({ children ,extraClass,onClose}: { children: ReactNode ,extraClass?:string,onClose?:()=>void}) => {
     return (

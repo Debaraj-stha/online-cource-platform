@@ -48,7 +48,7 @@ const LessonResourceItem = ({ resource, lessonTitle }: Props) => {
                     {resource.type === "video" && resource.thumbnail && (
                         <div className='w-full sm:w-40'>
                             <img
-                                src={resource.thumbnail}
+                                src={resource.thumbnail.toString()}
                                 alt={`${lessonTitle} thumbnail`}
                                 className="rounded-lg w-full h-full object-cover mt-2"
                             />

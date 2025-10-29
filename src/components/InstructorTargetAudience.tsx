@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react'
+import { memo, useRef } from 'react';
 import RoundedSkeleton from './RoundedSkeleton'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
