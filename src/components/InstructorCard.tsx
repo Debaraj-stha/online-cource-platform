@@ -37,14 +37,14 @@ const InstructorCard = memo(({ instructor }: { instructor: Instructor }) => {
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
        
-          <p>👥 Students: <span className="font-semibold">{instructor.stats.totalStudents??0}</span></p>
+          <p>👥 Students: <span className="font-semibold">{instructor.stats?.totalStudents??0}</span></p>
      
 
-          <p>📚 Courses: <span className="font-semibold">{instructor.stats.totalCourses??0}</span></p>
+          <p>📚 Courses: <span className="font-semibold">{instructor.stats?.totalCourses??0}</span></p>
     
           <p>💼 Experience: <span className="font-semibold">{instructor.experience??0} yrs</span></p>
       
-          <p>⭐ Rating: <span className="font-semibold">{instructor.stats.averageRating??0.0}</span></p>
+          <p>⭐ Rating: <span className="font-semibold">{instructor.stats?.averageRating??0.0}</span></p>
       
       </div>
 

@@ -7,7 +7,7 @@ const ThemeToggler = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center"
+      className=" p-2 rounded bg-gray-800  dark:bg-red-500hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center"
       title="Toggle theme"
     >
       {isDark ? (

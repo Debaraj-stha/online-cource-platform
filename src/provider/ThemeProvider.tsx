@@ -14,9 +14,7 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
 
     const toggleTheme = () => {
-        const root = document.documentElement;
         const newTheme = !isDark ? 'dark' : 'light';
-        root.setAttribute('data-theme', newTheme);
         setDark(!isDark);
         localStorage.setItem('theme', newTheme);
     };
